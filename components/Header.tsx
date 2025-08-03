@@ -15,7 +15,11 @@ const navItems = [
   { label: 'FAQs', href: '#faqs' },
 ]
 
-export default function Header() {
+interface HeaderProps {
+  onRsvpClick: () => void
+}
+
+export default function Header({ onRsvpClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
@@ -44,7 +48,7 @@ export default function Header() {
 
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="sm" className="hidden md:inline-flex">
+              <Button size="sm" className="hidden md:inline-flex" onClick={onRsvpClick}>
                 RSVP
               </Button>
             </motion.div>
@@ -123,7 +127,10 @@ export default function Header() {
                     <Button
                       size="sm"
                       className="w-full"
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={() => {
+                        setIsMenuOpen(false)
+                        onRsvpClick()
+                      }}
                     >
                       RSVP
                     </Button>

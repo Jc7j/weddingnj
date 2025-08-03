@@ -63,7 +63,11 @@ const imagePositions = [
   },
 ]
 
-export default function Hero() {
+interface HeroProps {
+  onRsvpClick: () => void
+}
+
+export default function Hero({ onRsvpClick }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const dateRef = useRef<HTMLDivElement>(null)
@@ -249,7 +253,7 @@ export default function Hero() {
           Philippines
         </p>
 
-        <Button ref={buttonRef} size="lg" className="px-8">
+        <Button ref={buttonRef} size="lg" className="px-8" onClick={onRsvpClick}>
           RSVP
         </Button>
       </div>
