@@ -303,7 +303,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
         className="absolute inset-x-0 bottom-16 z-20 flex flex-col items-center text-muted-foreground"
       >
         <p className="mb-2 font-light text-sm tracking-wide">
-          Discover our love story
+          Discover our story
         </p>
         <div className="flex flex-col items-center">
           <ChevronDown className="h-6 w-6 animate-bounce" />

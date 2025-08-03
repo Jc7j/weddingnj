@@ -51,7 +51,8 @@ export default function Header({ onRsvpClick }: HeaderProps) {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="sm"
-                className="hidden md:inline-flex"
+                className="hidden rounded-full px-8 py-2 font-medium text-white tracking-wide transition-colors hover:opacity-90 md:inline-flex"
+                style={{ backgroundColor: '#2B4735' }}
                 onClick={onRsvpClick}
               >
                 RSVP
@@ -131,7 +132,8 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                   >
                     <Button
                       size="sm"
-                      className="w-full"
+                      className="w-full rounded-full px-8 py-2 font-medium text-white tracking-wide transition-colors hover:opacity-90"
+                      style={{ backgroundColor: '#2B4735' }}
                       onClick={() => {
                         setIsMenuOpen(false)
                         onRsvpClick()
