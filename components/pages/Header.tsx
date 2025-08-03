@@ -33,7 +33,7 @@ export default function Header({ onRsvpClick }: HeaderProps) {
             NJ
           </Link>
 
-          <ul className="hidden items-center gap-8 md:flex">
+          {/* <ul className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
@@ -44,11 +44,15 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                 </Link>
               </li>
             ))}
-          </ul>
+          </ul> */}
 
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button size="sm" className="hidden md:inline-flex" onClick={onRsvpClick}>
+              <Button
+                size="sm"
+                className="hidden md:inline-flex"
+                onClick={onRsvpClick}
+              >
                 RSVP
               </Button>
             </motion.div>

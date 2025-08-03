@@ -8,7 +8,7 @@ import {
   usePageLoad,
 } from '~/components/animations'
 import { ConvexClientProvider } from '~/components/ConvexClientProvider'
-import Header from '~/components/Header'
+import { Footer, Header } from '~/components/pages'
 import RsvpForm from '~/components/RsvpForm'
 import SmoothScrollProvider from '~/components/SmoothScrollProvider'
 import {
@@ -56,6 +56,7 @@ export default function LayoutContent({
           >
             <Header onRsvpClick={openRsvpDialog} />
             {children}
+            <Footer />
             <ScrollAnimations />
 
             <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>

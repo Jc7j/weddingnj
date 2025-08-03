@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 import { Button } from '~/components/ui/button'
 
 import { gsap } from 'gsap'
+import { ChevronDown } from 'lucide-react'
 
 const imagePositions = [
   {
@@ -73,6 +74,7 @@ export default function Hero({ onRsvpClick }: HeroProps) {
   const dateRef = useRef<HTMLDivElement>(null)
   const locationRef = useRef<HTMLParagraphElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null)
   const imagesRef = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
@@ -90,6 +92,7 @@ export default function Hero({ onRsvpClick }: HeroProps) {
           dateRef.current,
           locationRef.current,
           buttonRef.current,
+          scrollIndicatorRef.current,
         ],
         {
           opacity: 0,
@@ -160,6 +163,26 @@ export default function Hero({ onRsvpClick }: HeroProps) {
           },
           '-=0.2'
         )
+        .to(
+          scrollIndicatorRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+          '-=0.6'
+        )
+
+      // Animate scroll indicator bouncing
+      gsap.to(scrollIndicatorRef.current, {
+        y: 10,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 2,
+      })
     }, sectionRef)
 
     return () => ctx.revert()
@@ -256,6 +279,20 @@ export default function Hero({ onRsvpClick }: HeroProps) {
         <Button ref={buttonRef} size="lg" className="px-8" onClick={onRsvpClick}>
           RSVP
         </Button>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div
+        ref={scrollIndicatorRef}
+        className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center text-muted-foreground"
+      >
+        <p className="mb-2 font-light text-sm tracking-wide">
+          Discover our love story
+        </p>
+        <div className="flex flex-col items-center">
+          <ChevronDown className="h-6 w-6 animate-bounce" />
+          <div className="mt-1 h-8 w-px bg-current opacity-30" />
+        </div>
       </div>
 
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
