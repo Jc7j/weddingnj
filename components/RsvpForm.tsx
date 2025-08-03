@@ -75,7 +75,7 @@ export default function RsvpForm() {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="John Doe"
+                  placeholder="Acme Acme"
                 />
                 {field.state.meta.errors.length > 0 && (
                   <p className="mt-1 text-red-500 text-sm">
@@ -110,7 +110,7 @@ export default function RsvpForm() {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="john@example.com"
+                  placeholder="acme@example.com"
                 />
                 {field.state.meta.errors.length > 0 && (
                   <p className="mt-1 text-red-500 text-sm">
@@ -124,9 +124,7 @@ export default function RsvpForm() {
           <form.Field name="attending">
             {(field) => (
               <div className="space-y-2">
-                <Label className="block">
-                  Will you be attending?
-                </Label>
+                <Label className="block">Will you be attending?</Label>
                 <div className="flex gap-4">
                   <Label className="flex items-center">
                     <input
@@ -176,9 +174,7 @@ export default function RsvpForm() {
                     <Input
                       id={field.name}
                       name={field.name}
-                      type="number"
-                      min="1"
-                      max="5"
+                      max="2"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) =>

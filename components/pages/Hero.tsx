@@ -284,7 +284,7 @@ export default function Hero({ onRsvpClick }: HeroProps) {
       {/* Scroll Indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center text-muted-foreground"
+        className="absolute inset-x-0 bottom-16 z-20 flex flex-col items-center text-muted-foreground"
       >
         <p className="mb-2 font-light text-sm tracking-wide">
           Discover our love story

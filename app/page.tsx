@@ -1,7 +1,7 @@
 'use client'
 
 import { useRsvpDialog } from '~/components/LayoutContent'
-import { Hero, RsvpSection } from '~/components/pages'
+import { Hero, LoveStory, RsvpSection } from '~/components/pages'
 
 export default function Home() {
   const { openRsvpDialog } = useRsvpDialog()
@@ -9,6 +9,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero onRsvpClick={openRsvpDialog} />
+      <LoveStory />
       <RsvpSection onRsvpClick={openRsvpDialog} />
     </main>
   )

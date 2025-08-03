@@ -110,15 +110,12 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       <div className="relative z-10 text-center">
         <div ref={titleRef} className="mb-6">
           <h1 className="font-serif text-6xl text-[#3A3A3A] leading-none md:text-8xl">
-            Nicole
-            <span className="mt-2 block text-5xl text-[#8B5A5A] md:text-7xl">
-              &amp; James
-            </span>
+            You're <span className="text-[#8B5A5A]">Invited</span>
           </h1>
         </div>
         <div ref={dateRef} className="mb-12">
           <p className="font-light text-[#6B5B73] text-xl tracking-wide md:text-2xl">
-            June 15, 2025
+            May 21st, 2026
           </p>
         </div>
 
@@ -129,9 +126,6 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
               className="absolute inset-y-0 left-0 origin-left bg-gradient-to-r from-[#8B5A5A] to-[#6B5B73]"
             />
           </div>
-          <p className="mt-4 font-light text-[#6B5B73] text-sm">
-            Preparing your experience...
-          </p>
         </div>
       </div>
     </div>
