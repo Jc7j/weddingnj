@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 import { ConvexClientProvider } from '~/components/ConvexClientProvider'
+import SmoothScrollProvider from '~/components/SmoothScrollProvider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   )
