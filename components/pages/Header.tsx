@@ -100,7 +100,7 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                   },
                 }}
               >
-                {navItems.map((item) => (
+                {/* {navItems.map((item) => (
                   <motion.li
                     key={item.href}
                     variants={{
@@ -117,7 +117,7 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                       {item.label}
                     </Link>
                   </motion.li>
-                ))}
+                ))} */}
                 <motion.li
                   variants={{
                     open: { opacity: 1, y: 0 },
