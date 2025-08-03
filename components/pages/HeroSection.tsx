@@ -10,56 +10,62 @@ import { ChevronDown } from 'lucide-react'
 const imagePositions = [
   {
     id: 'decoration-1',
-    desktop: { top: '10%', left: '5%', width: 200, height: 250, rotation: -5 },
-    mobile: { top: '8%', left: '2%', width: 120, height: 150, rotation: -3 },
+    desktop: { top: '15%', left: '3%', width: 180, height: 220, rotation: -8 },
+    mobile: { top: '8%', left: '2%', width: 100, height: 130, rotation: -5 },
     alt: 'Wedding decoration',
   },
   {
     id: 'floral-1',
-    desktop: { top: '5%', right: '8%', width: 180, height: 220, rotation: 3 },
-    mobile: { top: '5%', right: '2%', width: 100, height: 130, rotation: 2 },
+    desktop: { top: '8%', right: '5%', width: 160, height: 200, rotation: 5 },
+    mobile: { top: '5%', right: '2%', width: 90, height: 120, rotation: 3 },
     alt: 'Floral arrangement',
   },
   {
     id: 'venue-1',
     desktop: {
-      bottom: '15%',
-      left: '3%',
-      width: 220,
-      height: 180,
-      rotation: -3,
+      bottom: '18%',
+      left: '2%',
+      width: 200,
+      height: 160,
+      rotation: -6,
     },
-    mobile: { bottom: '25%', left: '1%', width: 110, height: 90, rotation: -2 },
+    mobile: { bottom: '25%', left: '1%', width: 100, height: 80, rotation: -3 },
     alt: 'Wedding venue',
   },
   {
     id: 'sunset-1',
     desktop: {
-      bottom: '10%',
-      right: '5%',
-      width: 240,
-      height: 200,
-      rotation: 5,
+      bottom: '12%',
+      right: '3%',
+      width: 220,
+      height: 180,
+      rotation: 8,
     },
     mobile: {
       bottom: '20%',
       right: '1%',
-      width: 120,
-      height: 100,
-      rotation: 3,
+      width: 110,
+      height: 90,
+      rotation: 4,
     },
     alt: 'Sunset view',
   },
   {
     id: 'arch-1',
-    desktop: { top: '50%', left: '12%', width: 160, height: 200, rotation: -8 },
-    mobile: { top: '60%', left: '5%', width: 80, height: 100, rotation: -5 },
+    desktop: { top: '55%', left: '8%', width: 140, height: 180, rotation: -12 },
+    mobile: { top: '60%', left: '3%', width: 70, height: 90, rotation: -8 },
     alt: 'Wedding arch',
   },
   {
     id: 'garden-1',
-    desktop: { top: '45%', right: '15%', width: 170, height: 210, rotation: 7 },
-    mobile: { top: '55%', right: '5%', width: 85, height: 110, rotation: 4 },
+    desktop: {
+      top: '48%',
+      right: '10%',
+      width: 150,
+      height: 190,
+      rotation: 10,
+    },
+    mobile: { top: '55%', right: '3%', width: 75, height: 95, rotation: 6 },
     alt: 'Garden setting',
   },
 ]
@@ -68,7 +74,7 @@ interface HeroProps {
   onRsvpClick: () => void
 }
 
-export default function Hero({ onRsvpClick }: HeroProps) {
+export default function HeroSection({ onRsvpClick }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const dateRef = useRef<HTMLDivElement>(null)
@@ -252,7 +258,10 @@ export default function Hero({ onRsvpClick }: HeroProps) {
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
         <div ref={dateRef} className="mb-8 space-y-2">
-          <div className="flex items-center justify-center gap-4 text-lg text-muted-foreground tracking-[0.3em]">
+          <div
+            className="flex items-center justify-center gap-4 text-lg tracking-[0.3em]"
+            style={{ color: '#2B4735' }}
+          >
             <span>05</span>
             <span className="text-2xl">.</span>
             <span>21</span>
@@ -263,20 +272,27 @@ export default function Hero({ onRsvpClick }: HeroProps) {
 
         <h1
           ref={titleRef}
-          className="mb-6 font-serif text-6xl text-primary tracking-wider md:text-8xl lg:text-9xl"
+          className="mb-6 font-serif text-6xl tracking-wider md:text-8xl lg:text-9xl"
+          style={{ color: '#2B4735' }}
         >
           NICOLE & JAMES
         </h1>
 
         <p
           ref={locationRef}
-          className="mb-12 font-light text-3xl text-muted-foreground italic md:text-4xl"
-          style={{ fontFamily: 'serif' }}
+          className="mb-12 font-script text-5xl md:text-6xl"
+          style={{ color: '#2B4735' }}
         >
           Philippines
         </p>
 
-        <Button ref={buttonRef} size="lg" className="px-8" onClick={onRsvpClick}>
+        <Button
+          ref={buttonRef}
+          size="lg"
+          className="rounded-full px-12 py-3 font-medium text-white tracking-wide transition-colors hover:opacity-90"
+          style={{ backgroundColor: '#2B4735' }}
+          onClick={onRsvpClick}
+        >
           RSVP
         </Button>
       </div>

@@ -28,7 +28,8 @@ export default function Header({ onRsvpClick }: HeaderProps) {
         <nav className="flex h-16 items-center justify-between">
           <Link
             href="/"
-            className="font-serif text-2xl text-primary tracking-wider transition-colors hover:text-primary/80"
+            className="font-serif text-2xl tracking-wider transition-colors hover:opacity-80"
+            style={{ color: '#2B4735' }}
           >
             NJ
           </Link>

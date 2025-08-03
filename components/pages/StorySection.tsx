@@ -52,7 +52,7 @@ const decorativeImages = [
   },
 ]
 
-export default function LoveStory() {
+export default function StorySection() {
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
@@ -197,7 +197,8 @@ export default function LoveStory() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-screen w-full items-center overflow-hidden bg-[#4A5D4A]"
+      className="relative flex h-screen w-full items-center overflow-hidden"
+      style={{ backgroundColor: '#2B4735' }}
     >
       {/* Decorative Images */}
       {decorativeImages.map((image, index) => (

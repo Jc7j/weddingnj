@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 
-export default function Footer() {
+export default function FooterSection() {
   return (
     <motion.footer
       className="w-full bg-background px-6 py-16 md:px-12 lg:px-16"
@@ -23,14 +23,20 @@ export default function Footer() {
     >
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 sm:flex-row sm:gap-4">
         <div className="text-center sm:text-left">
-          <span className="font-script text-5xl text-foreground leading-tight md:text-6xl lg:text-7xl">
+          <span
+            className="font-script text-5xl leading-tight md:text-6xl lg:text-7xl"
+            style={{ color: '#2B4735' }}
+          >
             Thank You,
           </span>
         </div>
 
         <div className="text-center sm:text-right">
-          <span className="font-serif text-foreground text-xl tracking-wide md:text-2xl lg:text-3xl">
-            Nicole Coyu & James Shoung
+          <span
+            className="font-serif text-xl tracking-wide md:text-2xl lg:text-3xl"
+            style={{ color: '#2B4735' }}
+          >
+            - Nicole Coyu & James Shoung
           </span>
         </div>
       </div>

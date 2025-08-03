@@ -10,7 +10,7 @@ export default function RsvpSection({ onRsvpClick }: RsvpSectionProps) {
   return (
     <section className="flex h-screen items-center justify-center bg-background">
       <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="mb-8 font-serif text-4xl text-primary sm:text-5xl lg:text-6xl">
+        <h2 className="mb-8 font-serif text-4xl sm:text-5xl lg:text-6xl" style={{ color: '#2B4735' }}>
           RSVP
         </h2>
         <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground sm:text-xl">
@@ -19,7 +19,8 @@ export default function RsvpSection({ onRsvpClick }: RsvpSectionProps) {
         <Button
           onClick={onRsvpClick}
           size="lg"
-          className="px-8 py-3 font-medium text-lg"
+          className="px-8 py-3 font-medium text-lg text-white hover:opacity-90 transition-colors"
+          style={{ backgroundColor: '#2B4735' }}
         >
           Respond to Our Invitation
         </Button>

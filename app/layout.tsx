@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Dancing_Script } from 'next/font/google'
+import { Dancing_Script, Geist, Geist_Mono } from 'next/font/google'
 
 import type { Metadata } from 'next'
 import './globals.css'
@@ -21,12 +21,9 @@ const dancingScript = Dancing_Script({
 })
 
 export const metadata: Metadata = {
-  title: 'Nicole & James Wedding | June 15, 2025',
+  title: 'Nicole & James Wedding | May 21st, 2026',
   description:
-    'Join us in celebrating our special day in the Philippines. RSVP for Nicole & James wedding on June 15, 2025.',
-  icons: {
-    icon: '/convex.svg',
-  },
+    'Join us in celebrating our special day in the Philippines. RSVP for Nicole & James wedding on May 21st, 2026.',
 }
 
 export default function RootLayout({
