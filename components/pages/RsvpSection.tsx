@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '~/components/ui/button'
+import DecorativeBackground from '~/components/ui/decorative-background'
 
 interface RsvpSectionProps {
   onRsvpClick: () => void
@@ -8,8 +9,9 @@ interface RsvpSectionProps {
 
 export default function RsvpSection({ onRsvpClick }: RsvpSectionProps) {
   return (
-    <section className="flex h-screen items-center justify-center bg-background">
-      <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+    <section className="relative flex h-screen items-center justify-center bg-background">
+      <DecorativeBackground variant="light" density="dense" />
+      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
         <h2 className="mb-8 font-serif text-4xl sm:text-5xl lg:text-6xl" style={{ color: '#2B4735' }}>
           RSVP
         </h2>

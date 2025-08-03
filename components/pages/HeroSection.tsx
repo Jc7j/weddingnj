@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 import { Button } from '~/components/ui/button'
+import DecorativeBackground from '~/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ChevronDown } from 'lucide-react'
@@ -199,6 +200,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
       ref={sectionRef}
       className="relative h-screen w-full overflow-hidden bg-background"
     >
+      <DecorativeBackground variant="light" density="medium" />
       {imagePositions.map((position, index) => (
         <div key={position.id}>
           {/* Desktop Images */}

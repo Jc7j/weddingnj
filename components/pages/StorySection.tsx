@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 
+import DecorativeBackground from '~/components/ui/decorative-background'
+
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -142,6 +144,7 @@ export default function StorySection() {
       className="relative min-h-screen w-full overflow-hidden py-16 lg:py-24"
       style={{ backgroundColor: '#2B4735' }}
     >
+      <DecorativeBackground variant="dark" density="sparse" />
       {/* Decorative Images - Only these are absolutely positioned */}
       {decorativeImages.map((image, index) => (
         <div
