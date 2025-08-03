@@ -1,6 +1,10 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 import { Button } from '~/components/ui/button'
+
+import { gsap } from 'gsap'
 
 const imagePositions = [
   {
@@ -60,12 +64,115 @@ const imagePositions = [
 ]
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const dateRef = useRef<HTMLDivElement>(null)
+  const locationRef = useRef<HTMLParagraphElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const imagesRef = useRef<HTMLDivElement[]>([])
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+
+    if (prefersReducedMotion) return
+
+    const ctx = gsap.context(() => {
+      // Set initial states
+      gsap.set(
+        [
+          titleRef.current,
+          dateRef.current,
+          locationRef.current,
+          buttonRef.current,
+        ],
+        {
+          opacity: 0,
+          y: 50,
+        }
+      )
+
+      gsap.set(imagesRef.current, {
+        opacity: 0,
+        scale: 0.8,
+        rotation: () => (Math.random() - 0.5) * 20,
+      })
+
+      // Create entrance timeline
+      const tl = gsap.timeline({ delay: 0.5 })
+
+      // Animate images first with stagger
+      tl.to(imagesRef.current, {
+        opacity: 1,
+        scale: 1,
+        rotation: (i) => imagePositions[i]?.desktop.rotation || 0,
+        duration: 1.2,
+        ease: 'back.out(1.7)',
+        stagger: {
+          amount: 1.5,
+          from: 'random',
+        },
+      })
+
+        // Animate text content
+        .to(
+          dateRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+          '-=0.8'
+        )
+        .to(
+          titleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power2.out',
+          },
+          '-=0.6'
+        )
+        .to(
+          locationRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+          '-=0.4'
+        )
+        .to(
+          buttonRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+          '-=0.2'
+        )
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-background">
-      {imagePositions.map((position) => (
+    <section
+      ref={sectionRef}
+      className="relative h-screen w-full overflow-hidden bg-background"
+    >
+      {imagePositions.map((position, index) => (
         <div key={position.id}>
           {/* Desktop Images */}
           <div
+            ref={(el) => {
+              if (el) imagesRef.current[index] = el
+            }}
             className="absolute hidden lg:block"
             style={{
               top: position.desktop.top,
@@ -117,7 +224,7 @@ export default function Hero() {
       ))}
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
-        <div className="mb-8 space-y-2">
+        <div ref={dateRef} className="mb-8 space-y-2">
           <div className="flex items-center justify-center gap-4 text-lg text-muted-foreground tracking-[0.3em]">
             <span>05</span>
             <span className="text-2xl">.</span>
@@ -127,18 +234,22 @@ export default function Hero() {
           </div>
         </div>
 
-        <h1 className="mb-6 font-serif text-6xl text-primary tracking-wider md:text-8xl lg:text-9xl">
+        <h1
+          ref={titleRef}
+          className="mb-6 font-serif text-6xl text-primary tracking-wider md:text-8xl lg:text-9xl"
+        >
           NICOLE & JAMES
         </h1>
 
         <p
+          ref={locationRef}
           className="mb-12 font-light text-3xl text-muted-foreground italic md:text-4xl"
           style={{ fontFamily: 'serif' }}
         >
           Philippines
         </p>
 
-        <Button size="lg" className="px-8">
+        <Button ref={buttonRef} size="lg" className="px-8">
           RSVP
         </Button>
       </div>
