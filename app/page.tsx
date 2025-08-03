@@ -1,16 +1,12 @@
 'use client'
 
 import RsvpForm from '~/components/RsvpForm'
+import Hero from '~/components/Hero'
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <section className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <h1 className="mb-4 font-serif text-6xl">Nicole & James</h1>
-          <p className="text-xl">June 15, 2025</p>
-        </div>
-      </section>
+      <Hero />
 
       <section className="px-8 py-20">
         <div className="mx-auto max-w-4xl">
