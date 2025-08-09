@@ -24,6 +24,7 @@ export default function SmoothScrollProvider({
     })
 
     lenisRef.current = lenis
+    ;(window as any).lenis = lenis
 
     function raf(time: number) {
       lenis.raf(time)
@@ -34,6 +35,7 @@ export default function SmoothScrollProvider({
 
     return () => {
       lenis.destroy()
+      delete (window as any).lenis
     }
   }, [])
 
