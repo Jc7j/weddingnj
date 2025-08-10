@@ -458,7 +458,7 @@ export default function BridesAndGroomsSection() {
           <p className="mb-2 font-medium text-muted-foreground/70 text-xs tracking-[0.3em]">
             WEDDING PARTY
           </p>
-          <h2 className="mb-2 font-serif text-4xl text-foreground/90 lg:text-6xl">
+          <h2 className="mb-2 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Bridesmaids & Groomsmen
           </h2>
           <p className="mx-auto max-w-2xl text-muted-foreground text-sm">
@@ -480,7 +480,7 @@ export default function BridesAndGroomsSection() {
                     ref={(el) => {
                       cardsRef.current[index] = el
                     }}
-                    className="h-[550px] w-full flex-shrink-0 md:w-[420px]"
+                    className="h-[450px] w-full flex-shrink-0 sm:h-[500px] md:h-[550px] md:w-[420px]"
                     aria-hidden="true"
                   />
                 )
@@ -494,7 +494,7 @@ export default function BridesAndGroomsSection() {
                   ref={(el) => {
                     cardsRef.current[index] = el
                   }}
-                  className="group relative h-[550px] w-full flex-shrink-0 md:w-[420px]"
+                  className="group relative h-[450px] w-full flex-shrink-0 sm:h-[500px] md:h-[550px] md:w-[420px]"
                 >
                   {/* Card Background with Pattern */}
                   <div
@@ -506,25 +506,25 @@ export default function BridesAndGroomsSection() {
                   <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-3xl">
                     {/* Card Header */}
                     <div
-                      className="relative px-8 pt-8 pb-4"
+                      className="relative px-6 pt-6 pb-3 sm:px-8 sm:pt-8 sm:pb-4"
                       style={{ backgroundColor: `${member.bgColor}40` }}
                     >
                       {/* Name and Role */}
-                      <h3 className="mb-1 font-serif text-2xl text-foreground">
+                      <h3 className="mb-1 font-serif text-foreground text-xl sm:text-2xl">
                         {member.name}
                       </h3>
-                      <p className="font-medium text-foreground/60 text-sm">
+                      <p className="font-medium text-foreground/60 text-xs sm:text-sm">
                         {member.role}
                       </p>
                       {member.relationship && (
-                        <p className="mt-1 text-foreground/50 text-xs">
+                        <p className="mt-1 text-[10px] text-foreground/50 sm:text-xs">
                           {member.relationship}
                         </p>
                       )}
                     </div>
 
                     {/* Image Container */}
-                    <div className="relative mx-6 mb-6 flex-1 overflow-hidden rounded-2xl shadow-inner">
+                    <div className="relative mx-4 mb-4 flex-1 overflow-hidden rounded-2xl shadow-inner sm:mx-6 sm:mb-6">
                       <div
                         className="absolute inset-0 opacity-10"
                         style={{ backgroundColor: member.accentColor }}
@@ -540,8 +540,8 @@ export default function BridesAndGroomsSection() {
                     </div>
 
                     {/* Story */}
-                    <div className="px-8 pb-8">
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                    <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+                      <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm">
                         {member.story}
                       </p>
                     </div>

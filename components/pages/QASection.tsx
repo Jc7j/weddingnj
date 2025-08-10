@@ -50,19 +50,19 @@ export default function QASection() {
     <section id="qa" className="relative w-full bg-background py-16 lg:py-20">
       <DecorativeBackground variant="light" density="sparse" />
       <div className="container relative z-10 mx-auto max-w-4xl px-6 lg:px-12">
-        <h2 className="mb-8 text-center font-serif text-3xl text-foreground/90 lg:text-4xl">
+        <h2 className="mb-6 text-center font-serif text-2xl text-foreground/90 sm:mb-8 sm:text-3xl lg:text-4xl">
           Questions & Answers
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-5">
           {questions.map((item) => (
             <div
               key={item.q}
-              className="border-muted-foreground/10 border-b pb-4"
+              className="border-muted-foreground/10 border-b pb-3 sm:pb-4"
             >
-              <h3 className="mb-2 font-medium text-base text-foreground/90 lg:text-lg">
+              <h3 className="mb-1.5 font-medium text-foreground/90 text-sm sm:mb-2 sm:text-base lg:text-lg">
                 {item.q}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed lg:text-base">
+              <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm lg:text-base">
                 {item.a}
               </p>
             </div>

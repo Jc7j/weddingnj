@@ -10,6 +10,20 @@ import { Bed, Car, Globe, MapPin, Phone, Wifi } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Convert PHP to USD (approximate rate: 1 USD = 58 PHP)
+const convertToUSD = (pesoRange: string) => {
+  const matches = pesoRange.match(/₱([\d,]+)\s*-\s*₱([\d,]+)/)
+  if (!matches) return ''
+  
+  const min = parseInt(matches[1].replace(/,/g, ''))
+  const max = parseInt(matches[2].replace(/,/g, ''))
+  
+  const minUSD = Math.round(min / 58)
+  const maxUSD = Math.round(max / 58)
+  
+  return `$${minUSD} - $${maxUSD}`
+}
+
 const hotelFeatures = [
   { icon: Bed, label: 'Comfortable Rooms' },
   { icon: Wifi, label: 'Free Wi-Fi' },
@@ -236,7 +250,7 @@ export default function StaySection() {
                     <div className="flex items-center gap-2">
                       <span className="text-xs">💰</span>
                       <span className="text-muted-foreground">
-                        {option.priceRange}
+                        {option.priceRange} ({convertToUSD(option.priceRange)})
                       </span>
                     </div>
                   </div>

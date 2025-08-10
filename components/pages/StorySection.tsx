@@ -146,7 +146,7 @@ export default function StorySection() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '400%',
+          end: '200%',
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -154,11 +154,11 @@ export default function StorySection() {
             const progress = self.progress
             let targetIndex = 0
 
-            if (progress <= 0.25) {
+            if (progress <= 0.2) {
               targetIndex = 0
-            } else if (progress <= 0.5) {
+            } else if (progress <= 0.45) {
               targetIndex = 1
-            } else if (progress <= 0.75) {
+            } else if (progress <= 0.7) {
               targetIndex = 2
             } else {
               targetIndex = 3
@@ -335,7 +335,7 @@ export default function StorySection() {
 
               {/* Title and Date */}
               <div className="story-text mb-6">
-                <h2 className="mb-2 font-serif text-4xl text-foreground lg:text-6xl">
+                <h2 className="mb-2 font-serif text-3xl text-foreground sm:text-4xl lg:text-6xl">
                   {currentPart.title}
                 </h2>
                 <div className="flex items-center gap-4">
@@ -351,13 +351,13 @@ export default function StorySection() {
 
               {/* Quote */}
               <div className="story-text mb-6 border-foreground/20 border-l-2 pl-4">
-                <p className="font-serif text-foreground/60 text-lg italic">
+                <p className="font-serif text-base text-foreground/60 italic sm:text-lg">
                   {currentPart.quote}
                 </p>
               </div>
 
               {/* Main Paragraph */}
-              <p className="story-text text-base text-foreground/80 leading-relaxed lg:text-lg">
+              <p className="story-text text-foreground/80 text-sm leading-relaxed sm:text-base lg:text-lg">
                 {currentPart.paragraph}
               </p>
             </div>
@@ -434,7 +434,7 @@ export default function StorySection() {
               variant="ghost"
               size="icon"
               onClick={goToPrevious}
-              className="group h-12 w-12 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
               aria-label={
                 currentPartIndex === 0
                   ? 'Go to hero section'
@@ -460,7 +460,7 @@ export default function StorySection() {
               variant="ghost"
               size="icon"
               onClick={goToNext}
-              className="group h-12 w-12 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
               aria-label={
                 currentPartIndex === storyParts.length - 1
                   ? 'Go to wedding party section'

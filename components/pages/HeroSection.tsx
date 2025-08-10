@@ -17,7 +17,7 @@ const imagePositions = [
     id: 'decoration-1',
     src: '/hero/IMG_8712.jpg',
     desktop: { top: '10%', left: '1%', width: 280, height: 320, rotation: -8 },
-    mobile: { top: '5%', left: '1%', width: 140, height: 160, rotation: -5 },
+    mobile: { top: '5%', left: '1%', width: 120, height: 140, rotation: -5 },
     alt: 'Wedding ceremony decoration',
     floatDelay: 0,
   },
@@ -25,7 +25,7 @@ const imagePositions = [
     id: 'floral-1',
     src: '/hero/IMG_8745.jpg',
     desktop: { top: '5%', right: '2%', width: 260, height: 300, rotation: 5 },
-    mobile: { top: '3%', right: '1%', width: 130, height: 150, rotation: 3 },
+    mobile: { top: '3%', right: '1%', width: 110, height: 130, rotation: 3 },
     alt: 'Beautiful floral arrangement',
     floatDelay: 2,
   },
@@ -42,8 +42,8 @@ const imagePositions = [
     mobile: {
       bottom: '20%',
       left: '1%',
-      width: 150,
-      height: 120,
+      width: 130,
+      height: 100,
       rotation: -3,
     },
     alt: 'Wedding venue setting',
@@ -62,8 +62,8 @@ const imagePositions = [
     mobile: {
       bottom: '15%',
       right: '1%',
-      width: 160,
-      height: 130,
+      width: 140,
+      height: 110,
       rotation: 4,
     },
     alt: 'Romantic sunset moment',
@@ -341,7 +341,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
           {/* Mobile Images */}
           <div
-            className="absolute block opacity-60 lg:hidden"
+            className="absolute block lg:hidden"
             style={{
               top: position.mobile.top,
               bottom: position.mobile.bottom,
@@ -394,7 +394,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
           <h1
             ref={titleRef}
-            className="mb-6 font-serif text-6xl tracking-wider md:text-8xl lg:text-9xl"
+            className="mb-6 font-serif text-5xl tracking-wider sm:text-6xl md:text-8xl lg:text-9xl"
             style={{ color: '#2B4735' }}
           >
             NICOLE & JAMES
@@ -402,7 +402,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
           <p
             ref={locationRef}
-            className="mb-12 font-script text-5xl md:text-6xl"
+            className="mb-12 font-script text-4xl sm:text-5xl md:text-6xl"
             style={{ color: '#2B4735' }}
           >
             Philippines
@@ -411,7 +411,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
           <Button
             ref={buttonRef}
             size="lg"
-            className="group rounded-full px-12 py-3 font-medium text-white tracking-wide shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            className="group rounded-full px-8 py-3 font-medium text-white tracking-wide shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl sm:px-12"
             style={{ backgroundColor: '#2B4735' }}
             onClick={onRsvpClick}
           >

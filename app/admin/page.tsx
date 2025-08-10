@@ -99,18 +99,22 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4 sm:gap-6">
             <a
               href="/"
-              className="font-serif text-2xl tracking-wider transition-colors hover:opacity-80"
+              className="font-serif text-xl tracking-wider transition-colors hover:opacity-80 sm:text-2xl"
               style={{ color: '#2B4735' }}
             >
               NJ
             </a>
-            <h1 className="font-serif text-3xl">RSVP Admin Dashboard</h1>
+            <h1 className="font-serif text-xl sm:text-3xl">RSVP Admin</h1>
           </div>
-          <Button onClick={handleLogout} variant="outline">
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
             Logout
           </Button>
         </div>
@@ -119,27 +123,39 @@ export default function AdminPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4"
+          className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4"
         >
-          <div className="rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm">
-            <p className="mb-2 text-muted-foreground text-sm">Total RSVPs</p>
-            <p className="font-bold text-3xl">{rsvps?.length ?? 0}</p>
+          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
+            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
+              Total RSVPs
+            </p>
+            <p className="font-bold text-2xl sm:text-3xl">
+              {rsvps?.length ?? 0}
+            </p>
           </div>
-          <div className="rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm">
-            <p className="mb-2 text-muted-foreground text-sm">Attending</p>
-            <p className="font-bold text-3xl text-green-600">
+          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
+            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
+              Attending
+            </p>
+            <p className="font-bold text-2xl text-green-600 sm:text-3xl">
               {attendingCount}
             </p>
           </div>
-          <div className="rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm">
-            <p className="mb-2 text-muted-foreground text-sm">Not Attending</p>
-            <p className="font-bold text-3xl text-red-600">
+          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
+            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
+              Not Attending
+            </p>
+            <p className="font-bold text-2xl text-red-600 sm:text-3xl">
               {notAttendingCount}
             </p>
           </div>
-          <div className="rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm">
-            <p className="mb-2 text-muted-foreground text-sm">Total Guests</p>
-            <p className="font-bold text-3xl text-blue-600">{totalGuests}</p>
+          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
+            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
+              Total Guests
+            </p>
+            <p className="font-bold text-2xl text-blue-600 sm:text-3xl">
+              {totalGuests}
+            </p>
           </div>
         </motion.div>
 
@@ -147,9 +163,10 @@ export default function AdminPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="overflow-hidden rounded-lg bg-white/80 shadow-xl backdrop-blur-sm"
+          className="rounded-lg bg-white/80 shadow-xl backdrop-blur-sm"
         >
-          <div className="overflow-x-auto">
+          {/* Desktop Table View */}
+          <div className="hidden overflow-x-auto md:block">
             <table className="w-full">
               <thead className="border-b bg-primary/10">
                 <tr>
@@ -203,8 +220,65 @@ export default function AdminPage() {
                 </AnimatePresence>
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden">
+            <AnimatePresence>
+              {rsvps?.map((rsvp, index) => (
+                <motion.div
+                  key={rsvp._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="border-b p-4 last:border-b-0"
+                >
+                  <div className="mb-2 flex items-start justify-between">
+                    <div>
+                      <h3 className="font-semibold text-base">{rsvp.name}</h3>
+                      <p className="text-muted-foreground text-sm">
+                        {rsvp.email}
+                      </p>
+                    </div>
+                    <span
+                      className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
+                        rsvp.attending
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
+                      {rsvp.attending ? 'Yes' : 'No'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Guests:</span>{' '}
+                      {rsvp.numberOfGuests}
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Date:</span>{' '}
+                      {formatDate(rsvp.createdAt).split(',')[0]}
+                    </div>
+                  </div>
+                  {rsvp.dietaryRestrictions && (
+                    <div className="mt-2 text-sm">
+                      <span className="text-muted-foreground">Dietary:</span>{' '}
+                      {rsvp.dietaryRestrictions}
+                    </div>
+                  )}
+                  {rsvp.message && (
+                    <div className="mt-2 text-sm">
+                      <span className="text-muted-foreground">Message:</span>
+                      <p className="mt-1 text-muted-foreground">
+                        {rsvp.message}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
             {(!rsvps || rsvps.length === 0) && (
-              <div className="py-12 text-center text-muted-foreground">
+              <div className="py-8 text-center text-muted-foreground sm:py-12">
                 No RSVPs yet
               </div>
             )}

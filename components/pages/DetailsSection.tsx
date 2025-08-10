@@ -204,10 +204,10 @@ export default function DetailsSection() {
           <p className="mb-4 font-medium text-muted-foreground text-xs tracking-[0.3em]">
             WEDDING SCHEDULE
           </p>
-          <h2 className="mb-4 font-serif text-4xl text-foreground/90 lg:text-6xl">
+          <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Order of Events
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
             Join us for a weekend of celebration as we begin our journey
             together
           </p>
@@ -250,7 +250,7 @@ export default function DetailsSection() {
           </svg>
 
           {/* Mobile Timeline Line */}
-          <div className="absolute top-0 left-8 h-full w-0.5 bg-muted-foreground/20 lg:hidden" />
+          <div className="absolute top-0 left-6 h-full w-0.5 bg-muted-foreground/20 sm:left-8 lg:hidden" />
 
           {/* Event Cards */}
           <div className="relative">
@@ -268,46 +268,46 @@ export default function DetailsSection() {
                   }}
                 >
                   {/* Mobile Timeline Dot */}
-                  <div className="absolute top-8 left-[-28px] flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-md lg:hidden">
-                    <span className="text-xl">{item.icon}</span>
+                  <div className="absolute top-8 left-[-32px] flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md sm:left-[-28px] sm:h-12 sm:w-12 lg:hidden">
+                    <span className="text-lg sm:text-xl">{item.icon}</span>
                   </div>
 
                   {/* Card */}
                   <div
-                    className="group relative ml-8 overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl lg:ml-0"
+                    className="group relative ml-6 overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl sm:ml-8 lg:ml-0"
                     style={{ backgroundColor: item.bgColor }}
                   >
-                    <div className="p-6 lg:p-8">
+                    <div className="p-4 sm:p-6 lg:p-8">
                       {/* Number and Icon */}
-                      <div className="mb-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/50 font-bold text-foreground/70 text-sm">
+                      <div className="mb-3 flex items-center justify-between sm:mb-4">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/50 font-bold text-foreground/70 text-xs sm:h-8 sm:w-8 sm:text-sm">
                             {index + 1}
                           </span>
-                          <p className="font-medium text-foreground/70 text-xs tracking-[0.2em]">
+                          <p className="font-medium text-[10px] text-foreground/70 tracking-[0.2em] sm:text-xs">
                             {item.label}
                           </p>
                         </div>
-                        <span className="event-icon hidden text-3xl lg:block">
+                        <span className="event-icon hidden text-2xl sm:text-3xl lg:block">
                           {item.icon}
                         </span>
                       </div>
 
                       {/* Title and Time */}
-                      <div className="mb-4">
-                        <h3 className="mb-1 font-serif text-2xl text-foreground lg:text-3xl">
+                      <div className="mb-3 sm:mb-4">
+                        <h3 className="mb-1 font-serif text-foreground text-xl sm:text-2xl lg:text-3xl">
                           {item.title}
                         </h3>
-                        <p className="mb-2 font-serif text-foreground/60 text-lg">
+                        <p className="mb-1 font-serif text-base text-foreground/60 sm:mb-2 sm:text-lg">
                           {item.subtitle}
                         </p>
-                        <p className="font-medium text-foreground/50 text-sm">
+                        <p className="font-medium text-foreground/50 text-xs sm:text-sm">
                           {item.time}
                         </p>
                       </div>
 
                       {/* Description */}
-                      <p className="text-foreground/70 text-sm leading-relaxed lg:text-base">
+                      <p className="text-foreground/70 text-xs leading-relaxed sm:text-sm lg:text-base">
                         {item.description}
                       </p>
 

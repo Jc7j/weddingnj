@@ -118,10 +118,10 @@ export default function AttireSection() {
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-12 text-center" ref={textRef}>
-          <h2 className="mb-6 font-serif text-3xl text-foreground/90 lg:text-5xl">
+          <h2 className="mb-4 font-serif text-2xl text-foreground/90 sm:mb-6 sm:text-3xl lg:text-5xl">
             Dress Code & Attire
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed lg:text-lg">
+          <p className="mx-auto max-w-2xl text-muted-foreground text-sm leading-relaxed sm:text-base lg:text-lg">
             We invite you to join us in cocktail attire. Please consider wearing
             colors from our curated palette below to create a harmonious
             celebration. The venue is outdoors, so consider bringing a light
@@ -134,7 +134,7 @@ export default function AttireSection() {
             <h3 className="mb-8 text-center font-medium text-muted-foreground text-xs tracking-[0.2em] lg:text-left">
               SUGGESTED COLOUR PALETTE
             </h3>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
               {colorPalette.map((color) => (
                 <div
                   key={color.name}
@@ -145,11 +145,11 @@ export default function AttireSection() {
                       className="aspect-square w-full"
                       style={{ backgroundColor: color.hex }}
                     />
-                    <div className="bg-white p-3 text-center">
-                      <p className="font-medium text-foreground text-sm">
+                    <div className="bg-white p-2 text-center sm:p-3">
+                      <p className="font-medium text-foreground text-xs sm:text-sm">
                         {color.name}
                       </p>
-                      <p className="mt-1 font-mono text-muted-foreground text-xs">
+                      <p className="mt-0.5 font-mono text-[10px] text-muted-foreground sm:mt-1 sm:text-xs">
                         {color.hex}
                       </p>
                     </div>
@@ -170,9 +170,9 @@ export default function AttireSection() {
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
-              <div className="mt-6 space-y-4 text-muted-foreground text-sm">
+              <div className="mt-4 space-y-3 text-muted-foreground text-xs sm:mt-6 sm:space-y-4 sm:text-sm">
                 <div>
-                  <h4 className="mb-2 font-medium text-foreground">
+                  <h4 className="mb-1 font-medium text-foreground text-sm sm:mb-2 sm:text-base">
                     For Ladies:
                   </h4>
                   <p className="leading-relaxed">
@@ -182,7 +182,7 @@ export default function AttireSection() {
                   </p>
                 </div>
                 <div>
-                  <h4 className="mb-2 font-medium text-foreground">
+                  <h4 className="mb-1 font-medium text-foreground text-sm sm:mb-2 sm:text-base">
                     For Gentlemen:
                   </h4>
                   <p className="leading-relaxed">

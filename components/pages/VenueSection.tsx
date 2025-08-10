@@ -155,10 +155,10 @@ export default function VenueSection() {
           <p className="mb-4 font-medium text-muted-foreground text-xs tracking-[0.3em]">
             THE VENUE
           </p>
-          <h2 className="mb-4 font-serif text-4xl text-foreground/90 lg:text-6xl">
+          <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Imelda's Garden
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
             Join us in the beautiful garden setting of Cuenca, Batangas, where
             mountain views and natural beauty create the perfect backdrop for
             our special day.
@@ -202,19 +202,22 @@ export default function VenueSection() {
             </div>
 
             {/* Venue Details Cards */}
-            <div ref={detailsRef} className="grid grid-cols-2 gap-4">
+            <div
+              ref={detailsRef}
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+            >
               {venueDetails.map((detail) => (
                 <div
                   key={detail.label}
                   className="detail-card rounded-lg bg-white/50 p-4 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white/70 hover:shadow-md"
                 >
                   <div className="mb-2 flex items-center gap-2">
-                    <span className="text-2xl">{detail.icon}</span>
+                    <span className="text-xl sm:text-2xl">{detail.icon}</span>
                     <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
                       {detail.label}
                     </p>
                   </div>
-                  <p className="whitespace-pre-line text-foreground text-sm leading-relaxed">
+                  <p className="whitespace-pre-line text-foreground text-xs leading-relaxed sm:text-sm">
                     {detail.value}
                   </p>
                 </div>
@@ -226,7 +229,7 @@ export default function VenueSection() {
           <div className="space-y-8">
             {/* Interactive Map */}
             <div ref={mapRef} className="space-y-4">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-xl">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-xl sm:aspect-[4/3]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3877.0699999999997!2d121.1736!3d13.6536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd2b8c9e8c9e8f%3A0x8c8c8c8c8c8c8c8c!2sImelda's%20Garden%2C%20Sitio%20Sablay%2C%20Barangay%20Poblacion%208%20Hall%2C%20Cuenca%2C%20Batangas%2C%20Philippines!5e0!3m2!1sen!2sph!4v1234567890"
                   width="100%"
@@ -271,36 +274,36 @@ export default function VenueSection() {
             </div>
 
             {/* Getting There Section */}
-            <div className="rounded-xl bg-primary/5 p-6">
-              <h3 className="mb-4 font-serif text-foreground text-xl">
+            <div className="rounded-xl bg-primary/5 p-4 sm:p-6">
+              <h3 className="mb-3 font-serif text-foreground text-lg sm:mb-4 sm:text-xl">
                 Getting There
               </h3>
-              <div className="space-y-4 text-muted-foreground text-sm">
+              <div className="space-y-3 text-muted-foreground text-xs sm:space-y-4 sm:text-sm">
                 <div>
-                  <p className="mb-1 font-medium text-foreground">
+                  <p className="mb-1 font-medium text-foreground text-xs sm:text-sm">
                     From Manila (2-3 hours):
                   </p>
-                  <p className="leading-relaxed">
+                  <p className="text-xs leading-relaxed sm:text-sm">
                     Take SLEX and exit at Batangas City. Follow the signs to
                     Cuenca via Alitagtag. The venue will be on your right after
                     entering Cuenca town proper.
                   </p>
                 </div>
                 <div>
-                  <p className="mb-1 font-medium text-foreground">
+                  <p className="mb-1 font-medium text-foreground text-xs sm:text-sm">
                     Public Transportation:
                   </p>
-                  <p className="leading-relaxed">
+                  <p className="text-xs leading-relaxed sm:text-sm">
                     Buses to Batangas City are available from various terminals
                     in Manila. From Batangas City, take a jeepney or tricycle to
                     Cuenca.
                   </p>
                 </div>
                 <div>
-                  <p className="mb-1 font-medium text-foreground">
+                  <p className="mb-1 font-medium text-foreground text-xs sm:text-sm">
                     Accommodation:
                   </p>
-                  <p className="leading-relaxed">
+                  <p className="text-xs leading-relaxed sm:text-sm">
                     Several hotels and resorts are available in nearby Lipa City
                     (20 minutes) and Batangas City (30 minutes).
                   </p>
