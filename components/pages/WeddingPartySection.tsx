@@ -288,9 +288,9 @@ export default function WeddingPartySection() {
 
   return (
     <section
+      id="wedding-party"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden transition-colors duration-500"
-      style={{ backgroundColor: '#F0D5D5' }}
+      className="relative min-h-screen w-full overflow-hidden bg-background transition-colors duration-500"
     >
       <div className="flex h-screen flex-col">
         <div className="flex-shrink-0 px-6 pt-12 text-center lg:px-12 lg:pt-20">

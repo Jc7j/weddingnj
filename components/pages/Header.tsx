@@ -9,10 +9,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navItems = [
-  { label: 'Our Story', href: '#our-story' },
-  { label: 'Wedding Details', href: '#wedding-details' },
-  { label: 'Travel & Stay', href: '#travel-stay' },
-  { label: 'FAQs', href: '#faqs' },
+  { label: 'Our Story', href: '#story' },
+  { label: 'Venue', href: '#venue' },
+  { label: 'Details', href: '#details' },
+  { label: 'Wedding Party', href: '#wedding-party' },
+  { label: 'Q&A', href: '#qa' },
 ]
 
 interface HeaderProps {
@@ -21,6 +22,14 @@ interface HeaderProps {
 
 export default function Header({ onRsvpClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    setIsMenuOpen(false)
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -34,18 +43,18 @@ export default function Header({ onRsvpClick }: HeaderProps) {
             NJ
           </Link>
 
-          {/* <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
               <li key={item.href}>
-                <Link
-                  href={item.href}
+                <button
+                  onClick={() => scrollToSection(item.href)}
                   className="font-medium text-sm transition-colors hover:text-primary"
                 >
                   {item.label}
-                </Link>
+                </button>
               </li>
             ))}
-          </ul> */}
+          </ul>
 
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -101,7 +110,7 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                   },
                 }}
               >
-                {/* {navItems.map((item) => (
+                {navItems.map((item) => (
                   <motion.li
                     key={item.href}
                     variants={{
@@ -110,15 +119,14 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                     }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsMenuOpen(false)}
+                    <button
+                      onClick={() => scrollToSection(item.href)}
                       className="block py-2 font-medium text-sm transition-colors hover:text-primary"
                     >
                       {item.label}
-                    </Link>
+                    </button>
                   </motion.li>
-                ))} */}
+                ))}
                 <motion.li
                   variants={{
                     open: { opacity: 1, y: 0 },

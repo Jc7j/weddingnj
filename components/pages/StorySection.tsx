@@ -15,7 +15,7 @@ const storyParts = [
       "Every love story is unique, and Nicole and James's began in the most natural way. When they first met in 2019, neither of them expected anything more than friendship. But, as with many of life’s best surprises, something unexpected began to grow. The more time they spent together, the more they clicked. James was the first to catch feelings and made the bold move to ask Nicole on a date—to Disneyland, no less. On December 11, 2019, their lives became intertwined, and they’ve been inseparable ever since.  ",
     image: '/images/story-1.jpg',
     bgImage: '/images/bg-1.jpg',
-    bgColor: '#2B4735',
+    bgColor: '#F5E6D3',
   },
   {
     id: 'part-2',
@@ -24,7 +24,7 @@ const storyParts = [
       'When they began dating, laughter quickly became the soundtrack of their days, and with every shared moment, their feelings for each other deepened. James found a true home within Nicole’s heart—and she found the same comfort in his. They grew closer than ever, inspiring one another to become the best versions of themselves. Opening their hearts fully, they discovered that together was the coziest place to be. Over time, they became not only partners but best friends, continuously uplifting and bettering each other along the way.',
     image: '/images/story-2.jpg',
     bgImage: '/images/bg-2.jpg',
-    bgColor: '#3A5147',
+    bgColor: '#E6D5F0',
   },
   {
     id: 'part-3',
@@ -33,7 +33,7 @@ const storyParts = [
       'There wasn’t one single moment when James knew Nicole was the one—he just had a gut feeling that she was it. By 2021, the idea of proposing had started to take shape, and when James found out that Honne—an artist both he and Nicole deeply love—was coming to L.A., inspiration struck. He decided to take a leap of faith and reached out to the band to ask if they’d help with the proposal. To his surprise, they said yes. On May 21st. 2022, James had invited their closest friends and family to be there. During the concert, he was brought up on stage—and in front of everyone, he asked Nicole to marry him. She was completely shocked... and said yes! The crowd erupted in cheers, and it became a night they’ll both remember forever.',
     image: '/images/story-3.jpg',
     bgImage: '/images/bg-3.jpg',
-    bgColor: '#4A6157',
+    bgColor: '#F0D5D5',
   },
   {
     id: 'part-4',
@@ -42,7 +42,7 @@ const storyParts = [
       'Fast forward a few years, and Nicole and James are finally ready to celebrate their wedding and begin this exciting new chapter together. More than anything, they’re thrilled to share this joyous moment with the people who mean the most to them. They can’t wait to see all of your beautiful faces as they celebrate a love that has grown stronger every day. No matter where life has led them, they’ve always found home in each other — and with your love and support, this next chapter will be the best one yet. From the bottom of their hearts, Nicole and James thank you for being part of their story and this unforgettable celebration.',
     image: '/images/story-4.jpg',
     bgImage: '/images/bg-4.jpg',
-    bgColor: '#5A7167',
+    bgColor: '#D4E6D5',
   },
 ]
 
@@ -115,11 +115,13 @@ export default function StorySection() {
       })
 
       // Set initial background
-      bg.style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${storyParts[0].bgImage}')`
+      bg.style.backgroundImage = `url('${storyParts[0].bgImage}')`
       document.body.style.backgroundColor = storyParts[0].bgColor
 
       // Connect with Lenis for smooth scrolling
-      const lenis = (window as { lenis?: any }).lenis
+      const lenis = (
+        window as Window & { lenis?: { on: Function; off: Function } }
+      ).lenis
       if (lenis) {
         const handleScroll = () => ScrollTrigger.update()
         lenis.on('scroll', handleScroll)
@@ -174,7 +176,7 @@ export default function StorySection() {
       duration: 0.3,
       ease: 'power2.inOut',
       onComplete: () => {
-        bg.style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${part.bgImage}')`
+        bg.style.backgroundImage = `url('${part.bgImage}')`
         gsap.to(bg, {
           opacity: 1,
           duration: 0.3,
@@ -186,6 +188,7 @@ export default function StorySection() {
 
   return (
     <section
+      id="story"
       ref={sectionRef}
       className="relative h-screen w-full overflow-hidden"
       style={{ backgroundColor: currentPart.bgColor }}
@@ -198,21 +201,20 @@ export default function StorySection() {
           filter: 'blur(2px)',
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40" />
 
       {/* Single Content Container */}
       <div className="relative z-20 flex h-full items-center justify-center px-4 sm:px-6 lg:px-8">
         <div ref={contentRef} className="mx-auto w-full max-w-7xl">
           <div className="grid items-center gap-6 md:gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
-            <div className="order-2 text-white lg:order-1">
-              <h2 className="mb-1 font-serif text-[#F5E6A3] text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+            <div className="order-2 text-gray-800 lg:order-1">
+              <h2 className="mb-1 font-serif text-amber-700 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
                 Part {currentPartIndex + 1}
               </h2>
-              <h3 className="mb-3 font-serif text-3xl text-white leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
+              <h3 className="mb-3 font-serif text-3xl text-gray-900 leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
                 {currentPart.title}
               </h3>
-              <p className="text-base text-white/90 leading-relaxed sm:text-lg md:text-xl lg:text-2xl">
+              <p className="text-base text-gray-700 leading-relaxed sm:text-lg md:text-xl lg:text-2xl">
                 {currentPart.paragraph}
               </p>
             </div>
@@ -233,7 +235,7 @@ export default function StorySection() {
 
       {/* Scroll Indicator */}
       <div className="-translate-x-1/2 absolute bottom-8 left-1/2 z-30 animate-bounce">
-        <div className="flex flex-col items-center text-white/70">
+        <div className="flex flex-col items-center text-gray-600">
           <span className="mb-2 text-sm uppercase tracking-wider">
             Scroll{' '}
             {currentPartIndex < storyParts.length - 1 ? 'Down' : 'to Continue'}
@@ -263,8 +265,8 @@ export default function StorySection() {
             key={part.id}
             className={`h-1 w-12 rounded-full transition-all duration-300 ${
               part.id === storyParts[currentPartIndex].id
-                ? 'bg-white'
-                : 'bg-white/30'
+                ? 'bg-gray-800'
+                : 'bg-gray-400'
             }`}
           />
         ))}

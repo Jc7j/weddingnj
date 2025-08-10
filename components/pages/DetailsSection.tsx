@@ -133,6 +133,7 @@ export default function DetailsSection() {
 
   return (
     <section
+      id="details"
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-background py-20 lg:py-32"
     >

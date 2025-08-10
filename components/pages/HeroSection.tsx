@@ -197,6 +197,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
       className="relative h-screen w-full overflow-hidden bg-background"
     >
