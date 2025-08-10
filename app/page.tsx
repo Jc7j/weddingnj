@@ -7,6 +7,7 @@ import DetailsSection from '~/components/pages/DetailsSection'
 import HeroSection from '~/components/pages/HeroSection'
 import QASection from '~/components/pages/QASection'
 import RsvpSection from '~/components/pages/RsvpSection'
+import StaySection from '~/components/pages/StaySection'
 import StorySection from '~/components/pages/StorySection'
 import VenueSection from '~/components/pages/VenueSection'
 
@@ -21,6 +22,7 @@ export default function Home() {
       <VenueSection />
       <DetailsSection />
       <AttireSection />
+      <StaySection />
       <QASection />
       <RsvpSection onRsvpClick={openRsvpDialog} />
     </main>
