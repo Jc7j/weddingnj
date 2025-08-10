@@ -1,6 +1,7 @@
 'use client'
 
 import { useRsvpDialog } from '~/components/LayoutContent'
+import AttireSection from '~/components/pages/AttireSection'
 import BridesAndGroomsSection from '~/components/pages/BridesAndGrooms'
 import DetailsSection from '~/components/pages/DetailsSection'
 import HeroSection from '~/components/pages/HeroSection'
@@ -19,6 +20,7 @@ export default function Home() {
       <BridesAndGroomsSection />
       <VenueSection />
       <DetailsSection />
+      <AttireSection />
       <QASection />
       <RsvpSection onRsvpClick={openRsvpDialog} />
     </main>

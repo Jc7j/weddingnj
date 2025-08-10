@@ -1,5 +1,7 @@
 'use client'
 
+import DecorativeBackground from '@/components/ui/decorative-background'
+
 const questions = [
   {
     q: 'When will you be arriving',
@@ -45,8 +47,9 @@ const questions = [
 
 export default function QASection() {
   return (
-    <section id="qa" className="w-full bg-background py-16 lg:py-20">
-      <div className="container mx-auto max-w-4xl px-6 lg:px-12">
+    <section id="qa" className="relative w-full bg-background py-16 lg:py-20">
+      <DecorativeBackground variant="light" density="sparse" />
+      <div className="container relative z-10 mx-auto max-w-4xl px-6 lg:px-12">
         <h2 className="mb-8 text-center font-serif text-3xl text-foreground/90 lg:text-4xl">
           Questions & Answers
         </h2>

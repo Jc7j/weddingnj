@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 
+import DecorativeBackground from '@/components/ui/decorative-background'
+
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -9,60 +11,62 @@ gsap.registerPlugin(ScrollTrigger)
 
 const detailItems = [
   {
-    id: 'venue',
-    label: 'THE VENUE',
-    title: 'Lorem Ipsum\nDolor Sit\nAmet 12345',
-    link: { text: 'Consectetur Adipiscing', url: 'https://www.example.com' },
-    description: null,
+    id: 'welcome-party',
+    label: 'WELCOME PARTY',
+    title: 'Friday\nEvening\nCelebration',
+    link: null,
+    description:
+      'Join us for drinks and light appetizers\nas we kick off our wedding weekend\nat the resort lounge.',
     position: 'left',
     verticalOffset: 0,
   },
   {
-    id: 'airport',
-    label: 'THE AIRPORT',
-    title: 'Eiusmod\nTempor\nIncididunt',
-    link: { text: 'Ut Labore', url: 'https://www.example.com' },
+    id: 'ceremony',
+    label: 'CEREMONY',
+    title: 'Sacred\nVows',
+    link: null,
     description:
-      'Sed do eiusmod tempor incididunt\nut labore et dolore magna aliqua\nsed do eiusmod.',
+      'The wedding ceremony will take place\nin the beautiful garden setting\nwith mountain views as our backdrop.',
     position: 'center',
     verticalOffset: 200,
   },
   {
-    id: 'lodging',
-    label: 'THE LODGING',
-    title: 'Dolore\nMagna\nAliqua',
-    link: { text: 'Veniam Quis', url: 'https://www.example.com' },
+    id: 'cocktail-hour',
+    label: 'COCKTAIL HOUR',
+    title: 'Garden\nCocktails',
+    link: null,
     description:
-      "Ut enim ad minim veniam quis\nnostrud exercitation ullamco\nlaboris nisi ut aliquip ex ea\ncommodo consequat.",
+      "Celebrate with signature cocktails\nand hors d'oeuvres while we take photos\nand you mingle with fellow guests.",
     position: 'right',
     verticalOffset: 400,
   },
   {
-    id: 'activities',
-    label: 'ACTIVITIES',
-    title: 'Duis\nAute',
+    id: 'dinner',
+    label: 'DINNER',
+    title: 'Reception\nFeast',
     link: null,
-    description: 'Irure Dolor\nReprehenderit\nVoluptate\nVelit Esse',
+    description:
+      'A delicious Filipino-inspired menu\nfeaturing local ingredients\nand family recipes.',
     position: 'left',
     verticalOffset: 600,
   },
   {
-    id: 'food',
-    label: 'FOOD & DRINK',
-    title: 'Cillum\nDolore',
+    id: 'dancing',
+    label: 'DANCING',
+    title: 'Dance\nFloor',
     link: null,
     description:
-      'Fugiat Nulla\nPariatur Excepteur\nSint Occaecat\nCupidatat Non',
+      'Let loose and dance the night away\nto a mix of your favorite songs\nand Filipino classics.',
     position: 'center',
     verticalOffset: 800,
   },
   {
-    id: 'schedule',
-    label: 'THE SCHEDULE',
-    title: 'Proident\nSunt',
+    id: 'cake',
+    label: 'CAKE',
+    title: 'Sweet\nEnding',
     link: null,
     description:
-      'Culpa Qui - Officia\nDeserunt - Mollit Anim\nId Est - Laborum Sed\nUt Perspiciatis - Unde',
+      'Join us for the cake cutting ceremony\nand indulge in our three-tier\ncoconut and ube creation.',
     position: 'right',
     verticalOffset: 1000,
   },
@@ -137,11 +141,12 @@ export default function DetailsSection() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-background py-20 lg:py-32"
     >
+      <DecorativeBackground variant="light" density="sparse" />
       <div className="container mx-auto max-w-7xl px-6 lg:px-12">
         <div ref={contentRef} className="relative z-10">
           {/* Zigzag Layout Container */}
           <div className="relative">
-            {detailItems.map((item) => {
+            {detailItems.map((item, index) => {
               const getPositionClass = () => {
                 switch (item.position) {
                   case 'left':
@@ -165,7 +170,8 @@ export default function DetailsSection() {
                 >
                   <div className="space-y-6">
                     <div>
-                      <p className="mb-2 font-medium text-muted-foreground text-xs tracking-[0.2em]">
+                      <p className="mb-2 flex items-center gap-2 font-medium text-muted-foreground text-xs tracking-[0.2em]">
+                        <span className="text-muted-foreground/50">{index + 1}.</span>
                         {item.label}
                       </p>
                       <div className="mb-8 h-px w-12 bg-muted-foreground/30" />
@@ -184,13 +190,13 @@ export default function DetailsSection() {
                       </h2>
                       {item.link && (
                         <a
-                          href={item.link.url}
+                          href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-block border-current border-b pb-1 text-sm transition-opacity hover:opacity-70"
                           style={{ color: '#2B4735' }}
                         >
-                          {item.link.text}
+                          {item.link}
                         </a>
                       )}
                       {item.description && item.position === 'left' && (
@@ -206,7 +212,11 @@ export default function DetailsSection() {
           </div>
 
           {/* Add height to container based on last item */}
-          <div style={{ height: `${Math.max(...detailItems.map(item => item.verticalOffset)) + 400}px` }} />
+          <div
+            style={{
+              height: `${Math.max(...detailItems.map((item) => item.verticalOffset)) + 400}px`,
+            }}
+          />
         </div>
       </div>
 

@@ -1,18 +1,34 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
+
+import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const venueDetails = [
+  {
+    icon: '📍',
+    label: 'Address',
+    value: "Imelda's Garden\nCuenca, Batangas\nPhilippines",
+  },
+  {
+    icon: '🚗',
+    label: 'Parking',
+    value: 'Free parking available\non-site',
+  },
+]
+
 export default function VenueSection() {
   const sectionRef = useRef<HTMLElement>(null)
-  const leftImageRef = useRef<HTMLDivElement>(null)
-  const rightContentRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const ringImageRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const imagesRef = useRef<HTMLDivElement>(null)
+  const detailsRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -22,73 +38,96 @@ export default function VenueSection() {
     if (prefersReducedMotion) return
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-
-      tl.fromTo(
-        leftImageRef.current,
+      gsap.fromTo(
+        headerRef.current,
         {
           opacity: 0,
-          x: -50,
+          y: 30,
         },
         {
           opacity: 1,
-          x: 0,
-          duration: 1,
+          y: 0,
+          duration: 0.8,
           ease: 'power2.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
         }
       )
-        .fromTo(
-          rightContentRef.current,
+
+      const imageElements = imagesRef.current?.querySelectorAll('.venue-image')
+      if (imageElements) {
+        gsap.fromTo(
+          imageElements,
           {
             opacity: 0,
-            x: 50,
-          },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.7'
-        )
-        .fromTo(
-          textRef.current,
-          {
-            opacity: 0,
-            y: 20,
+            y: 40,
+            scale: 0.95,
           },
           {
             opacity: 1,
             y: 0,
+            scale: 1,
             duration: 0.8,
+            stagger: 0.15,
             ease: 'power2.out',
-          },
-          '-=0.5'
+            scrollTrigger: {
+              trigger: imagesRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse',
+            },
+          }
         )
-        .fromTo(
-          ringImageRef.current,
+      }
+
+      const detailCards = detailsRef.current?.querySelectorAll('.detail-card')
+      if (detailCards) {
+        gsap.fromTo(
+          detailCards,
           {
             opacity: 0,
-            scale: 0.9,
+            x: -20,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: detailsRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        )
+      }
+
+      if (mapRef.current) {
+        gsap.fromTo(
+          mapRef.current,
+          {
+            opacity: 0,
+            scale: 0.95,
           },
           {
             opacity: 1,
             scale: 1,
-            duration: 0.8,
+            duration: 1,
             ease: 'power2.out',
-          },
-          '-=0.5'
+            scrollTrigger: {
+              trigger: mapRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse',
+            },
+          }
         )
+      }
 
-      gsap.to([leftImageRef.current, ringImageRef.current], {
-        y: -30,
+      gsap.to(imagesRef.current, {
+        y: -20,
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -106,73 +145,165 @@ export default function VenueSection() {
     <section
       id="venue"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-background py-20 lg:py-32"
+      className="relative w-full overflow-hidden bg-background py-20 lg:py-32"
     >
-      <div className="container mx-auto max-w-7xl px-6 lg:px-12">
-        <h2 className="mb-12 text-center font-serif text-4xl text-foreground/90 lg:text-5xl">
-          The Wedding
-        </h2>
-        <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
-          {/* Left Column - Main Photo & Text */}
-          <div className="relative">
-            <div
-              ref={leftImageRef}
-              className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 shadow-2xl"
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-center text-muted-foreground text-xl">
-                  Imelda's Garden
-                </span>
+      <DecorativeBackground variant="light" density="sparse" />
+
+      <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+        {/* Header */}
+        <div ref={headerRef} className="mb-16 text-center">
+          <p className="mb-4 font-medium text-muted-foreground text-xs tracking-[0.3em]">
+            THE VENUE
+          </p>
+          <h2 className="mb-4 font-serif text-4xl text-foreground/90 lg:text-6xl">
+            Imelda's Garden
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
+            Join us in the beautiful garden setting of Cuenca, Batangas, where
+            mountain views and natural beauty create the perfect backdrop for
+            our special day.
+          </p>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Left Column - Images & Details */}
+          <div className="space-y-8">
+            {/* Venue Images */}
+            <div ref={imagesRef} className="grid grid-cols-2 gap-4">
+              <div className="venue-image group relative col-span-2 aspect-[16/10] overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/venue/Venue-1.png"
+                  alt="Main venue view"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              </div>
+              <div className="venue-image group relative aspect-square overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/venue/Venue-2.png"
+                  alt="Garden view"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </div>
+              <div className="venue-image group relative aspect-square overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/venue/Venue-3.png"
+                  alt="Ceremony area"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
               </div>
             </div>
 
-            {/* Text below image */}
-            <div ref={textRef} className="mt-8 flex items-end gap-8">
-              <div>
-                {/* <p className="font-serif text-muted-foreground text-sm uppercase tracking-[0.2em]">
-                  3:40PM
-                </p> */}
-                <p className="mt-2 font-serif text-3xl text-foreground/80 lg:text-4xl">
-                  Emelda’s Garden in Cuenca, Batangas, Philippines
-                </p>
-              </div>
-              {/* <div className="text-right">
-                <p className="font-serif text-6xl text-foreground/40 leading-none lg:text-7xl">
-                  19
-                </p>
-              </div> */}
+            {/* Venue Details Cards */}
+            <div ref={detailsRef} className="grid grid-cols-2 gap-4">
+              {venueDetails.map((detail) => (
+                <div
+                  key={detail.label}
+                  className="detail-card rounded-lg bg-white/50 p-4 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white/70 hover:shadow-md"
+                >
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="text-2xl">{detail.icon}</span>
+                    <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
+                      {detail.label}
+                    </p>
+                  </div>
+                  <p className="whitespace-pre-line text-foreground text-sm leading-relaxed">
+                    {detail.value}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right Column - Map & Ring Photo */}
-          <div className="relative flex flex-col gap-8 lg:mt-16">
-            {/* Google Maps Embed */}
-            <div
-              ref={rightContentRef}
-              className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl"
-            >
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3877.0699999999997!2d121.1736!3d13.6536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd2b8c9e8c9e8f%3A0x8c8c8c8c8c8c8c8c!2sImelda's%20Garden%2C%20Sitio%20Sablay%2C%20Barangay%20Poblacion%208%20Hall%2C%20Cuenca%2C%20Batangas%2C%20Philippines!5e0!3m2!1sen!2sph!4v1234567890"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="h-full w-full"
-                title="Imelda's Garden Wedding Venue Location"
-              />
+          {/* Right Column - Map & Additional Info */}
+          <div className="space-y-8">
+            {/* Interactive Map */}
+            <div ref={mapRef} className="space-y-4">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-xl">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3877.0699999999997!2d121.1736!3d13.6536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd2b8c9e8c9e8f%3A0x8c8c8c8c8c8c8c8c!2sImelda's%20Garden%2C%20Sitio%20Sablay%2C%20Barangay%20Poblacion%208%20Hall%2C%20Cuenca%2C%20Batangas%2C%20Philippines!5e0!3m2!1sen!2sph!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-full w-full"
+                  title="Imelda's Garden Wedding Venue Location"
+                />
+              </div>
+              <a
+                href="https://maps.google.com/maps?q=Imelda's+Garden+Cuenca+Batangas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-foreground/90 px-6 py-3 font-medium text-background text-sm transition-all duration-200 hover:bg-foreground"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-label="Google Maps"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                View on Google Maps
+              </a>
             </div>
 
-            {/* Ring Photo */}
-            <div
-              ref={ringImageRef}
-              className="relative ml-auto aspect-square w-2/3 overflow-hidden rounded-lg bg-gradient-to-br from-accent/20 to-muted/20 shadow-xl lg:w-3/5"
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-center text-muted-foreground text-sm">
-                  Imelda's Garden
-                </span>
+            {/* Getting There Section */}
+            <div className="rounded-xl bg-primary/5 p-6">
+              <h3 className="mb-4 font-serif text-foreground text-xl">
+                Getting There
+              </h3>
+              <div className="space-y-4 text-muted-foreground text-sm">
+                <div>
+                  <p className="mb-1 font-medium text-foreground">
+                    From Manila (2-3 hours):
+                  </p>
+                  <p className="leading-relaxed">
+                    Take SLEX and exit at Batangas City. Follow the signs to
+                    Cuenca via Alitagtag. The venue will be on your right after
+                    entering Cuenca town proper.
+                  </p>
+                </div>
+                <div>
+                  <p className="mb-1 font-medium text-foreground">
+                    Public Transportation:
+                  </p>
+                  <p className="leading-relaxed">
+                    Buses to Batangas City are available from various terminals
+                    in Manila. From Batangas City, take a jeepney or tricycle to
+                    Cuenca.
+                  </p>
+                </div>
+                <div>
+                  <p className="mb-1 font-medium text-foreground">
+                    Accommodation:
+                  </p>
+                  <p className="leading-relaxed">
+                    Several hotels and resorts are available in nearby Lipa City
+                    (20 minutes) and Batangas City (30 minutes).
+                  </p>
+                </div>
               </div>
             </div>
           </div>

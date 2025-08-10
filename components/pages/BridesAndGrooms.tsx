@@ -508,20 +508,50 @@ export default function BridesAndGroomsSection() {
               type="button"
               onClick={goToPrevious}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground/10 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-foreground/20"
-              aria-label={currentIndex === 0 ? "Go to story section" : "Previous wedding party member"}
+              aria-label={
+                currentIndex === 0
+                  ? 'Go to story section'
+                  : 'Previous wedding party member'
+              }
             >
-              <svg className="h-4 w-4 text-foreground/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="h-4 w-4 text-foreground/70"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
             <button
               type="button"
               onClick={goToNext}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground/10 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-foreground/20"
-              aria-label={currentIndex === realCards.length - 1 ? "Go to venue section" : "Next wedding party member"}
+              aria-label={
+                currentIndex === realCards.length - 1
+                  ? 'Go to venue section'
+                  : 'Next wedding party member'
+              }
             >
-              <svg className="h-4 w-4 text-foreground/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="h-4 w-4 text-foreground/70"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
