@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 
 import { gsap } from 'gsap'
 
@@ -21,6 +21,41 @@ export default function DecorativeBackground({
   const palmCount = density === 'sparse' ? 2 : density === 'medium' ? 4 : 6
   const flowerCount = density === 'sparse' ? 6 : density === 'medium' ? 10 : 15
   const waveCount = density === 'sparse' ? 1 : density === 'medium' ? 2 : 3
+
+  // Pre-generate all random values to avoid hydration mismatches
+  const elements = useMemo(() => {
+    const palms = Array.from({ length: palmCount }, (_, index) => ({
+      id: `palm-${index}`,
+      top: 15 + (index * 55) / palmCount + (index % 2) * 10,
+      left: 10 + (index * 70) / palmCount + (index % 2) * 15,
+      opacity: 0.6 + (index % 3) * 0.13,
+      width: 80 + (index % 3) * 20,
+      height: 100 + (index % 4) * 20,
+    }))
+
+    const flowers = Array.from({ length: flowerCount }, (_, index) => ({
+      id: `flower-${index}`,
+      top: 5 + (index * 85) / flowerCount,
+      left: 5 + ((index * 73) % 85),
+      opacity: 0.5 + (index % 5) * 0.1,
+      width: 20 + (index % 3) * 8,
+      height: 20 + (index % 3) * 8,
+    }))
+
+    const waves = Array.from({ length: waveCount }, (_, index) => ({
+      id: `wave-${index}`,
+      bottom: index === 0 ? 10 : index === 1 ? 60 : 80,
+      opacity: 0.3 + (index % 2) * 0.15,
+      height: 30 + (index % 2) * 10,
+    }))
+
+    const sunRays = Array.from({ length: 8 }, (_, index) => ({
+      id: `ray-${index}`,
+      angle: (index * Math.PI) / 4,
+    }))
+
+    return { palms, flowers, waves, sunRays }
+  }, [palmCount, flowerCount, waveCount])
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -109,22 +144,22 @@ export default function DecorativeBackground({
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
     >
       {/* Palm Fronds */}
-      {Array.from({ length: palmCount }).map((_, index) => (
+      {elements.palms.map((palm) => (
         <div
-          key={`palm-${Math.random()}-${index}`}
+          key={palm.id}
           ref={(el) => {
             if (el) elementsRef.current.push(el)
           }}
           className="palm absolute"
           style={{
-            top: `${Math.random() * 70 + 15}%`,
-            left: `${Math.random() * 80 + 10}%`,
-            opacity: 0.6 + Math.random() * 0.4,
+            top: `${palm.top}%`,
+            left: `${palm.left}%`,
+            opacity: palm.opacity,
           }}
         >
           <svg
-            width={80 + Math.random() * 60}
-            height={100 + Math.random() * 80}
+            width={palm.width}
+            height={palm.height}
             viewBox="0 0 120 160"
             fill="none"
             aria-hidden="true"
@@ -153,22 +188,22 @@ export default function DecorativeBackground({
       ))}
 
       {/* Tropical Flowers */}
-      {Array.from({ length: flowerCount }).map((_, index) => (
+      {elements.flowers.map((flower) => (
         <div
-          key={`flower-${Math.random()}-${index}`}
+          key={flower.id}
           ref={(el) => {
             if (el) elementsRef.current.push(el)
           }}
           className="flower absolute"
           style={{
-            top: `${Math.random() * 90 + 5}%`,
-            left: `${Math.random() * 90 + 5}%`,
-            opacity: 0.5 + Math.random() * 0.5,
+            top: `${flower.top}%`,
+            left: `${flower.left}%`,
+            opacity: flower.opacity,
           }}
         >
           <svg
-            width={20 + Math.random() * 25}
-            height={20 + Math.random() * 25}
+            width={flower.width}
+            height={flower.height}
             viewBox="0 0 40 40"
             fill="none"
             aria-hidden="true"
@@ -194,23 +229,23 @@ export default function DecorativeBackground({
       ))}
 
       {/* Wave Patterns */}
-      {Array.from({ length: waveCount }).map((_, index) => (
+      {elements.waves.map((wave) => (
         <div
-          key={`wave-${Math.random()}-${index}`}
+          key={wave.id}
           ref={(el) => {
             if (el) elementsRef.current.push(el)
           }}
           className="wave absolute"
           style={{
-            bottom: index === 0 ? '10%' : index === 1 ? '60%' : '80%',
+            bottom: `${wave.bottom}%`,
             left: 0,
             right: 0,
-            opacity: 0.3 + Math.random() * 0.3,
+            opacity: wave.opacity,
           }}
         >
           <svg
             width="100%"
-            height={30 + Math.random() * 20}
+            height={wave.height}
             viewBox="0 0 400 50"
             fill="none"
             preserveAspectRatio="none"
@@ -240,8 +275,8 @@ export default function DecorativeBackground({
         }}
         className="flower absolute"
         style={{
-          top: `${20 + Math.random() * 20}%`,
-          right: `${10 + Math.random() * 10}%`,
+          top: '25%',
+          right: '12%',
           opacity: 0.15,
         }}
       >
@@ -262,13 +297,13 @@ export default function DecorativeBackground({
                 : 'rgba(255, 255, 0, 0.4)'
             }
           />
-          {Array.from({ length: 8 }).map((_, rayIndex) => (
+          {elements.sunRays.map((ray) => (
             <line
-              key={`ray-${Math.random()}-${rayIndex}`}
+              key={ray.id}
               x1="40"
               y1="40"
-              x2={40 + 25 * Math.cos((rayIndex * Math.PI) / 4)}
-              y2={40 + 25 * Math.sin((rayIndex * Math.PI) / 4)}
+              x2={40 + 25 * Math.cos(ray.angle)}
+              y2={40 + 25 * Math.sin(ray.angle)}
               stroke={
                 variant === 'light'
                   ? 'rgba(255, 215, 0, 0.4)'

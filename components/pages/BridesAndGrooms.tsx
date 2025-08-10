@@ -299,9 +299,9 @@ export default function BridesAndGroomsSection() {
           tl.fromTo(
             card,
             {
-              opacity: 0,
-              y: 50,
-              scale: 0.9,
+              opacity: realIndex === 0 ? 1 : 0,
+              y: realIndex === 0 ? 0 : 50,
+              scale: realIndex === 0 ? 1 : 0.9,
             },
             {
               opacity: 1,
@@ -470,7 +470,7 @@ export default function BridesAndGroomsSection() {
         <div className="relative flex-1 overflow-hidden">
           <div
             ref={containerRef}
-            className="flex h-full items-center gap-6 px-4 sm:gap-8 sm:px-6 md:flex-row md:gap-12 md:px-12"
+            className="flex h-full items-start gap-6 px-4 pt-20 sm:gap-8 sm:px-6 md:flex-row md:items-center md:gap-12 md:px-12 md:pt-0"
           >
             {weddingParty.map((member, index) => {
               if (member.isGhost) {

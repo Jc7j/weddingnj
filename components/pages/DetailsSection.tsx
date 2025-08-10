@@ -260,11 +260,14 @@ export default function DetailsSection() {
               return (
                 <div
                   key={item.id}
-                  className={`detail-item relative mb-12 lg:absolute lg:mb-0 ${
+                  className={`detail-item mb-6 sm:mb-8 lg:absolute lg:mb-0 ${
                     isLeft ? 'lg:left-0' : 'lg:right-0'
                   } w-full lg:w-[45%]`}
                   style={{
-                    top: `${item.verticalOffset}px`,
+                    position: 'relative',
+                    ...(typeof window !== 'undefined' && window.innerWidth >= 1024 
+                      ? { top: `${item.verticalOffset}px`, position: 'absolute' }
+                      : {})
                   }}
                 >
                   {/* Mobile Timeline Dot */}
