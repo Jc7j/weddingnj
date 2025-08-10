@@ -386,9 +386,9 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
               className="flex items-center justify-center gap-3 text-lg tracking-[0.2em]"
               style={{ color: '#2B4735' }}
             >
-              <span className="font-medium">SUNDAY</span>
+              <span className="font-medium">THURSDAY</span>
               <span className="text-xl opacity-40">•</span>
-              <span>06.15.2025</span>
+              <span>05.21.2026</span>
             </div>
           </div>
 

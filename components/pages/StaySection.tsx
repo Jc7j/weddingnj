@@ -281,7 +281,7 @@ export default function StaySection() {
           <div className="mx-auto max-w-2xl rounded-xl bg-accent/10 p-6 text-center">
             <p className="mb-2 font-medium text-lg">💡 Travel Tip</p>
             <p className="text-muted-foreground text-sm">
-              Book your accommodation early! June is a popular travel season in
+              Book your accommodation early! May is a beautiful travel season in
               the Philippines. We recommend securing your stay at least 2 months
               in advance.
             </p>

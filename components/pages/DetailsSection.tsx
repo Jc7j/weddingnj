@@ -11,9 +11,9 @@ const detailItems = [
   {
     id: 'welcome-party',
     label: 'WELCOME PARTY',
-    title: 'Friday Evening',
+    title: 'Tuesday Evening',
     subtitle: 'Celebration',
-    time: 'Friday, June 13 • 7:00 PM',
+    time: 'Tuesday, May 19 • 7:00 PM',
     icon: '🥂',
     description:
       'Join us for drinks and light appetizers as we kick off our wedding weekend at the resort lounge.',
@@ -26,7 +26,7 @@ const detailItems = [
     label: 'CEREMONY',
     title: 'Sacred Vows',
     subtitle: 'Garden Wedding',
-    time: 'Sunday, June 15 • 4:00 PM',
+    time: 'Thursday, May 21 • 4:00 PM',
     icon: '💍',
     description:
       'The wedding ceremony will take place in the beautiful garden setting with mountain views as our backdrop.',
@@ -39,7 +39,7 @@ const detailItems = [
     label: 'COCKTAIL HOUR',
     title: 'Garden Cocktails',
     subtitle: 'Mix & Mingle',
-    time: 'Sunday, June 15 • 5:00 PM',
+    time: 'Thursday, May 21 • 5:00 PM',
     icon: '🍸',
     description:
       "Celebrate with signature cocktails and hors d'oeuvres while we take photos and you mingle with fellow guests.",
@@ -52,7 +52,7 @@ const detailItems = [
     label: 'RECEPTION',
     title: 'Reception Feast',
     subtitle: 'Filipino Cuisine',
-    time: 'Sunday, June 15 • 6:30 PM',
+    time: 'Thursday, May 21 • 6:30 PM',
     icon: '🍽️',
     description:
       'A delicious Filipino-inspired menu featuring local ingredients and family recipes.',
@@ -65,7 +65,7 @@ const detailItems = [
     label: 'DANCING',
     title: 'Dance Floor',
     subtitle: 'Party Time',
-    time: 'Sunday, June 15 • 8:30 PM',
+    time: 'Thursday, May 21 • 8:30 PM',
     icon: '🎵',
     description:
       'Let loose and dance the night away to a mix of your favorite songs and Filipino classics.',
@@ -78,7 +78,7 @@ const detailItems = [
     label: 'CAKE CUTTING',
     title: 'Sweet Ending',
     subtitle: 'Ube & Coconut',
-    time: 'Sunday, June 15 • 10:00 PM',
+    time: 'Thursday, May 21 • 10:00 PM',
     icon: '🎂',
     description:
       'Join us for the cake cutting ceremony and indulge in our three-tier coconut and ube creation.',

@@ -58,8 +58,8 @@ const storyParts = [
     id: 'part-4',
     chapter: 'Chapter Four',
     title: 'Our Next Chapter',
-    year: '2025',
-    date: 'June 15',
+    year: '2026',
+    date: 'May 21',
     icon: '🎊',
     quote: '"And so the adventure begins..."',
     paragraph:
