@@ -36,7 +36,7 @@ export default function AttireSection() {
 
     const ctx = gsap.context(() => {
       const colorCards = paletteRef.current?.querySelectorAll('.color-card')
-      
+
       if (colorCards) {
         gsap.fromTo(
           colorCards,
@@ -115,16 +115,17 @@ export default function AttireSection() {
       className="relative w-full overflow-hidden bg-background py-20 lg:py-32"
     >
       <DecorativeBackground variant="light" density="sparse" />
-      
+
       <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-12 text-center" ref={textRef}>
           <h2 className="mb-6 font-serif text-3xl text-foreground/90 lg:text-5xl">
             Dress Code & Attire
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-base leading-relaxed lg:text-lg">
-            We invite you to join us in cocktail attire. Please consider wearing colors from our 
-            curated palette below to create a harmonious celebration. The venue is outdoors, 
-            so consider bringing a light jacket for the evening.
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed lg:text-lg">
+            We invite you to join us in cocktail attire. Please consider wearing
+            colors from our curated palette below to create a harmonious
+            celebration. The venue is outdoors, so consider bringing a light
+            jacket for the evening.
           </p>
         </div>
 
@@ -165,25 +166,29 @@ export default function AttireSection() {
                   src="/attire.png"
                   alt="Attire color palette inspiration"
                   fill
-                  className="object-contain bg-gray-50"
+                  className="bg-gray-50 object-contain"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
-              <div className="mt-6 space-y-4 text-sm text-muted-foreground">
+              <div className="mt-6 space-y-4 text-muted-foreground text-sm">
                 <div>
-                  <h4 className="mb-2 font-medium text-foreground">For Ladies:</h4>
+                  <h4 className="mb-2 font-medium text-foreground">
+                    For Ladies:
+                  </h4>
                   <p className="leading-relaxed">
-                    Cocktail dresses, elegant midi or floor-length gowns in any of the 
-                    suggested colors. Feel free to add your personal style while keeping 
-                    within the color palette.
+                    Cocktail dresses, elegant midi or floor-length gowns in any
+                    of the suggested colors. Feel free to add your personal
+                    style while keeping within the color palette.
                   </p>
                 </div>
                 <div>
-                  <h4 className="mb-2 font-medium text-foreground">For Gentlemen:</h4>
+                  <h4 className="mb-2 font-medium text-foreground">
+                    For Gentlemen:
+                  </h4>
                   <p className="leading-relaxed">
-                    Suit and tie in complementary colors. Navy, charcoal, or lighter 
-                    suits work beautifully with our palette. Consider incorporating 
-                    accent colors in your tie or pocket square.
+                    Suit and tie in complementary colors. Navy, charcoal, or
+                    lighter suits work beautifully with our palette. Consider
+                    incorporating accent colors in your tie or pocket square.
                   </p>
                 </div>
               </div>

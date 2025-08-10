@@ -252,6 +252,7 @@ export default function VenueSection() {
                   viewBox="0 0 24 24"
                   aria-label="Google Maps"
                 >
+                  <title>Google Maps icon</title>
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

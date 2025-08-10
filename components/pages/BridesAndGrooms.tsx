@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+import { Button } from '@/components/ui/button'
 import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
@@ -25,9 +26,11 @@ const weddingParty = [
     name: 'Lorem Ipsum',
     role: 'Maid of Honor',
     side: 'bride',
+    relationship: 'Best Friend',
     story:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     bgColor: '#F0D5D5',
+    accentColor: '#E6D5F0',
     image: '/dogs/choco.png',
   },
   {
@@ -35,9 +38,11 @@ const weddingParty = [
     name: 'Dolor Sit',
     role: 'Best Man',
     side: 'groom',
+    relationship: 'Brother',
     story:
       'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     bgColor: '#D5E0E6',
+    accentColor: '#D4E6D5',
     image: '/dogs/fish.png',
   },
   {
@@ -45,9 +50,11 @@ const weddingParty = [
     name: 'Consectetur Adipiscing',
     role: 'Bridesmaid',
     side: 'bride',
+    relationship: 'College Friend',
     story:
       'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
     bgColor: '#E6D5F0',
+    accentColor: '#F0D5D5',
     image: '/dogs/kobe.png',
   },
   {
@@ -55,9 +62,11 @@ const weddingParty = [
     name: 'Eiusmod Tempor',
     role: 'Groomsman',
     side: 'groom',
+    relationship: 'Childhood Friend',
     story:
       'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     bgColor: '#D4E6D5',
+    accentColor: '#D5E0E6',
     image: '/dogs/molly.png',
   },
   {
@@ -65,9 +74,11 @@ const weddingParty = [
     name: 'Incididunt Labore',
     role: 'Bridesmaid',
     side: 'bride',
+    relationship: 'Sister',
     story:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
     bgColor: '#F0E6D5',
+    accentColor: '#E6D5F0',
     image: '/dogs/choco.png',
   },
   {
@@ -75,9 +86,11 @@ const weddingParty = [
     name: 'Magna Aliqua',
     role: 'Groomsman',
     side: 'groom',
+    relationship: 'Cousin',
     story:
       'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.',
     bgColor: '#F5DDD5',
+    accentColor: '#D4E6D5',
     image: '/dogs/fish.png',
   },
   {
@@ -85,9 +98,11 @@ const weddingParty = [
     name: 'Veniam Quis',
     role: 'Bridesmaid',
     side: 'bride',
+    relationship: 'Work Friend',
     story:
       'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
     bgColor: '#D5E6F0',
+    accentColor: '#F0D5D5',
     image: '/dogs/kobe.png',
   },
   {
@@ -95,9 +110,11 @@ const weddingParty = [
     name: 'Nostrud Exercitation',
     role: 'Groomsman',
     side: 'groom',
+    relationship: 'College Roommate',
     story:
       'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque.',
     bgColor: '#E6D5F0',
+    accentColor: '#D5E0E6',
     image: '/dogs/molly.png',
   },
   {
@@ -105,9 +122,11 @@ const weddingParty = [
     name: 'Ullamco Laboris',
     role: 'Bridesmaid',
     side: 'bride',
+    relationship: 'Childhood Friend',
     story:
       'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.',
     bgColor: '#D5E6F0',
+    accentColor: '#E6D5F0',
     image: '/dogs/choco.png',
   },
   {
@@ -115,9 +134,11 @@ const weddingParty = [
     name: 'Aliquip Commodo',
     role: 'Groomsman',
     side: 'groom',
+    relationship: 'Brother',
     story:
       'Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.',
     bgColor: '#F5DDD5',
+    accentColor: '#D4E6D5',
     image: '/dogs/fish.png',
   },
   {
@@ -192,7 +213,6 @@ export default function BridesAndGroomsSection() {
         })
       }
     } else {
-      // Scroll to next section (venue)
       scrollToSection('#venue')
     }
   }
@@ -215,7 +235,6 @@ export default function BridesAndGroomsSection() {
         })
       }
     } else {
-      // Scroll to previous section (story)
       scrollToSection('#story')
     }
   }
@@ -414,16 +433,40 @@ export default function BridesAndGroomsSection() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-background transition-colors duration-500"
     >
-      {/* Decorative Background */}
       <DecorativeBackground variant="light" density="medium" />
 
+      {/* Floating Hearts Animation */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {Array.from({ length: 5 }, (_, i) => (
+          <div
+            key={`floating-heart-${Date.now()}-${i}`}
+            className="absolute animate-float"
+            style={{
+              left: `${20 + i * 15}%`,
+              animationDelay: `${i * 2}s`,
+              animationDuration: `${15 + i * 3}s`,
+            }}
+          >
+            <span className="text-2xl opacity-10">💕</span>
+          </div>
+        ))}
+      </div>
+
       <div className="flex h-screen flex-col">
+        {/* Header */}
         <div className="flex-shrink-0 px-6 pt-6 text-center lg:px-12 lg:pt-20">
-          <h2 className="mb-8 font-serif text-4xl text-foreground/90 lg:text-6xl">
-            Brides & Grooms
+          <p className="mb-2 font-medium text-muted-foreground/70 text-xs tracking-[0.3em]">
+            WEDDING PARTY
+          </p>
+          <h2 className="mb-2 font-serif text-4xl text-foreground/90 lg:text-6xl">
+            Bridesmaids & Groomsmen
           </h2>
+          <p className="mx-auto max-w-2xl text-muted-foreground text-sm">
+            The special people who have supported our journey
+          </p>
         </div>
 
+        {/* Cards Container */}
         <div className="relative flex-1 overflow-hidden">
           <div
             ref={containerRef}
@@ -437,11 +480,13 @@ export default function BridesAndGroomsSection() {
                     ref={(el) => {
                       cardsRef.current[index] = el
                     }}
-                    className="h-[500px] w-full flex-shrink-0 md:w-[400px]"
+                    className="h-[550px] w-full flex-shrink-0 md:w-[420px]"
                     aria-hidden="true"
                   />
                 )
               }
+
+              const realIndex = realCards.findIndex((m) => m.id === member.id)
 
               return (
                 <div
@@ -449,41 +494,63 @@ export default function BridesAndGroomsSection() {
                   ref={(el) => {
                     cardsRef.current[index] = el
                   }}
-                  className="flex h-[500px] w-full flex-shrink-0 flex-col rounded-2xl bg-white/90 p-8 shadow-2xl backdrop-blur-sm md:w-[400px]"
+                  className="group relative h-[550px] w-full flex-shrink-0 md:w-[420px]"
                 >
-                  <div className="mb-6 flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
-                        {member.side === 'bride' ? "Nicole's" : "James's"}
-                      </p>
-                      <p className="mt-1 font-serif text-2xl text-foreground">
+                  {/* Card Background with Pattern */}
+                  <div
+                    className="absolute inset-0 rounded-3xl opacity-30"
+                    style={{ backgroundColor: member.accentColor }}
+                  />
+
+                  {/* Main Card */}
+                  <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-3xl">
+                    {/* Card Header */}
+                    <div
+                      className="relative px-8 pt-8 pb-4"
+                      style={{ backgroundColor: `${member.bgColor}40` }}
+                    >
+                      {/* Name and Role */}
+                      <h3 className="mb-1 font-serif text-2xl text-foreground">
+                        {member.name}
+                      </h3>
+                      <p className="font-medium text-foreground/60 text-sm">
                         {member.role}
                       </p>
+                      {member.relationship && (
+                        <p className="mt-1 text-foreground/50 text-xs">
+                          {member.relationship}
+                        </p>
+                      )}
                     </div>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                      <span className="font-bold text-lg text-primary">
-                        {index}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="relative mb-6 flex-1 overflow-hidden rounded-xl">
-                    <Image
-                      src={member.image || ''}
-                      alt={`${member.name} - ${member.role}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
+                    {/* Image Container */}
+                    <div className="relative mx-6 mb-6 flex-1 overflow-hidden rounded-2xl shadow-inner">
+                      <div
+                        className="absolute inset-0 opacity-10"
+                        style={{ backgroundColor: member.accentColor }}
+                      />
+                      <Image
+                        src={member.image || ''}
+                        alt={`${member.name} - ${member.role}`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 420px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
+
+                    {/* Story */}
+                    <div className="px-8 pb-8">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {member.story}
+                      </p>
+                    </div>
+
+                    {/* Decorative Elements */}
+                    <div
+                      className="absolute right-0 bottom-0 left-0 h-1"
+                      style={{ backgroundColor: member.accentColor }}
                     />
-                  </div>
-
-                  <div className="space-y-3">
-                    <h3 className="font-serif text-2xl text-foreground">
-                      {member.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {member.story}
-                    </p>
                   </div>
                 </div>
               )
@@ -491,23 +558,29 @@ export default function BridesAndGroomsSection() {
           </div>
         </div>
 
-        <div className="flex justify-between px-6 pb-6 lg:px-12">
-          <div className="flex items-center">
-            <div className="relative h-1 w-48 overflow-hidden rounded-full bg-black/10">
+        {/* Footer with Progress */}
+        <div className="flex items-center justify-between px-6 pb-6 lg:px-12">
+          {/* Progress Bar */}
+          <div className="flex flex-1 items-center gap-4">
+            <span className="font-medium text-foreground/50 text-xs">
+              {currentIndex + 1} / {realCards.length}
+            </span>
+            <div className="relative h-1 max-w-xs flex-1 overflow-hidden rounded-full bg-black/10">
               <div
                 ref={progressRef}
-                className="h-full rounded-full bg-foreground/80 transition-all duration-300"
+                className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
                 style={{ width: '0%' }}
               />
             </div>
           </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex gap-2">
-            <button
-              type="button"
+          {/* Navigation */}
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={goToPrevious}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground/10 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-foreground/20"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
               aria-label={
                 currentIndex === 0
                   ? 'Go to story section'
@@ -515,12 +588,12 @@ export default function BridesAndGroomsSection() {
               }
             >
               <svg
-                className="h-4 w-4 text-foreground/70"
+                className="group-hover:-translate-x-0.5 h-5 w-5 text-foreground/70 transition-transform"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                aria-hidden="true"
               >
+                <title>Previous arrow</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -528,11 +601,12 @@ export default function BridesAndGroomsSection() {
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={goToNext}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground/10 shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-foreground/20"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
               aria-label={
                 currentIndex === realCards.length - 1
                   ? 'Go to venue section'
@@ -540,12 +614,12 @@ export default function BridesAndGroomsSection() {
               }
             >
               <svg
-                className="h-4 w-4 text-foreground/70"
+                className="h-5 w-5 text-foreground/70 transition-transform group-hover:translate-x-0.5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                aria-hidden="true"
               >
+                <title>Next arrow</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -553,10 +627,27 @@ export default function BridesAndGroomsSection() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px);
+          }
+          33% {
+            transform: translateY(-30px) translateX(10px);
+          }
+          66% {
+            transform: translateY(-15px) translateX(-10px);
+          }
+        }
+        .animate-float {
+          animation: float linear infinite;
+        }
+      `}</style>
     </section>
   )
 }
