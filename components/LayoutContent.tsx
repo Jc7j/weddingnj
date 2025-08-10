@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 import {
   PageLoader,
@@ -42,12 +43,21 @@ export default function LayoutContent({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const isAdminPage = pathname?.startsWith('/admin')
+  
   const { showLoader, handleLoaderComplete } = usePageLoad()
   const [isRsvpOpen, setIsRsvpOpen] = useState(false)
 
   const openRsvpDialog = () => setIsRsvpOpen(true)
   const closeRsvpDialog = () => setIsRsvpOpen(false)
 
+  // For admin pages, only provide Convex without decorative elements
+  if (isAdminPage) {
+    return <ConvexClientProvider>{children}</ConvexClientProvider>
+  }
+
+  // For main wedding site, include all decorative elements
   return (
     <>
       {showLoader && <PageLoader onComplete={handleLoaderComplete} />}
