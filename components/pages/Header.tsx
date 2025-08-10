@@ -16,8 +16,7 @@ const navItems = [
   { label: 'Our Story', href: '#story' },
   { label: 'Wedding Party', href: '#wedding-party' },
   { label: 'Venue', href: '#venue' },
-  { label: 'Details', href: '#details' },
-  { label: 'Q&A', href: '#qa' },
+  { label: 'Details & More', href: '#details' },
 ]
 
 interface HeaderProps {

@@ -2,7 +2,7 @@
 
 const questions = [
   {
-    q: 'What is the dress code?',
+    q: 'When will you be arriving',
     a: 'Cocktail attire. Please wear something comfortable for an outdoor garden wedding. Consider bringing a light jacket as it may get cool in the evening.',
   },
   {
@@ -48,7 +48,7 @@ export default function QASection() {
     <section id="qa" className="w-full bg-background py-16 lg:py-20">
       <div className="container mx-auto max-w-4xl px-6 lg:px-12">
         <h2 className="mb-8 text-center font-serif text-3xl text-foreground/90 lg:text-4xl">
-          Frequently Asked Questions
+          Questions & Answers
         </h2>
         <div className="space-y-4">
           {questions.map((item) => (

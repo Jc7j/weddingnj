@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
 import { Button } from '~/components/ui/button'
@@ -11,63 +12,103 @@ import { ChevronDown } from 'lucide-react'
 const imagePositions = [
   {
     id: 'decoration-1',
-    desktop: { top: '15%', left: '3%', width: 180, height: 220, rotation: -8 },
-    mobile: { top: '8%', left: '2%', width: 100, height: 130, rotation: -5 },
-    alt: 'Wedding decoration',
+    src: '/hero/IMG_8712.jpg',
+    desktop: { top: '10%', left: '1%', width: 280, height: 320, rotation: -8 },
+    mobile: { top: '5%', left: '1%', width: 140, height: 160, rotation: -5 },
+    alt: 'Wedding ceremony decoration',
   },
   {
     id: 'floral-1',
-    desktop: { top: '8%', right: '5%', width: 160, height: 200, rotation: 5 },
-    mobile: { top: '5%', right: '2%', width: 90, height: 120, rotation: 3 },
-    alt: 'Floral arrangement',
+    src: '/hero/IMG_8745.jpg',
+    desktop: { top: '5%', right: '2%', width: 260, height: 300, rotation: 5 },
+    mobile: { top: '3%', right: '1%', width: 130, height: 150, rotation: 3 },
+    alt: 'Beautiful floral arrangement',
   },
   {
     id: 'venue-1',
+    src: '/hero/IMG_8755.jpg',
     desktop: {
-      bottom: '18%',
-      left: '2%',
-      width: 200,
-      height: 160,
+      bottom: '15%',
+      left: '1%',
+      width: 300,
+      height: 240,
       rotation: -6,
-    },
-    mobile: { bottom: '25%', left: '1%', width: 100, height: 80, rotation: -3 },
-    alt: 'Wedding venue',
-  },
-  {
-    id: 'sunset-1',
-    desktop: {
-      bottom: '12%',
-      right: '3%',
-      width: 220,
-      height: 180,
-      rotation: 8,
     },
     mobile: {
       bottom: '20%',
+      left: '1%',
+      width: 150,
+      height: 120,
+      rotation: -3,
+    },
+    alt: 'Wedding venue setting',
+  },
+  {
+    id: 'sunset-1',
+    src: '/hero/IMG_8757.jpg',
+    desktop: {
+      bottom: '8%',
       right: '1%',
-      width: 110,
-      height: 90,
+      width: 320,
+      height: 260,
+      rotation: 8,
+    },
+    mobile: {
+      bottom: '15%',
+      right: '1%',
+      width: 160,
+      height: 130,
       rotation: 4,
     },
-    alt: 'Sunset view',
+    alt: 'Romantic sunset moment',
   },
   {
     id: 'arch-1',
-    desktop: { top: '55%', left: '8%', width: 140, height: 180, rotation: -12 },
-    mobile: { top: '60%', left: '3%', width: 70, height: 90, rotation: -8 },
-    alt: 'Wedding arch',
+    src: '/hero/IMG_8758.jpg',
+    desktop: { top: '50%', left: '5%', width: 220, height: 280, rotation: -12 },
+    mobile: { top: '55%', left: '2%', width: 110, height: 140, rotation: -8 },
+    alt: 'Wedding ceremony arch',
   },
   {
     id: 'garden-1',
+    src: '/hero/IMG_8766.jpg',
     desktop: {
-      top: '48%',
-      right: '10%',
-      width: 150,
-      height: 190,
+      top: '42%',
+      right: '6%',
+      width: 240,
+      height: 300,
       rotation: 10,
     },
-    mobile: { top: '55%', right: '3%', width: 75, height: 95, rotation: 6 },
-    alt: 'Garden setting',
+    mobile: { top: '50%', right: '2%', width: 120, height: 150, rotation: 6 },
+    alt: 'Garden wedding setting',
+  },
+  {
+    id: 'celebration-top-1',
+    src: '/hero/IMG_8770.jpg',
+    desktop: { top: '2%', left: '25%', width: 200, height: 240, rotation: -3 },
+    mobile: { top: '1%', left: '20%', width: 100, height: 120, rotation: -2 },
+    alt: 'Wedding celebration moment',
+  },
+  {
+    id: 'flowers-top-1',
+    src: '/hero/IMG_8771.jpg',
+    desktop: { top: '1%', right: '30%', width: 180, height: 220, rotation: 4 },
+    mobile: { top: '0.5%', right: '25%', width: 90, height: 110, rotation: 2 },
+    alt: 'Wedding flowers arrangement',
+  },
+  {
+    id: 'details-bottom-1',
+    src: '/hero/IMG_8772.jpg',
+    desktop: { bottom: '2%', left: '30%', width: 220, height: 180, rotation: 2 },
+    mobile: { bottom: '1%', left: '25%', width: 110, height: 90, rotation: 1 },
+    alt: 'Wedding details',
+  },
+  {
+    id: 'moments-bottom-1',
+    src: '/hero/IMG_8775.jpg',
+    desktop: { bottom: '1%', right: '25%', width: 240, height: 200, rotation: -4 },
+    mobile: { bottom: '0.5%', right: '20%', width: 120, height: 100, rotation: -2 },
+    alt: 'Special wedding moments',
   },
 ]
 
@@ -225,10 +266,14 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
                 height: position.desktop.height,
               }}
             >
-              <div className="absolute inset-0 animate-pulse bg-muted" />
-              <span className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs">
-                {position.alt}
-              </span>
+              <Image
+                src={position.src}
+                alt={position.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 160px, 320px"
+                priority
+              />
             </div>
           </div>
 
@@ -250,10 +295,13 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
                 height: position.mobile.height,
               }}
             >
-              <div className="absolute inset-0 animate-pulse bg-muted" />
-              <span className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs">
-                {position.alt}
-              </span>
+              <Image
+                src={position.src}
+                alt={position.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 160px, 320px"
+              />
             </div>
           </div>
         </div>

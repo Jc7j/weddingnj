@@ -1,6 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+
+import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -12,36 +15,32 @@ const storyParts = [
     id: 'part-1',
     title: 'The Beginning:',
     paragraph:
-      "Every love story is unique, and Nicole and James's began in the most natural way. When they first met in 2019, neither of them expected anything more than friendship. But, as with many of life’s best surprises, something unexpected began to grow. The more time they spent together, the more they clicked. James was the first to catch feelings and made the bold move to ask Nicole on a date—to Disneyland, no less. On December 11, 2019, their lives became intertwined, and they’ve been inseparable ever since.  ",
-    image: '/images/story-1.jpg',
-    bgImage: '/images/bg-1.jpg',
+      "Every love story is unique, and Nicole and James's began in the most natural way. When they first met in 2019, neither of them expected anything more than friendship. But, as with many of life's best surprises, something unexpected began to grow. The more time they spent together, the more they clicked. James was the first to catch feelings and made the bold move to ask Nicole on a date—to Disneyland, no less. On December 11, 2019, their lives became intertwined, and they've been inseparable ever since.  ",
+    image: '/story/1.png',
     bgColor: '#F5E6D3',
   },
   {
     id: 'part-2',
     title: 'The Dating Chapter:',
     paragraph:
-      'When they began dating, laughter quickly became the soundtrack of their days, and with every shared moment, their feelings for each other deepened. James found a true home within Nicole’s heart—and she found the same comfort in his. They grew closer than ever, inspiring one another to become the best versions of themselves. Opening their hearts fully, they discovered that together was the coziest place to be. Over time, they became not only partners but best friends, continuously uplifting and bettering each other along the way.',
-    image: '/images/story-2.jpg',
-    bgImage: '/images/bg-2.jpg',
+      "When they began dating, laughter quickly became the soundtrack of their days, and with every shared moment, their feelings for each other deepened. James found a true home within Nicole's heart—and she found the same comfort in his. They grew closer than ever, inspiring one another to become the best versions of themselves. Opening their hearts fully, they discovered that together was the coziest place to be. Over time, they became not only partners but best friends, continuously uplifting and bettering each other along the way.",
+    image: '/story/2.png',
     bgColor: '#E6D5F0',
   },
   {
     id: 'part-3',
     title: 'The Engagement: ',
     paragraph:
-      'There wasn’t one single moment when James knew Nicole was the one—he just had a gut feeling that she was it. By 2021, the idea of proposing had started to take shape, and when James found out that Honne—an artist both he and Nicole deeply love—was coming to L.A., inspiration struck. He decided to take a leap of faith and reached out to the band to ask if they’d help with the proposal. To his surprise, they said yes. On May 21st. 2022, James had invited their closest friends and family to be there. During the concert, he was brought up on stage—and in front of everyone, he asked Nicole to marry him. She was completely shocked... and said yes! The crowd erupted in cheers, and it became a night they’ll both remember forever.',
-    image: '/images/story-3.jpg',
-    bgImage: '/images/bg-3.jpg',
+      "There wasn't one single moment when James knew Nicole was the one—he just had a gut feeling that she was it. By 2021, the idea of proposing had started to take shape, and when James found out that Honne—an artist both he and Nicole deeply love—was coming to L.A., inspiration struck. He decided to take a leap of faith and reached out to the band to ask if they'd help with the proposal. To his surprise, they said yes. On May 21st. 2022, James had invited their closest friends and family to be there. During the concert, he was brought up on stage—and in front of everyone, he asked Nicole to marry him. She was completely shocked... and said yes! The crowd erupted in cheers, and it became a night they'll both remember forever.",
+    image: '/story/3.png',
     bgColor: '#F0D5D5',
   },
   {
     id: 'part-4',
     title: 'Where Are They Now: ',
     paragraph:
-      'Fast forward a few years, and Nicole and James are finally ready to celebrate their wedding and begin this exciting new chapter together. More than anything, they’re thrilled to share this joyous moment with the people who mean the most to them. They can’t wait to see all of your beautiful faces as they celebrate a love that has grown stronger every day. No matter where life has led them, they’ve always found home in each other — and with your love and support, this next chapter will be the best one yet. From the bottom of their hearts, Nicole and James thank you for being part of their story and this unforgettable celebration.',
-    image: '/images/story-4.jpg',
-    bgImage: '/images/bg-4.jpg',
+      "Fast forward a few years, and Nicole and James are finally ready to celebrate their wedding and begin this exciting new chapter together. More than anything, they're thrilled to share this joyous moment with the people who mean the most to them. They can't wait to see all of your beautiful faces as they celebrate a love that has grown stronger every day. No matter where life has led them, they've always found home in each other — and with your love and support, this next chapter will be the best one yet. From the bottom of their hearts, Nicole and James thank you for being part of their story and this unforgettable celebration.",
+    image: '/story/4.png',
     bgColor: '#D4E6D5',
   },
 ]
@@ -49,11 +48,61 @@ const storyParts = [
 export default function StorySection() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const bgRef = useRef<HTMLDivElement>(null)
   const [currentPartIndex, setCurrentPartIndex] = useState(0)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
 
   const currentPart = storyParts[currentPartIndex]
+
+  const scrollToSection = (href: string) => {
+    const lenis = (
+      window as Window & {
+        lenis?: {
+          scrollTo: (
+            target: string,
+            options?: {
+              duration?: number
+              easing?: (t: number) => number
+              onComplete?: () => void
+            }
+          ) => void
+        }
+      }
+    ).lenis
+    if (lenis) {
+      lenis.scrollTo(href, {
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+        onComplete: () => {
+          setTimeout(() => {
+            ScrollTrigger.refresh()
+          }, 100)
+        },
+      })
+    } else {
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+  }
+
+  const goToNext = () => {
+    if (currentPartIndex < storyParts.length - 1) {
+      setCurrentPartIndex(currentPartIndex + 1)
+    } else {
+      // Scroll to next section (wedding party)
+      scrollToSection('#wedding-party')
+    }
+  }
+
+  const goToPrevious = () => {
+    if (currentPartIndex > 0) {
+      setCurrentPartIndex(currentPartIndex - 1)
+    } else {
+      // Scroll to previous section (hero)
+      scrollToSection('#hero')
+    }
+  }
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -66,8 +115,7 @@ export default function StorySection() {
     const ctx = gsap.context(() => {
       const section = sectionRef.current
       const content = contentRef.current
-      const bg = bgRef.current
-      if (!section || !content || !bg) return
+      if (!section || !content) return
 
       const isMobile = window.innerWidth < 768
 
@@ -102,20 +150,7 @@ export default function StorySection() {
 
       timelineRef.current = tl
 
-      // Parallax effect for background
-      gsap.to(bg, {
-        y: isMobile ? '15%' : '30%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '400%',
-          scrub: 1,
-        },
-      })
-
-      // Set initial background
-      bg.style.backgroundImage = `url('${storyParts[0].bgImage}')`
+      // Set initial background color
       document.body.style.backgroundColor = storyParts[0].bgColor
 
       // Connect with Lenis for smooth scrolling
@@ -139,11 +174,10 @@ export default function StorySection() {
     }
   }, [])
 
-  // Handle content and background transitions when currentPartIndex changes
+  // Handle content transitions when currentPartIndex changes
   useEffect(() => {
     const content = contentRef.current
-    const bg = bgRef.current
-    if (!content || !bg) return
+    if (!content) return
 
     const part = storyParts[currentPartIndex]
 
@@ -169,21 +203,6 @@ export default function StorySection() {
       duration: 0.5,
       ease: 'power2.inOut',
     })
-
-    // Crossfade background image
-    gsap.to(bg, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.inOut',
-      onComplete: () => {
-        bg.style.backgroundImage = `url('${part.bgImage}')`
-        gsap.to(bg, {
-          opacity: 1,
-          duration: 0.3,
-          ease: 'power2.inOut',
-        })
-      },
-    })
   }, [currentPartIndex])
 
   return (
@@ -193,14 +212,8 @@ export default function StorySection() {
       className="relative h-screen w-full overflow-hidden"
       style={{ backgroundColor: currentPart.bgColor }}
     >
-      {/* Single Background */}
-      <div
-        ref={bgRef}
-        className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-        style={{
-          filter: 'blur(2px)',
-        }}
-      />
+      {/* Decorative Background */}
+      <DecorativeBackground variant="light" density="sparse" />
 
       {/* Single Content Container */}
       <div className="relative z-20 flex h-full items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -222,11 +235,15 @@ export default function StorySection() {
             {/* Image */}
             <div className="relative order-1 lg:order-2">
               <div className="relative mx-auto aspect-[4/3] max-w-sm overflow-hidden rounded-xl shadow-2xl sm:aspect-[3/4] sm:rounded-2xl lg:max-w-none">
-                <div className="absolute inset-0 animate-pulse bg-white/10" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                <span className="absolute inset-0 flex items-center justify-center p-4 text-center text-lg text-white/60 sm:text-xl lg:text-2xl">
-                  Story Image {currentPartIndex + 1}
-                </span>
+                <Image
+                  src={currentPart.image}
+                  alt={`Story part ${currentPartIndex + 1}: ${currentPart.title}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={currentPartIndex === 0}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </div>
           </div>
@@ -270,6 +287,60 @@ export default function StorySection() {
             }`}
           />
         ))}
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="absolute right-6 bottom-6 z-30 flex gap-2 lg:right-12 lg:bottom-12">
+        <button
+          type="button"
+          onClick={goToPrevious}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white/90"
+          aria-label={
+            currentPartIndex === 0
+              ? 'Go to hero section'
+              : 'Previous story part'
+          }
+        >
+          <svg
+            className="h-5 w-5 text-gray-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={goToNext}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white/90"
+          aria-label={
+            currentPartIndex === storyParts.length - 1
+              ? 'Go to wedding party section'
+              : 'Next story part'
+          }
+        >
+          <svg
+            className="h-5 w-5 text-gray-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
       </div>
     </section>
   )
