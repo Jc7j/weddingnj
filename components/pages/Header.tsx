@@ -6,13 +6,17 @@ import { useState } from 'react'
 import { Button } from '~/components/ui/button'
 
 import { AnimatePresence, motion } from 'framer-motion'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Menu, X } from 'lucide-react'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const navItems = [
   { label: 'Our Story', href: '#story' },
+  { label: 'Wedding Party', href: '#wedding-party' },
   { label: 'Venue', href: '#venue' },
   { label: 'Details', href: '#details' },
-  { label: 'Wedding Party', href: '#wedding-party' },
   { label: 'Q&A', href: '#qa' },
 ]
 
@@ -24,9 +28,37 @@ export default function Header({ onRsvpClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const lenis = (
+      window as Window & {
+        lenis?: {
+          scrollTo: (
+            target: string,
+            options?: {
+              duration?: number
+              easing?: (t: number) => number
+              onComplete?: () => void
+            }
+          ) => void
+        }
+      }
+    ).lenis
+    if (lenis) {
+      lenis.scrollTo(href, {
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+        onComplete: () => {
+          // Refresh ScrollTrigger after Lenis completes the scroll
+          setTimeout(() => {
+            ScrollTrigger.refresh()
+          }, 100)
+        },
+      })
+    } else {
+      // Fallback to native scroll if Lenis isn't available
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     }
     setIsMenuOpen(false)
   }
@@ -46,12 +78,13 @@ export default function Header({ onRsvpClick }: HeaderProps) {
           <ul className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
               <li key={item.href}>
-                <button
+                <Button
+                  variant="ghost"
                   onClick={() => scrollToSection(item.href)}
                   className="font-medium text-sm transition-colors hover:text-primary"
                 >
                   {item.label}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -119,12 +152,13 @@ export default function Header({ onRsvpClick }: HeaderProps) {
                     }}
                     transition={{ duration: 0.2 }}
                   >
-                    <button
+                    <Button
+                      variant="ghost"
                       onClick={() => scrollToSection(item.href)}
                       className="block py-2 font-medium text-sm transition-colors hover:text-primary"
                     >
                       {item.label}
-                    </button>
+                    </Button>
                   </motion.li>
                 ))}
                 <motion.li

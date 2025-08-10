@@ -293,20 +293,16 @@ export default function WeddingPartySection() {
       className="relative min-h-screen w-full overflow-hidden bg-background transition-colors duration-500"
     >
       <div className="flex h-screen flex-col">
-        <div className="flex-shrink-0 px-6 pt-12 text-center lg:px-12 lg:pt-20">
-          <h2 className="mb-2 font-serif text-4xl text-foreground/90 lg:text-6xl">
+        <div className="flex-shrink-0 px-6 pt-6 text-center lg:px-12 lg:pt-20">
+          <h2 className="mb-8 font-serif text-4xl text-foreground/90 lg:text-6xl">
             The Wedding Party
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-foreground/70 lg:text-lg">
-            The amazing people who have supported our journey and will stand by
-            our side
-          </p>
         </div>
 
         <div className="relative flex-1 overflow-hidden">
           <div
             ref={containerRef}
-            className="flex h-full items-center gap-8 px-6 py-8 md:flex-row md:gap-12 md:px-12"
+            className="flex h-full items-center gap-8 px-6 md:flex-row md:gap-12 md:px-12"
           >
             {weddingParty.map((member, index) => {
               if (member.isGhost) {
@@ -371,7 +367,7 @@ export default function WeddingPartySection() {
           </div>
         </div>
 
-        <div className="flex justify-between px-6 pb-8 lg:px-12">
+        <div className="flex justify-between px-6 pb-6 lg:px-12">
           <div className="flex items-center">
             <div className="relative h-1 w-48 overflow-hidden rounded-full bg-black/10">
               <div

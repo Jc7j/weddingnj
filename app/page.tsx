@@ -16,9 +16,9 @@ export default function Home() {
     <main className="min-h-screen">
       <HeroSection onRsvpClick={openRsvpDialog} />
       <StorySection />
+      <WeddingPartySection />
       <VenueSection />
       <DetailsSection />
-      <WeddingPartySection />
       <QASection />
       <RsvpSection onRsvpClick={openRsvpDialog} />
     </main>
