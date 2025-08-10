@@ -470,7 +470,7 @@ export default function BridesAndGroomsSection() {
         <div className="relative flex-1 overflow-hidden">
           <div
             ref={containerRef}
-            className="flex h-full items-center gap-8 px-6 md:flex-row md:gap-12 md:px-12"
+            className="flex h-full items-center gap-6 px-4 sm:gap-8 sm:px-6 md:flex-row md:gap-12 md:px-12"
           >
             {weddingParty.map((member, index) => {
               if (member.isGhost) {
@@ -480,7 +480,7 @@ export default function BridesAndGroomsSection() {
                     ref={(el) => {
                       cardsRef.current[index] = el
                     }}
-                    className="h-[450px] w-full flex-shrink-0 sm:h-[500px] md:h-[550px] md:w-[420px]"
+                    className="h-[380px] w-full flex-shrink-0 sm:h-[450px] md:h-[550px] md:w-[420px]"
                     aria-hidden="true"
                   />
                 )
@@ -494,7 +494,7 @@ export default function BridesAndGroomsSection() {
                   ref={(el) => {
                     cardsRef.current[index] = el
                   }}
-                  className="group relative h-[450px] w-full flex-shrink-0 sm:h-[500px] md:h-[550px] md:w-[420px]"
+                  className="group relative h-[380px] w-full flex-shrink-0 sm:h-[450px] md:h-[550px] md:w-[420px]"
                 >
                   {/* Card Background with Pattern */}
                   <div
@@ -506,14 +506,14 @@ export default function BridesAndGroomsSection() {
                   <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-3xl">
                     {/* Card Header */}
                     <div
-                      className="relative px-6 pt-6 pb-3 sm:px-8 sm:pt-8 sm:pb-4"
+                      className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 sm:pb-3 md:px-8 md:pt-8 md:pb-4"
                       style={{ backgroundColor: `${member.bgColor}40` }}
                     >
                       {/* Name and Role */}
-                      <h3 className="mb-1 font-serif text-foreground text-xl sm:text-2xl">
+                      <h3 className="mb-1 font-serif text-foreground text-lg sm:text-xl md:text-2xl">
                         {member.name}
                       </h3>
-                      <p className="font-medium text-foreground/60 text-xs sm:text-sm">
+                      <p className="font-medium text-foreground/60 text-xs md:text-sm">
                         {member.role}
                       </p>
                       {member.relationship && (
@@ -524,7 +524,7 @@ export default function BridesAndGroomsSection() {
                     </div>
 
                     {/* Image Container */}
-                    <div className="relative mx-4 mb-4 flex-1 overflow-hidden rounded-2xl shadow-inner sm:mx-6 sm:mb-6">
+                    <div className="relative mx-3 mb-3 flex-1 overflow-hidden rounded-2xl shadow-inner sm:mx-4 sm:mb-4 md:mx-6 md:mb-6">
                       <div
                         className="absolute inset-0 opacity-10"
                         style={{ backgroundColor: member.accentColor }}
@@ -540,8 +540,8 @@ export default function BridesAndGroomsSection() {
                     </div>
 
                     {/* Story */}
-                    <div className="px-6 pb-6 sm:px-8 sm:pb-8">
-                      <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm">
+                    <div className="px-4 pb-4 sm:px-6 sm:pb-6 md:px-8 md:pb-8">
+                      <p className="text-muted-foreground text-[11px] leading-relaxed sm:text-xs md:text-sm">
                         {member.story}
                       </p>
                     </div>

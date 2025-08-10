@@ -12,10 +12,11 @@ interface PageLoaderProps {
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   const loaderRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLDivElement>(null)
-  const dateRef = useRef<HTMLDivElement>(null)
-  const progressRef = useRef<HTMLDivElement>(null)
-  const progressBarRef = useRef<HTMLDivElement>(null)
+  const envelopeRef = useRef<SVGSVGElement>(null)
+  const flapRef = useRef<SVGPathElement>(null)
+  const sealRef = useRef<SVGCircleElement>(null)
+  const cardRef = useRef<SVGGElement>(null)
+  const cardTextRef = useRef<SVGGElement>(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -23,31 +24,43 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     ).matches
 
     if (prefersReducedMotion) {
-      // Skip animation for users who prefer reduced motion
       setTimeout(onComplete, 500)
       return
     }
 
-    // Store callback in ref to avoid dependency issues
     const completeCallback = onComplete
 
-    // Set initial states immediately
-    gsap.set([titleRef.current, dateRef.current, progressRef.current], {
+    // Set initial states
+    gsap.set(envelopeRef.current, {
+      scale: 0.8,
       opacity: 0,
-      y: 30,
+      y: 20,
     })
-    gsap.set(progressBarRef.current, { scaleX: 0 })
+    gsap.set(flapRef.current, {
+      transformOrigin: 'center top',
+    })
+    gsap.set(sealRef.current, {
+      scale: 1,
+      opacity: 1,
+    })
+    gsap.set(cardRef.current, {
+      y: 0,
+      opacity: 0,
+    })
+    gsap.set(cardTextRef.current, {
+      opacity: 0,
+    })
 
     // Create main animation timeline
     const tl = gsap.timeline({
       delay: ANIMATION_CONFIG.pageLoader.initialDelay / 1000,
       onComplete: () => {
-        // Start exit animation and immediately trigger content reveal
         completeCallback()
 
-        // Exit animation
+        // Exit animation - entire loader fades and moves up
         gsap.to(loaderRef.current, {
-          y: '-100%',
+          opacity: 0,
+          y: -50,
           duration: ANIMATION_CONFIG.pageLoader.exitDuration / 1000,
           ease: ANIMATION_CONFIG.easing.slide,
         })
@@ -55,42 +68,58 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
     })
 
     // Animation sequence
-    tl.to(titleRef.current, {
+    tl.to(envelopeRef.current, {
+      scale: 1,
       opacity: 1,
       y: 0,
       duration: 0.8,
-      ease: ANIMATION_CONFIG.easing.smooth,
+      ease: 'power2.out',
     })
+      // Break the seal
       .to(
-        dateRef.current,
+        sealRef.current,
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: ANIMATION_CONFIG.easing.smooth,
-        },
-        '-=0.3'
-      )
-      .to(
-        progressRef.current,
-        {
-          opacity: 1,
-          y: 0,
+          scale: 1.2,
+          opacity: 0,
           duration: 0.5,
-          ease: ANIMATION_CONFIG.easing.smooth,
+          ease: 'power2.inOut',
+        },
+        '+=0.3'
+      )
+      // Open the flap
+      .to(
+        flapRef.current,
+        {
+          rotationX: -180,
+          duration: 0.8,
+          ease: 'power2.inOut',
+          transformPerspective: 800,
         },
         '-=0.2'
       )
+      // Reveal the card - slide it up and out of the envelope
       .to(
-        progressBarRef.current,
+        cardRef.current,
         {
-          scaleX: 1,
-          duration: 1.8,
-          ease: 'power2.inOut',
+          y: -250,
+          scale: 1.08,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'back.out(1.2)',
         },
-        '-=0.3'
+        '-=0.4'
       )
-      .to({}, { duration: 0.3 })
+      // Show card text with stagger effect
+      .to(
+        cardTextRef.current,
+        {
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+        },
+        '-=0.5'
+      )
+      .to({}, { duration: 0.8 })
 
     return () => {
       tl.kill()
@@ -107,27 +136,130 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
         <div className="-bottom-40 -left-40 absolute h-80 w-80 rounded-full bg-[#F0D5D5] opacity-20 blur-3xl" />
       </div>
 
-      <div className="relative z-10 text-center">
-        <div ref={titleRef} className="mb-6">
-          <h1 className="font-serif text-6xl text-[#3A3A3A] leading-none md:text-8xl">
-            You're <span className="text-[#8B5A5A]">Invited</span>
-          </h1>
-        </div>
-        <div ref={dateRef} className="mb-12">
-          <p className="font-light text-[#6B5B73] text-xl tracking-wide md:text-2xl">
-            May 21st, 2026
-          </p>
-        </div>
+      <svg
+        ref={envelopeRef}
+        className="relative z-10 w-80 md:w-96 lg:w-[420px] xl:w-[480px]"
+        viewBox="0 0 320 400"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ perspective: '800px', overflow: 'visible' }}
+        aria-label="Wedding invitation envelope animation"
+      >
+        {/* Envelope shadow */}
+        <ellipse
+          cx="160"
+          cy="320"
+          rx="100"
+          ry="10"
+          fill="#000000"
+          opacity="0.1"
+        />
 
-        <div ref={progressRef} className="mx-auto w-64">
-          <div className="relative h-px overflow-hidden rounded-full bg-[#3A3A3A] bg-opacity-20">
-            <div
-              ref={progressBarRef}
-              className="absolute inset-y-0 left-0 origin-left bg-gradient-to-r from-[#8B5A5A] to-[#6B5B73]"
-            />
-          </div>
-        </div>
-      </div>
+        {/* Envelope body */}
+        <path
+          d="M40 180 L280 180 L280 300 L40 300 Z"
+          fill="#FFF9F0"
+          stroke="#E6D5F0"
+          strokeWidth="2"
+        />
+
+        {/* Inner shadow for depth */}
+        <path
+          d="M40 180 L280 180 L280 300 L40 300 Z"
+          fill="url(#envelopeGradient)"
+          opacity="0.3"
+        />
+
+        {/* Card inside envelope */}
+        <g ref={cardRef}>
+          <rect
+            x="60"
+            y="220"
+            width="200"
+            height="120"
+            rx="4"
+            fill="#FFFFFF"
+            stroke="#F0D5D5"
+            strokeWidth="1"
+          />
+          <g ref={cardTextRef}>
+            <text
+              x="160"
+              y="255"
+              textAnchor="middle"
+              className="fill-[#8B5A5A]"
+              style={{
+                fontSize: '22px',
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+              }}
+            >
+              You're Invited
+            </text>
+            <text
+              x="160"
+              y="280"
+              textAnchor="middle"
+              className="fill-[#6B5B73]"
+              style={{ fontSize: '16px', fontFamily: 'sans-serif' }}
+            >
+              Nicole & James
+            </text>
+            <text
+              x="160"
+              y="305"
+              textAnchor="middle"
+              className="fill-[#6B5B73]"
+              style={{ fontSize: '14px', fontFamily: 'sans-serif' }}
+            >
+              May 21st, 2026
+            </text>
+          </g>
+        </g>
+
+        {/* Envelope flap (will rotate) */}
+        <path
+          ref={flapRef}
+          d="M40 180 L160 240 L280 180 Z"
+          fill="#FFF9F0"
+          stroke="#E6D5F0"
+          strokeWidth="2"
+        />
+
+        {/* Wax seal */}
+        <circle
+          ref={sealRef}
+          cx="160"
+          cy="210"
+          r="25"
+          fill="#8B5A5A"
+          stroke="#6B5B73"
+          strokeWidth="1"
+        />
+        <text
+          x="160"
+          y="215"
+          textAnchor="middle"
+          className="pointer-events-none fill-white"
+          style={{ fontSize: '16px', fontFamily: 'serif' }}
+        >
+          N&J
+        </text>
+
+        {/* Gradients */}
+        <defs>
+          <linearGradient
+            id="envelopeGradient"
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="#E6D5F0" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+        </defs>
+      </svg>
     </div>
   )
 }

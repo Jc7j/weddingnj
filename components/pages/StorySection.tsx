@@ -320,11 +320,11 @@ export default function StorySection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 flex h-full items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div ref={contentRef} className="mx-auto w-full max-w-7xl">
-          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+      <div className="relative z-20 flex h-full items-center justify-center overflow-y-auto px-4 sm:px-6 lg:px-8">
+        <div ref={contentRef} className="mx-auto w-full max-w-7xl py-8 sm:py-0">
+          <div className="grid items-center gap-4 sm:gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
-            <div className="story-content order-2 lg:order-1">
+            <div className="story-content order-2 max-h-[50vh] overflow-y-auto sm:max-h-none sm:overflow-visible lg:order-1">
               {/* Chapter Badge */}
               <div className="story-text mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-sm">
                 <span className="text-2xl">{currentPart.icon}</span>
@@ -357,14 +357,14 @@ export default function StorySection() {
               </div>
 
               {/* Main Paragraph */}
-              <p className="story-text text-foreground/80 text-sm leading-relaxed sm:text-base lg:text-lg">
+              <p className="story-text pb-4 text-foreground/80 text-sm leading-relaxed sm:pb-0 sm:text-base lg:text-lg">
                 {currentPart.paragraph}
               </p>
             </div>
 
             {/* Image with Frame */}
             <div className="story-image relative order-1 lg:order-2">
-              <div className="relative mx-auto max-w-md lg:max-w-none">
+              <div className="relative mx-auto max-w-[280px] sm:max-w-md lg:max-w-none">
                 {/* Decorative Frame */}
                 <div
                   className="-inset-4 absolute rounded-2xl opacity-20"
@@ -377,7 +377,7 @@ export default function StorySection() {
                   ref={imageRef}
                   className="relative overflow-hidden rounded-xl shadow-2xl"
                 >
-                  <div className="relative aspect-[3/4]">
+                  <div className="relative aspect-square sm:aspect-[3/4]">
                     <Image
                       src={currentPart.image}
                       alt={`${currentPart.title} - ${currentPart.year}`}
@@ -403,7 +403,7 @@ export default function StorySection() {
       </div>
 
       {/* Enhanced Navigation */}
-      <div className="absolute inset-x-0 bottom-0 z-30 px-6 pb-8 lg:px-12">
+      <div className="absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/80 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Progress Dots */}
           <div className="flex gap-3">
@@ -486,9 +486,9 @@ export default function StorySection() {
         </div>
       </div>
 
-      {/* Scroll Hint */}
+      {/* Scroll Hint - Hidden on mobile */}
       {currentPartIndex < storyParts.length - 1 && (
-        <div className="-translate-x-1/2 absolute bottom-20 left-1/2 z-30 animate-bounce">
+        <div className="-translate-x-1/2 absolute bottom-20 left-1/2 z-30 hidden animate-bounce sm:block">
           <div className="flex flex-col items-center text-foreground/40">
             <span className="mb-2 text-xs uppercase tracking-wider">
               Scroll for more
