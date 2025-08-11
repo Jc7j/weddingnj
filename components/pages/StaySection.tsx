@@ -6,7 +6,7 @@ import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Bed, Car, Globe, MapPin, Phone, Wifi } from 'lucide-react'
+import { Globe, MapPin, Phone } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,21 +14,15 @@ gsap.registerPlugin(ScrollTrigger)
 const convertToUSD = (pesoRange: string) => {
   const matches = pesoRange.match(/₱([\d,]+)\s*-\s*₱([\d,]+)/)
   if (!matches) return ''
-  
+
   const min = parseInt(matches[1].replace(/,/g, ''))
   const max = parseInt(matches[2].replace(/,/g, ''))
-  
+
   const minUSD = Math.round(min / 58)
   const maxUSD = Math.round(max / 58)
-  
+
   return `$${minUSD} - $${maxUSD}`
 }
-
-const hotelFeatures = [
-  { icon: Bed, label: 'Comfortable Rooms' },
-  { icon: Wifi, label: 'Free Wi-Fi' },
-  { icon: Car, label: 'Free Parking' },
-]
 
 const nearbyOptions = [
   {
@@ -150,10 +144,6 @@ export default function StaySection() {
           <h2 className="mb-4 font-serif text-4xl text-foreground/90 lg:text-6xl">
             Where you can stay
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground leading-relaxed">
-            We've arranged special rates at Imelda's Garden Hotel, or explore
-            other nearby accommodations that suit your preferences and budget.
-          </p>
         </div>
 
         {/* Main Content */}
@@ -191,30 +181,6 @@ export default function StaySection() {
                           View on Facebook
                         </a>
                       </div>
-                    </div>
-
-                    <div className="mb-6 flex flex-wrap gap-4">
-                      {hotelFeatures.map((feature) => (
-                        <div
-                          key={feature.label}
-                          className="flex items-center gap-2"
-                        >
-                          <feature.icon className="h-4 w-4 text-primary" />
-                          <span className="text-muted-foreground text-sm">
-                            {feature.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="rounded-lg bg-primary/5 p-4">
-                      <p className="font-medium text-foreground text-sm">
-                        Special Wedding Rate
-                      </p>
-                      <p className="mt-1 text-muted-foreground text-xs">
-                        Mention "Nicole & James Wedding" when booking for
-                        special rates
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -257,48 +223,6 @@ export default function StaySection() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 text-center">
-              <p className="mb-4 text-muted-foreground">
-                Search for more options on popular booking platforms:
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a
-                  href="https://www.airbnb.com/s/Cuenca--Batangas--Philippines"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border border-foreground/20 px-4 py-2 text-sm transition-all duration-200 hover:bg-foreground/5"
-                >
-                  Airbnb
-                </a>
-                <a
-                  href="https://www.booking.com/searchresults.html?ss=Cuenca%2C+Batangas"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border border-foreground/20 px-4 py-2 text-sm transition-all duration-200 hover:bg-foreground/5"
-                >
-                  Booking.com
-                </a>
-                <a
-                  href="https://www.agoda.com/search?city=18502"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border border-foreground/20 px-4 py-2 text-sm transition-all duration-200 hover:bg-foreground/5"
-                >
-                  Agoda
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Travel Tip */}
-          <div className="mx-auto max-w-2xl rounded-xl bg-accent/10 p-6 text-center">
-            <p className="mb-2 font-medium text-lg">💡 Travel Tip</p>
-            <p className="text-muted-foreground text-sm">
-              Book your accommodation early! May is a beautiful travel season in
-              the Philippines. We recommend securing your stay at least 2 months
-              in advance.
-            </p>
           </div>
         </div>
       </div>

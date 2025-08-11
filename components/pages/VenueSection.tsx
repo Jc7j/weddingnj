@@ -158,11 +158,6 @@ export default function VenueSection() {
           <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Imelda's Garden
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
-            Join us in the beautiful garden setting of Cuenca, Batangas, where
-            mountain views and natural beauty create the perfect backdrop for
-            our special day.
-          </p>
         </div>
 
         {/* Main Content Grid */}

@@ -14,11 +14,7 @@ gsap.registerPlugin(ScrollTrigger)
 const storyParts = [
   {
     id: 'part-1',
-    chapter: 'Chapter One',
     title: 'The Beginning',
-    year: '2019',
-    date: 'December 11',
-    icon: '💕',
     quote: '"Every love story is beautiful, but ours is my favorite"',
     paragraph:
       "Every love story is unique, and Nicole and James's began in the most natural way. When they first met in 2019, neither of them expected anything more than friendship. But, as with many of life's best surprises, something unexpected began to grow. The more time they spent together, the more they clicked. James was the first to catch feelings and made the bold move to ask Nicole on a date—to Disneyland, no less. On December 11, 2019, their lives became intertwined, and they've been inseparable ever since.",
@@ -28,11 +24,7 @@ const storyParts = [
   },
   {
     id: 'part-2',
-    chapter: 'Chapter Two',
     title: 'Growing Together',
-    year: '2019-2021',
-    date: 'The Dating Years',
-    icon: '🌹',
     quote: '"Home is wherever I\'m with you"',
     paragraph:
       "When they began dating, laughter quickly became the soundtrack of their days, and with every shared moment, their feelings for each other deepened. James found a true home within Nicole's heart—and she found the same comfort in his. They grew closer than ever, inspiring one another to become the best versions of themselves. Opening their hearts fully, they discovered that together was the coziest place to be. Over time, they became not only partners but best friends, continuously uplifting and bettering each other along the way.",
@@ -42,11 +34,7 @@ const storyParts = [
   },
   {
     id: 'part-3',
-    chapter: 'Chapter Three',
     title: 'The Proposal',
-    year: '2022',
-    date: 'May 21',
-    icon: '💍',
     quote: '"She said yes!"',
     paragraph:
       "There wasn't one single moment when James knew Nicole was the one—he just had a gut feeling that she was it. By 2021, the idea of proposing had started to take shape, and when James found out that Honne—an artist both he and Nicole deeply love—was coming to L.A., inspiration struck. He decided to take a leap of faith and reached out to the band to ask if they'd help with the proposal. To his surprise, they said yes. On May 21st, 2022, James had invited their closest friends and family to be there. During the concert, he was brought up on stage—and in front of everyone, he asked Nicole to marry him. She was completely shocked... and said yes! The crowd erupted in cheers, and it became a night they'll both remember forever.",
@@ -56,11 +44,7 @@ const storyParts = [
   },
   {
     id: 'part-4',
-    chapter: 'Chapter Four',
     title: 'Our Next Chapter',
-    year: '2026',
-    date: 'May 21',
-    icon: '🎊',
     quote: '"And so the adventure begins..."',
     paragraph:
       "Fast forward a few years, and Nicole and James are finally ready to celebrate their wedding and begin this exciting new chapter together. More than anything, they're thrilled to share this joyous moment with the people who mean the most to them. They can't wait to see all of your beautiful faces as they celebrate a love that has grown stronger every day. No matter where life has led them, they've always found home in each other — and with your love and support, this next chapter will be the best one yet. From the bottom of their hearts, Nicole and James thank you for being part of their story and this unforgettable celebration.",
@@ -325,28 +309,12 @@ export default function StorySection() {
           <div className="grid items-center gap-4 sm:gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
             <div className="story-content order-2 max-h-[50vh] overflow-y-auto sm:max-h-none sm:overflow-visible lg:order-1">
-              {/* Chapter Badge */}
-              <div className="story-text mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-sm">
-                <span className="text-2xl">{currentPart.icon}</span>
-                <span className="font-medium text-foreground/70 text-xs tracking-wider">
-                  {currentPart.chapter}
-                </span>
-              </div>
 
-              {/* Title and Date */}
+              {/* Title */}
               <div className="story-text mb-6">
                 <h2 className="mb-2 font-serif text-3xl text-foreground sm:text-4xl lg:text-6xl">
                   {currentPart.title}
                 </h2>
-                <div className="flex items-center gap-4">
-                  <span className="font-medium text-foreground/50 text-sm">
-                    {currentPart.year}
-                  </span>
-                  <span className="h-1 w-1 rounded-full bg-foreground/30" />
-                  <span className="font-medium text-foreground/50 text-sm">
-                    {currentPart.date}
-                  </span>
-                </div>
               </div>
 
               {/* Quote */}
@@ -380,7 +348,7 @@ export default function StorySection() {
                   <div className="relative aspect-square sm:aspect-[3/4]">
                     <Image
                       src={currentPart.image}
-                      alt={`${currentPart.title} - ${currentPart.year}`}
+                      alt={currentPart.title}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

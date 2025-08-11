@@ -175,10 +175,6 @@ export default function DetailsSection() {
           <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Order of Events
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
-            Join us for a weekend of celebration as we begin our journey
-            together
-          </p>
         </div>
 
         <div ref={contentRef} className="relative z-10">

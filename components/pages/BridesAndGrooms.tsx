@@ -161,18 +161,12 @@ export default function BridesAndGroomsSection() {
           <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Bridesmaids & Groomsmen
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-sm sm:text-base">
-            The special people who have supported our journey
-          </p>
         </div>
 
         {/* Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {weddingParty.map((member) => (
-            <div
-              key={member.id}
-              className="group relative h-full"
-            >
+            <div key={member.id} className="group relative h-full">
               {/* Card Background with Pattern */}
               <div
                 className="absolute inset-0 rounded-3xl opacity-30"
