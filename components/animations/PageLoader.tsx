@@ -144,6 +144,7 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
         xmlns="http://www.w3.org/2000/svg"
         style={{ perspective: '800px', overflow: 'visible' }}
         aria-label="Wedding invitation envelope animation"
+        aria-hidden="true"
       >
         {/* Envelope shadow */}
         <ellipse

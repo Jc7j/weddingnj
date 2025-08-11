@@ -18,7 +18,6 @@ const detailItems = [
     description:
       'Join us for drinks and light appetizers as we kick off our wedding weekend at the resort lounge.',
     position: 'left',
-    verticalOffset: 0,
     bgColor: '#F0E6D5',
   },
   {
@@ -31,7 +30,6 @@ const detailItems = [
     description:
       'The wedding ceremony will take place in the beautiful garden setting with mountain views as our backdrop.',
     position: 'right',
-    verticalOffset: 250,
     bgColor: '#F5DDD5',
   },
   {
@@ -44,7 +42,6 @@ const detailItems = [
     description:
       "Celebrate with signature cocktails and hors d'oeuvres while we take photos and you mingle with fellow guests.",
     position: 'left',
-    verticalOffset: 500,
     bgColor: '#E6D5F0',
   },
   {
@@ -57,7 +54,6 @@ const detailItems = [
     description:
       'A delicious Filipino-inspired menu featuring local ingredients and family recipes.',
     position: 'right',
-    verticalOffset: 750,
     bgColor: '#D5E6F0',
   },
   {
@@ -70,7 +66,6 @@ const detailItems = [
     description:
       'Let loose and dance the night away to a mix of your favorite songs and Filipino classics.',
     position: 'left',
-    verticalOffset: 1000,
     bgColor: '#D4E6D5',
   },
   {
@@ -83,7 +78,6 @@ const detailItems = [
     description:
       'Join us for the cake cutting ceremony and indulge in our three-tier coconut and ube creation.',
     position: 'right',
-    verticalOffset: 1250,
     bgColor: '#F5E6D3',
   },
 ]
@@ -91,7 +85,6 @@ const detailItems = [
 export default function DetailsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const timelineRef = useRef<SVGSVGElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -122,31 +115,6 @@ export default function DetailsSection() {
             },
           }
         )
-      }
-
-      // Animate timeline path drawing
-      if (timelineRef.current) {
-        const path = timelineRef.current.querySelector('.timeline-path')
-        if (path) {
-          const pathLength = (path as SVGPathElement).getTotalLength()
-
-          gsap.set(path, {
-            strokeDasharray: pathLength,
-            strokeDashoffset: pathLength,
-          })
-
-          gsap.to(path, {
-            strokeDashoffset: 0,
-            duration: 2,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 60%',
-              end: 'bottom 40%',
-              scrub: 1,
-            },
-          })
-        }
       }
 
       // Animate detail cards
@@ -214,61 +182,20 @@ export default function DetailsSection() {
         </div>
 
         <div ref={contentRef} className="relative z-10">
-          {/* SVG Timeline Path - Desktop Only */}
-          <svg
-            ref={timelineRef}
-            className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
-            style={{
-              height: `${Math.max(...detailItems.map((item) => item.verticalOffset)) + 500}px`,
-            }}
-            preserveAspectRatio="none"
-          >
-            <title>Event timeline path</title>
-            <path
-              className="timeline-path"
-              d={`
-                M ${detailItems[0].position === 'left' ? '200' : '600'} 100
-                ${detailItems
-                  .map((item, index) => {
-                    const x = item.position === 'left' ? 200 : 600
-                    const y = item.verticalOffset + 150
-                    if (index === 0) return ''
-                    const prevItem = detailItems[index - 1]
-                    const prevX = prevItem.position === 'left' ? 200 : 600
-                    const prevY = prevItem.verticalOffset + 150
-                    const midY = (prevY + y) / 2
-                    return `Q ${prevX} ${midY}, ${x} ${y}`
-                  })
-                  .join(' ')}
-              `}
-              stroke="#2B4735"
-              strokeWidth="2"
-              fill="none"
-              strokeDasharray="5,5"
-              opacity="0.2"
-            />
-          </svg>
-
           {/* Mobile Timeline Line */}
           <div className="absolute top-0 left-6 h-full w-0.5 bg-muted-foreground/20 sm:left-8 lg:hidden" />
 
           {/* Event Cards */}
-          <div className="relative">
+          <div className="relative lg:space-y-16">
             {detailItems.map((item, index) => {
               const isLeft = item.position === 'left'
 
               return (
                 <div
                   key={item.id}
-                  className={`detail-item mb-6 sm:mb-8 lg:absolute lg:mb-0 ${
-                    isLeft ? 'lg:left-0' : 'lg:right-0'
-                  } w-full lg:w-[45%]`}
-                  style={{
-                    position: 'relative',
-                    ...(typeof window !== 'undefined' && window.innerWidth >= 1024 
-                      ? { top: `${item.verticalOffset}px`, position: 'absolute' }
-                      : {})
-                  }}
+                  className={`detail-item mb-6 sm:mb-8 lg:mb-0 ${
+                    isLeft ? 'lg:pr-[55%]' : 'lg:pl-[55%]'
+                  } w-full`}
                 >
                   {/* Mobile Timeline Dot */}
                   <div className="absolute top-8 left-[-32px] flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md sm:left-[-28px] sm:h-12 sm:w-12 lg:hidden">
@@ -321,25 +248,10 @@ export default function DetailsSection() {
                     {/* Hover Effect Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   </div>
-
-                  {/* Desktop Timeline Connector */}
-                  <div
-                    className={`-translate-y-1/2 absolute top-1/2 hidden h-0.5 w-8 bg-muted-foreground/20 lg:block ${
-                      isLeft ? 'right-[-32px]' : 'left-[-32px]'
-                    }`}
-                  />
                 </div>
               )
             })}
           </div>
-
-          {/* Add height to container */}
-          <div
-            className="hidden lg:block"
-            style={{
-              height: `${Math.max(...detailItems.map((item) => item.verticalOffset)) + 400}px`,
-            }}
-          />
         </div>
       </div>
 

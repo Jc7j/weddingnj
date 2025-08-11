@@ -1,26 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
 
-import { Button } from '@/components/ui/button'
 import DecorativeBackground from '@/components/ui/decorative-background'
 
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
 const weddingParty = [
-  {
-    id: 'ghost-card',
-    name: '',
-    role: '',
-    side: 'ghost',
-    story: '',
-    bgColor: '#F5E6D3',
-    isGhost: true,
-  },
   {
     id: 'maid-of-honor',
     name: 'Lorem Ipsum',
@@ -141,297 +125,13 @@ const weddingParty = [
     accentColor: '#D4E6D5',
     image: '/dogs/fish.png',
   },
-  {
-    id: 'ghost-card-end',
-    name: '',
-    role: '',
-    side: 'ghost',
-    story: '',
-    bgColor: '#F5E6D3',
-    isGhost: true,
-  },
 ]
 
 export default function BridesAndGroomsSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
-  const progressRef = useRef<HTMLDivElement>(null)
-  const timelineRef = useRef<gsap.core.Timeline | null>(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const realCards = weddingParty.filter((m) => !m.isGhost)
-
-  const scrollToSection = (href: string) => {
-    const lenis = (
-      window as Window & {
-        lenis?: {
-          scrollTo: (
-            target: string,
-            options?: {
-              duration?: number
-              easing?: (t: number) => number
-              onComplete?: () => void
-            }
-          ) => void
-        }
-      }
-    ).lenis
-    if (lenis) {
-      lenis.scrollTo(href, {
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-        onComplete: () => {
-          setTimeout(() => {
-            ScrollTrigger.refresh()
-          }, 100)
-        },
-      })
-    } else {
-      const element = document.querySelector(href)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
-    }
-  }
-
-  const goToNext = () => {
-    const nextIndex = currentIndex + 1
-    if (nextIndex < realCards.length) {
-      const targetProgress = nextIndex / realCards.length
-      const timeline = timelineRef.current
-      if (timeline) {
-        timeline.progress(targetProgress)
-      }
-      setCurrentIndex(nextIndex)
-      const section = sectionRef.current
-      if (section) {
-        gsap.to(section, {
-          backgroundColor: realCards[nextIndex].bgColor,
-          duration: 0.5,
-          ease: 'power2.inOut',
-        })
-      }
-    } else {
-      scrollToSection('#venue')
-    }
-  }
-
-  const goToPrevious = () => {
-    const prevIndex = currentIndex - 1
-    if (prevIndex >= 0) {
-      const targetProgress = prevIndex / realCards.length
-      const timeline = timelineRef.current
-      if (timeline) {
-        timeline.progress(targetProgress)
-      }
-      setCurrentIndex(prevIndex)
-      const section = sectionRef.current
-      if (section) {
-        gsap.to(section, {
-          backgroundColor: realCards[prevIndex].bgColor,
-          duration: 0.5,
-          ease: 'power2.inOut',
-        })
-      }
-    } else {
-      scrollToSection('#story')
-    }
-  }
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
-
-    if (prefersReducedMotion) return
-
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current
-      const container = containerRef.current
-      const progress = progressRef.current
-      if (!section || !container || !progress) return
-
-      const cards = cardsRef.current.filter(Boolean)
-      const isMobile = window.innerWidth < 768
-
-      if (isMobile) {
-        const realCards = weddingParty.filter((m) => !m.isGhost)
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: '300%',
-            pin: true,
-            scrub: 1,
-            onUpdate: (self) => {
-              const progressPercentage = self.progress * 100
-              gsap.set(progress, { width: `${progressPercentage}%` })
-
-              const scrollIndex = Math.floor(self.progress * realCards.length)
-              const clampedIndex = Math.min(scrollIndex, realCards.length - 1)
-              const currentMember = realCards[clampedIndex]
-
-              setCurrentIndex(clampedIndex)
-
-              if (currentMember) {
-                gsap.to(section, {
-                  backgroundColor: currentMember.bgColor,
-                  duration: 0.5,
-                  ease: 'power2.inOut',
-                })
-              }
-            },
-          },
-        })
-
-        timelineRef.current = tl
-
-        cards.forEach((card, index) => {
-          if (weddingParty[index].isGhost) return
-
-          const realIndex = realCards.findIndex(
-            (m) => m.id === weddingParty[index].id
-          )
-          const startProgress = realIndex / realCards.length
-          const endProgress = (realIndex + 1) / realCards.length
-
-          tl.fromTo(
-            card,
-            {
-              opacity: realIndex === 0 ? 1 : 0,
-              y: realIndex === 0 ? 0 : 50,
-              scale: realIndex === 0 ? 1 : 0.9,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: 'power2.out',
-            },
-            startProgress
-          )
-
-          if (realIndex < realCards.length - 1) {
-            tl.to(
-              card,
-              {
-                opacity: 0,
-                y: -50,
-                scale: 0.9,
-                duration: 0.3,
-                ease: 'power2.in',
-              },
-              endProgress - 0.05
-            )
-          }
-        })
-      } else {
-        const totalWidth = cards.length * 500
-
-        gsap.set(container, {
-          width: totalWidth,
-        })
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: () => `+=${totalWidth}`,
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            onUpdate: (self) => {
-              const realCards = weddingParty.filter((m) => !m.isGhost)
-              const progressPercentage = self.progress * 100
-              gsap.set(progress, { width: `${progressPercentage}%` })
-
-              const scrollIndex = Math.floor(self.progress * realCards.length)
-              const clampedIndex = Math.min(scrollIndex, realCards.length - 1)
-              const currentMember = realCards[clampedIndex]
-
-              setCurrentIndex(clampedIndex)
-
-              if (currentMember) {
-                gsap.to(section, {
-                  backgroundColor: currentMember.bgColor,
-                  duration: 0.5,
-                  ease: 'power2.inOut',
-                })
-              }
-            },
-          },
-        })
-
-        timelineRef.current = tl
-
-        tl.to(container, {
-          x: () => -(totalWidth - window.innerWidth + 100),
-          ease: 'none',
-        })
-
-        cards.forEach((card, index) => {
-          gsap.fromTo(
-            card,
-            {
-              opacity: 0,
-              y: 30,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: tl,
-                start: 'left 80%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          )
-
-          gsap.to(card, {
-            y: -20,
-            rotation: index % 2 === 0 ? 2 : -2,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: () => `+=${totalWidth}`,
-              scrub: 2,
-            },
-          })
-        })
-      }
-
-      const firstRealCard = weddingParty.find((m) => !m.isGhost)
-      gsap.set(section, {
-        backgroundColor: firstRealCard?.bgColor || '#F5E6D3',
-      })
-
-      const lenis = (window as { lenis?: any }).lenis
-      if (lenis) {
-        const handleScroll = () => ScrollTrigger.update()
-        lenis.on('scroll', handleScroll)
-
-        return () => {
-          lenis.off('scroll', handleScroll)
-        }
-      }
-    }, sectionRef)
-
-    return () => {
-      ctx.revert()
-    }
-  }, [])
-
   return (
     <section
       id="wedding-party"
-      ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-background transition-colors duration-500"
+      className="relative min-h-screen w-full overflow-hidden bg-background py-16 sm:py-20 lg:py-24"
     >
       <DecorativeBackground variant="light" density="medium" />
 
@@ -452,183 +152,85 @@ export default function BridesAndGroomsSection() {
         ))}
       </div>
 
-      <div className="flex h-screen flex-col">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex-shrink-0 px-6 pt-6 text-center lg:px-12 lg:pt-20">
+        <div className="mb-12 text-center sm:mb-16">
           <p className="mb-2 font-medium text-muted-foreground/70 text-xs tracking-[0.3em]">
             WEDDING PARTY
           </p>
-          <h2 className="mb-2 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
+          <h2 className="mb-4 font-serif text-3xl text-foreground/90 sm:text-4xl lg:text-6xl">
             Bridesmaids & Groomsmen
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-sm">
+          <p className="mx-auto max-w-2xl text-muted-foreground text-sm sm:text-base">
             The special people who have supported our journey
           </p>
         </div>
 
-        {/* Cards Container */}
-        <div className="relative flex-1 overflow-hidden">
-          <div
-            ref={containerRef}
-            className="flex h-full items-start gap-6 px-4 pt-20 sm:gap-8 sm:px-6 md:flex-row md:items-center md:gap-12 md:px-12 md:pt-0"
-          >
-            {weddingParty.map((member, index) => {
-              if (member.isGhost) {
-                return (
-                  <div
-                    key={member.id}
-                    ref={(el) => {
-                      cardsRef.current[index] = el
-                    }}
-                    className="h-[380px] w-full flex-shrink-0 sm:h-[450px] md:h-[550px] md:w-[420px]"
-                    aria-hidden="true"
-                  />
-                )
-              }
+        {/* Cards Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {weddingParty.map((member) => (
+            <div
+              key={member.id}
+              className="group relative h-full"
+            >
+              {/* Card Background with Pattern */}
+              <div
+                className="absolute inset-0 rounded-3xl opacity-30"
+                style={{ backgroundColor: member.accentColor }}
+              />
 
-              const realIndex = realCards.findIndex((m) => m.id === member.id)
-
-              return (
+              {/* Main Card */}
+              <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white/95 shadow-xl backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                {/* Card Header */}
                 <div
-                  key={member.id}
-                  ref={(el) => {
-                    cardsRef.current[index] = el
-                  }}
-                  className="group relative h-[380px] w-full flex-shrink-0 sm:h-[450px] md:h-[550px] md:w-[420px]"
+                  className="relative px-6 pt-6 pb-4"
+                  style={{ backgroundColor: `${member.bgColor}40` }}
                 >
-                  {/* Card Background with Pattern */}
+                  {/* Name and Role */}
+                  <h3 className="mb-1 font-serif text-foreground text-xl">
+                    {member.name}
+                  </h3>
+                  <p className="font-medium text-foreground/60 text-sm">
+                    {member.role}
+                  </p>
+                  {member.relationship && (
+                    <p className="mt-1 text-foreground/50 text-xs">
+                      {member.relationship}
+                    </p>
+                  )}
+                </div>
+
+                {/* Image Container */}
+                <div className="relative mx-4 mb-4 h-64 overflow-hidden rounded-2xl shadow-inner">
                   <div
-                    className="absolute inset-0 rounded-3xl opacity-30"
+                    className="absolute inset-0 opacity-10"
                     style={{ backgroundColor: member.accentColor }}
                   />
-
-                  {/* Main Card */}
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white/95 shadow-2xl backdrop-blur-sm transition-all duration-300 hover:shadow-3xl">
-                    {/* Card Header */}
-                    <div
-                      className="relative px-4 pt-4 pb-2 sm:px-6 sm:pt-6 sm:pb-3 md:px-8 md:pt-8 md:pb-4"
-                      style={{ backgroundColor: `${member.bgColor}40` }}
-                    >
-                      {/* Name and Role */}
-                      <h3 className="mb-1 font-serif text-foreground text-lg sm:text-xl md:text-2xl">
-                        {member.name}
-                      </h3>
-                      <p className="font-medium text-foreground/60 text-xs md:text-sm">
-                        {member.role}
-                      </p>
-                      {member.relationship && (
-                        <p className="mt-1 text-[10px] text-foreground/50 sm:text-xs">
-                          {member.relationship}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Image Container */}
-                    <div className="relative mx-3 mb-3 flex-1 overflow-hidden rounded-2xl shadow-inner sm:mx-4 sm:mb-4 md:mx-6 md:mb-6">
-                      <div
-                        className="absolute inset-0 opacity-10"
-                        style={{ backgroundColor: member.accentColor }}
-                      />
-                      <Image
-                        src={member.image || ''}
-                        alt={`${member.name} - ${member.role}`}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 420px"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    </div>
-
-                    {/* Story */}
-                    <div className="px-4 pb-4 sm:px-6 sm:pb-6 md:px-8 md:pb-8">
-                      <p className="text-muted-foreground text-[11px] leading-relaxed sm:text-xs md:text-sm">
-                        {member.story}
-                      </p>
-                    </div>
-
-                    {/* Decorative Elements */}
-                    <div
-                      className="absolute right-0 bottom-0 left-0 h-1"
-                      style={{ backgroundColor: member.accentColor }}
-                    />
-                  </div>
+                  <Image
+                    src={member.image}
+                    alt={`${member.name} - ${member.role}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
-              )
-            })}
-          </div>
-        </div>
 
-        {/* Footer with Progress */}
-        <div className="flex items-center justify-between px-6 pb-6 lg:px-12">
-          {/* Progress Bar */}
-          <div className="flex flex-1 items-center gap-4">
-            <span className="font-medium text-foreground/50 text-xs">
-              {currentIndex + 1} / {realCards.length}
-            </span>
-            <div className="relative h-1 max-w-xs flex-1 overflow-hidden rounded-full bg-black/10">
-              <div
-                ref={progressRef}
-                className="h-full rounded-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
-                style={{ width: '0%' }}
-              />
+                {/* Story */}
+                <div className="flex-1 px-6 pb-6">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {member.story}
+                  </p>
+                </div>
+
+                {/* Decorative Elements */}
+                <div
+                  className="absolute right-0 bottom-0 left-0 h-1"
+                  style={{ backgroundColor: member.accentColor }}
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={goToPrevious}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-              aria-label={
-                currentIndex === 0
-                  ? 'Go to story section'
-                  : 'Previous wedding party member'
-              }
-            >
-              <svg
-                className="group-hover:-translate-x-0.5 h-5 w-5 text-foreground/70 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <title>Previous arrow</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={goToNext}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-              aria-label={
-                currentIndex === realCards.length - 1
-                  ? 'Go to venue section'
-                  : 'Next wedding party member'
-              }
-            >
-              <svg
-                className="h-5 w-5 text-foreground/70 transition-transform group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <title>Next arrow</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Button>
-          </div>
+          ))}
         </div>
       </div>
 
