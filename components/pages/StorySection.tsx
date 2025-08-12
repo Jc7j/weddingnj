@@ -8,9 +8,8 @@ import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+gsap.registerPlugin(ScrollToPlugin)
 
 const storyParts = [
   {
@@ -59,9 +58,8 @@ export default function StorySection() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
-  const decorRef = useRef<HTMLDivElement>(null)
   const [currentPartIndex, setCurrentPartIndex] = useState(0)
-  const timelineRef = useRef<gsap.core.Timeline | null>(null)
+  const isTransitioning = useRef(false)
 
   const currentPart = storyParts[currentPartIndex]
 
@@ -80,21 +78,40 @@ export default function StorySection() {
   }
 
   const goToNext = () => {
+    if (isTransitioning.current) return
     if (currentPartIndex < storyParts.length - 1) {
+      isTransitioning.current = true
       setCurrentPartIndex(currentPartIndex + 1)
+      setTimeout(() => {
+        isTransitioning.current = false
+      }, 500)
     } else {
       scrollToSection('#wedding-party')
     }
   }
 
   const goToPrevious = () => {
+    if (isTransitioning.current) return
     if (currentPartIndex > 0) {
+      isTransitioning.current = true
       setCurrentPartIndex(currentPartIndex - 1)
+      setTimeout(() => {
+        isTransitioning.current = false
+      }, 500)
     } else {
       scrollToSection('#hero')
     }
   }
 
+  // Set initial background color
+  useEffect(() => {
+    document.body.style.backgroundColor = storyParts[0].bgColor
+    return () => {
+      document.body.style.backgroundColor = ''
+    }
+  }, [])
+
+  // Animate content transitions
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -103,106 +120,42 @@ export default function StorySection() {
     ).matches
     if (prefersReducedMotion) return
 
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current
-      const content = contentRef.current
-      if (!section || !content) return
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '200%',
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            const progress = self.progress
-            let targetIndex = 0
-
-            if (progress <= 0.2) {
-              targetIndex = 0
-            } else if (progress <= 0.45) {
-              targetIndex = 1
-            } else if (progress <= 0.7) {
-              targetIndex = 2
-            } else {
-              targetIndex = 3
-            }
-
-            setCurrentPartIndex(targetIndex)
-          },
-        },
-      })
-
-      timelineRef.current = tl
-
-      document.body.style.backgroundColor = storyParts[0].bgColor
-    }, sectionRef)
-
-    return () => {
-      ctx.revert()
-      document.body.style.backgroundColor = ''
-    }
-  }, [])
-
-  useEffect(() => {
     const content = contentRef.current
     const image = imageRef.current
-    const decor = decorRef.current
     if (!content || !image) return
 
     const part = storyParts[currentPartIndex]
 
-    // Animate content change with stagger
+    // Simple fade transition for text
     const textElements = content.querySelectorAll('.story-text')
-    gsap.to(textElements, {
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      stagger: 0.05,
-      ease: 'power2.in',
-      onComplete: () => {
-        gsap.to(textElements, {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: 'power2.out',
-        })
-      },
-    })
+    gsap.fromTo(
+      textElements,
+      { opacity: 0, y: 10 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: 'power2.out',
+      }
+    )
 
-    // Animate image with scale and rotation
-    gsap.to(image, {
-      scale: 0.95,
-      rotation: -2,
-      duration: 0.3,
-      ease: 'power2.in',
-      onComplete: () => {
-        gsap.to(image, {
-          scale: 1,
-          rotation: 0,
-          duration: 0.5,
-          ease: 'elastic.out(1, 0.8)',
-        })
-      },
-    })
+    // Simple scale animation for image
+    gsap.fromTo(
+      image,
+      { scale: 0.98, opacity: 0.8 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      }
+    )
 
-    // Animate decorative elements
-    if (decor) {
-      gsap.to(decor, {
-        rotation: 360,
-        duration: 20,
-        ease: 'none',
-        repeat: -1,
-      })
-    }
-
-    // Update background color with gradient
+    // Update background color
     gsap.to(document.body, {
       backgroundColor: part.bgColor,
-      duration: 0.8,
+      duration: 0.6,
       ease: 'power2.inOut',
     })
   }, [currentPartIndex])
@@ -211,14 +164,14 @@ export default function StorySection() {
     <section
       id="story"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden lg:h-screen"
+      className="relative min-h-screen w-full overflow-hidden"
       style={{ backgroundColor: currentPart.bgColor }}
     >
       <DecorativeBackground variant="light" density="sparse" />
 
-      {/* Floating Decorative Elements */}
+      {/* Simple Decorative Elements */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div ref={decorRef} className="-left-20 -top-20 absolute opacity-10">
+        <div className="-left-20 -top-20 absolute opacity-5">
           <svg
             width="200"
             height="200"
@@ -233,29 +186,10 @@ export default function StorySection() {
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
-              strokeDasharray="5,5"
-            />
-            <circle
-              cx="100"
-              cy="100"
-              r="60"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.5"
-              strokeDasharray="3,7"
-            />
-            <circle
-              cx="100"
-              cy="100"
-              r="40"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.5"
-              strokeDasharray="2,8"
             />
           </svg>
         </div>
-        <div className="-bottom-10 -right-10 absolute opacity-10">
+        <div className="-bottom-10 -right-10 absolute opacity-5">
           <svg
             width="150"
             height="150"
@@ -274,7 +208,7 @@ export default function StorySection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 flex min-h-screen items-center justify-center px-4 py-20 sm:px-6 lg:h-full lg:overflow-y-auto lg:px-8 lg:py-0">
+      <div className="relative z-20 flex min-h-screen flex-col items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
         <div ref={contentRef} className="mx-auto w-full max-w-7xl">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
@@ -337,10 +271,98 @@ export default function StorySection() {
             </div>
           </div>
         </div>
+
+        {/* Desktop Navigation - Integrated with content */}
+        <div className="mt-12 hidden lg:block">
+          <div className="flex items-center justify-center gap-12">
+            {/* Progress Dots */}
+            <div className="flex gap-3">
+              {storyParts.map((part, index) => (
+                <Button
+                  key={part.id}
+                  variant="ghost"
+                  onClick={() => {
+                    if (!isTransitioning.current) {
+                      isTransitioning.current = true
+                      setCurrentPartIndex(index)
+                      setTimeout(() => {
+                        isTransitioning.current = false
+                      }, 500)
+                    }
+                  }}
+                  className={`group relative h-2 p-0 transition-all duration-300 ${
+                    index === currentPartIndex ? 'w-12' : 'w-2'
+                  } overflow-hidden rounded-full ${
+                    index === currentPartIndex
+                      ? 'bg-foreground/80'
+                      : 'bg-foreground/20 hover:bg-foreground/40'
+                  }`}
+                  aria-label={`Go to ${part.title}`}
+                />
+              ))}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToPrevious}
+                className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
+                aria-label={
+                  currentPartIndex === 0
+                    ? 'Go to hero section'
+                    : 'Previous story part'
+                }
+              >
+                <svg
+                  className="group-hover:-translate-x-0.5 h-5 w-5 text-foreground/70 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <title>Previous arrow</title>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={goToNext}
+                className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
+                aria-label={
+                  currentPartIndex === storyParts.length - 1
+                    ? 'Go to wedding party section'
+                    : 'Next story part'
+                }
+              >
+                <svg
+                  className="h-5 w-5 text-foreground/70 transition-transform group-hover:translate-x-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <title>Next arrow</title>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Enhanced Navigation */}
-      <div className="fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/90 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:absolute lg:from-white/80 lg:px-12">
+      {/* Mobile Navigation - Fixed at bottom */}
+      <div className="fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/90 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Progress Dots */}
           <div className="flex gap-3">
@@ -348,7 +370,15 @@ export default function StorySection() {
               <Button
                 key={part.id}
                 variant="ghost"
-                onClick={() => setCurrentPartIndex(index)}
+                onClick={() => {
+                  if (!isTransitioning.current) {
+                    isTransitioning.current = true
+                    setCurrentPartIndex(index)
+                    setTimeout(() => {
+                      isTransitioning.current = false
+                    }, 500)
+                  }
+                }}
                 className={`group relative h-2 p-0 transition-all duration-300 ${
                   index === currentPartIndex ? 'w-12' : 'w-2'
                 } overflow-hidden rounded-full ${
@@ -357,11 +387,7 @@ export default function StorySection() {
                     : 'bg-foreground/20 hover:bg-foreground/40'
                 }`}
                 aria-label={`Go to ${part.title}`}
-              >
-                {index === currentPartIndex && (
-                  <div className="absolute inset-0 animate-pulse bg-white/30" />
-                )}
-              </Button>
+              />
             ))}
           </div>
 
@@ -371,7 +397,7 @@ export default function StorySection() {
               variant="ghost"
               size="icon"
               onClick={goToPrevious}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
               aria-label={
                 currentPartIndex === 0
                   ? 'Go to hero section'
@@ -397,7 +423,7 @@ export default function StorySection() {
               variant="ghost"
               size="icon"
               onClick={goToNext}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white sm:h-12 sm:w-12"
+              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
               aria-label={
                 currentPartIndex === storyParts.length - 1
                   ? 'Go to wedding party section'
@@ -422,31 +448,6 @@ export default function StorySection() {
           </div>
         </div>
       </div>
-
-      {/* Scroll Hint - Hidden on mobile */}
-      {currentPartIndex < storyParts.length - 1 && (
-        <div className="-translate-x-1/2 absolute bottom-20 left-1/2 z-30 hidden animate-bounce sm:block">
-          <div className="flex flex-col items-center text-foreground/40">
-            <span className="mb-2 text-xs uppercase tracking-wider">
-              Scroll for more
-            </span>
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <title>Scroll down arrow</title>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </div>
-        </div>
-      )}
     </section>
   )
 }
