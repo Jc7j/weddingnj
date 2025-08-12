@@ -272,9 +272,9 @@ export default function StorySection() {
           </div>
         </div>
 
-        {/* Desktop Navigation - Integrated with content */}
-        <div className="mt-12 hidden lg:block">
-          <div className="flex items-center justify-center gap-12">
+        {/* Navigation - Responsive for all devices */}
+        <div className="mt-12">
+          <div className="flex items-center justify-center gap-6 sm:gap-12">
             {/* Progress Dots */}
             <div className="flex gap-3">
               {storyParts.map((part, index) => (
@@ -357,94 +357,6 @@ export default function StorySection() {
                 </svg>
               </Button>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Navigation - Fixed at bottom */}
-      <div className="fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/90 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:hidden">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          {/* Progress Dots */}
-          <div className="flex gap-3">
-            {storyParts.map((part, index) => (
-              <Button
-                key={part.id}
-                variant="ghost"
-                onClick={() => {
-                  if (!isTransitioning.current) {
-                    isTransitioning.current = true
-                    setCurrentPartIndex(index)
-                    setTimeout(() => {
-                      isTransitioning.current = false
-                    }, 500)
-                  }
-                }}
-                className={`group relative h-2 p-0 transition-all duration-300 ${
-                  index === currentPartIndex ? 'w-12' : 'w-2'
-                } overflow-hidden rounded-full ${
-                  index === currentPartIndex
-                    ? 'bg-foreground/80'
-                    : 'bg-foreground/20 hover:bg-foreground/40'
-                }`}
-                aria-label={`Go to ${part.title}`}
-              />
-            ))}
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={goToPrevious}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-              aria-label={
-                currentPartIndex === 0
-                  ? 'Go to hero section'
-                  : 'Previous story part'
-              }
-            >
-              <svg
-                className="group-hover:-translate-x-0.5 h-5 w-5 text-foreground/70 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <title>Previous arrow</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={goToNext}
-              className="group h-11 w-11 rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white"
-              aria-label={
-                currentPartIndex === storyParts.length - 1
-                  ? 'Go to wedding party section'
-                  : 'Next story part'
-              }
-            >
-              <svg
-                className="h-5 w-5 text-foreground/70 transition-transform group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <title>Next arrow</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Button>
           </div>
         </div>
       </div>
