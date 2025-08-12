@@ -211,7 +211,7 @@ export default function StorySection() {
     <section
       id="story"
       ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden lg:h-screen"
       style={{ backgroundColor: currentPart.bgColor }}
     >
       <DecorativeBackground variant="light" density="sparse" />
@@ -274,35 +274,34 @@ export default function StorySection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 flex h-full items-center justify-center overflow-y-auto px-4 sm:px-6 lg:px-8">
-        <div ref={contentRef} className="mx-auto w-full max-w-7xl py-8 sm:py-0">
-          <div className="grid items-center gap-4 sm:gap-8 lg:grid-cols-2 lg:gap-16">
+      <div className="relative z-20 flex min-h-screen items-center justify-center px-4 py-20 sm:px-6 lg:h-full lg:overflow-y-auto lg:px-8 lg:py-0">
+        <div ref={contentRef} className="mx-auto w-full max-w-7xl">
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
-            <div className="story-content order-2 max-h-[50vh] overflow-y-auto sm:max-h-none sm:overflow-visible lg:order-1">
-
+            <div className="story-content order-2 lg:order-1">
               {/* Title */}
-              <div className="story-text mb-6">
-                <h2 className="mb-2 font-serif text-3xl text-foreground sm:text-4xl lg:text-6xl">
+              <div className="story-text mb-4 sm:mb-6">
+                <h2 className="mb-2 font-serif text-2xl text-foreground sm:text-4xl lg:text-6xl">
                   {currentPart.title}
                 </h2>
               </div>
 
               {/* Quote */}
-              <div className="story-text mb-6 border-foreground/20 border-l-2 pl-4">
-                <p className="font-serif text-base text-foreground/60 italic sm:text-lg">
+              <div className="story-text mb-4 border-foreground/20 border-l-2 pl-4 sm:mb-6">
+                <p className="font-serif text-foreground/60 text-sm italic sm:text-lg">
                   {currentPart.quote}
                 </p>
               </div>
 
               {/* Main Paragraph */}
-              <p className="story-text pb-4 text-foreground/80 text-sm leading-relaxed sm:pb-0 sm:text-base lg:text-lg">
+              <p className="story-text text-base text-foreground/80 leading-relaxed sm:text-base lg:text-lg">
                 {currentPart.paragraph}
               </p>
             </div>
 
             {/* Image with Frame */}
-            <div className="story-image relative order-1 lg:order-2">
-              <div className="relative mx-auto max-w-[280px] sm:max-w-md lg:max-w-none">
+            <div className="gstory-image relative order-1 lg:order-2">
+              <div className="relative mx-auto max-w-[240px] sm:max-w-sm lg:max-w-none">
                 {/* Decorative Frame */}
                 <div
                   className="-inset-4 absolute rounded-2xl opacity-20"
@@ -315,7 +314,7 @@ export default function StorySection() {
                   ref={imageRef}
                   className="relative overflow-hidden rounded-xl shadow-2xl"
                 >
-                  <div className="relative aspect-square sm:aspect-[3/4]">
+                  <div className="relative aspect-[4/3] sm:aspect-[3/4]">
                     <Image
                       src={currentPart.image}
                       alt={currentPart.title}
@@ -341,7 +340,7 @@ export default function StorySection() {
       </div>
 
       {/* Enhanced Navigation */}
-      <div className="absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/80 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:px-12">
+      <div className="fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white/90 to-transparent px-6 pt-4 pb-6 sm:pb-8 lg:absolute lg:from-white/80 lg:px-12">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           {/* Progress Dots */}
           <div className="flex gap-3">
