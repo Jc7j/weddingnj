@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/button'
 import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 const storyParts = [
   {
@@ -65,35 +66,16 @@ export default function StorySection() {
   const currentPart = storyParts[currentPartIndex]
 
   const scrollToSection = (href: string) => {
-    const lenis = (
-      window as Window & {
-        lenis?: {
-          scrollTo: (
-            target: string,
-            options?: {
-              duration?: number
-              easing?: (t: number) => number
-              onComplete?: () => void
-            }
-          ) => void
-        }
-      }
-    ).lenis
-    if (lenis) {
-      lenis.scrollTo(href, {
+    const element = document.querySelector(href)
+    if (element) {
+      gsap.to(window, {
         duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-        onComplete: () => {
-          setTimeout(() => {
-            ScrollTrigger.refresh()
-          }, 100)
+        scrollTo: {
+          y: element,
+          offsetY: 0,
         },
+        ease: 'power2.inOut',
       })
-    } else {
-      const element = document.querySelector(href)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
     }
   }
 
@@ -156,18 +138,6 @@ export default function StorySection() {
       timelineRef.current = tl
 
       document.body.style.backgroundColor = storyParts[0].bgColor
-
-      const lenis = (
-        window as Window & { lenis?: { on: Function; off: Function } }
-      ).lenis
-      if (lenis) {
-        const handleScroll = () => ScrollTrigger.update()
-        lenis.on('scroll', handleScroll)
-
-        return () => {
-          lenis.off('scroll', handleScroll)
-        }
-      }
     }, sectionRef)
 
     return () => {

@@ -7,10 +7,11 @@ import { Button } from '~/components/ui/button'
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { gsap } from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Menu, X } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 const navItems = [
   { label: 'Our Story', href: '#story' },
@@ -27,37 +28,17 @@ export default function Header({ onRsvpClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const scrollToSection = (href: string) => {
-    const lenis = (
-      window as Window & {
-        lenis?: {
-          scrollTo: (
-            target: string,
-            options?: {
-              duration?: number
-              easing?: (t: number) => number
-              onComplete?: () => void
-            }
-          ) => void
-        }
-      }
-    ).lenis
-    if (lenis) {
-      lenis.scrollTo(href, {
+    const element = document.querySelector(href)
+    if (element) {
+      // Use GSAP's scrollTo for smooth, controlled scrolling
+      gsap.to(window, {
         duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-        onComplete: () => {
-          // Refresh ScrollTrigger after Lenis completes the scroll
-          setTimeout(() => {
-            ScrollTrigger.refresh()
-          }, 100)
+        scrollTo: {
+          y: element,
+          offsetY: 0,
         },
+        ease: 'power2.inOut',
       })
-    } else {
-      // Fallback to native scroll if Lenis isn't available
-      const element = document.querySelector(href)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
     }
     setIsMenuOpen(false)
   }

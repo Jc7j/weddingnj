@@ -10,7 +10,6 @@ import {
 } from '~/components/animations'
 import { ConvexClientProvider } from '~/components/ConvexClientProvider'
 import RsvpForm from '~/components/RsvpForm'
-import SmoothScrollProvider from '~/components/SmoothScrollProvider'
 import {
   Dialog,
   DialogContent,
@@ -62,27 +61,25 @@ export default function LayoutContent({
     <>
       {showLoader && <PageLoader onComplete={handleLoaderComplete} />}
       <ConvexClientProvider>
-        <SmoothScrollProvider>
-          <RsvpDialogContext.Provider
-            value={{ openRsvpDialog, closeRsvpDialog }}
-          >
-            <Header onRsvpClick={openRsvpDialog} />
-            {children}
-            <FooterSection />
-            <ScrollAnimations />
+        <RsvpDialogContext.Provider
+          value={{ openRsvpDialog, closeRsvpDialog }}
+        >
+          <Header onRsvpClick={openRsvpDialog} />
+          {children}
+          <FooterSection />
+          <ScrollAnimations />
 
-            <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
-              <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="text-center font-serif text-2xl">
-                    Please Respond
-                  </DialogTitle>
-                </DialogHeader>
-                <RsvpForm />
-              </DialogContent>
-            </Dialog>
-          </RsvpDialogContext.Provider>
-        </SmoothScrollProvider>
+          <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
+            <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="text-center font-serif text-2xl">
+                  Please Respond
+                </DialogTitle>
+              </DialogHeader>
+              <RsvpForm />
+            </DialogContent>
+          </Dialog>
+        </RsvpDialogContext.Provider>
       </ConvexClientProvider>
     </>
   )
