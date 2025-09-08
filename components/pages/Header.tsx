@@ -15,8 +15,8 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 const navItems = [
   { label: 'Our Story', href: '#story' },
-  { label: 'Wedding Party', href: '#wedding-party' },
-  { label: 'Venue & Timeline', href: '#venue' },
+  // { label: 'Wedding Party', href: '#wedding-party' },
+  { label: 'Venue ', href: '#venue' },
   { label: 'Details & More', href: '#attire' },
 ]
 
