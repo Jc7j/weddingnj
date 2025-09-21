@@ -12,7 +12,6 @@ import RsvpForm from '~/components/RsvpForm'
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
 } from '~/components/ui/dialog'
 
@@ -68,12 +67,8 @@ export default function LayoutContent({
         <ScrollAnimations />
 
         <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
-          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-center font-serif text-2xl">
-                Please Respond
-              </DialogTitle>
-            </DialogHeader>
+          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+            <DialogTitle className="sr-only">RSVP Form</DialogTitle>
             <RsvpForm />
           </DialogContent>
         </Dialog>

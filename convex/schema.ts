@@ -5,6 +5,7 @@ export default defineSchema({
   guests: defineTable({
     name: v.string(),
     email: v.optional(v.string()),
+    phone: v.optional(v.string()),
     attending: v.optional(v.boolean()),
     parentId: v.optional(v.id('guests')),
   })

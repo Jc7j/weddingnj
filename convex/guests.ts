@@ -131,6 +131,44 @@ export const getGuestWithChildren = query({
   },
 })
 
+export const updatePartyRsvp = mutation({
+  args: {
+    partyUpdates: v.array(
+      v.object({
+        guestId: v.id('guests'),
+        attending: v.boolean(),
+        email: v.optional(v.string()),
+        phone: v.optional(v.string()),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    // Update each party member's attendance and contact info
+    for (const update of args.partyUpdates) {
+      const guest = await ctx.db.get(update.guestId)
+      if (!guest) continue
+
+      const updateData: {
+        attending: boolean
+        email?: string
+        phone?: string
+      } = { attending: update.attending }
+
+      // Update contact info if provided
+      if (update.email) {
+        updateData.email = update.email
+      }
+      if (update.phone) {
+        updateData.phone = update.phone
+      }
+
+      await ctx.db.patch(update.guestId, updateData)
+    }
+
+    return { success: true }
+  },
+})
+
 export const deleteGuest = mutation({
   args: { guestId: v.id('guests') },
   handler: async (ctx, args) => {

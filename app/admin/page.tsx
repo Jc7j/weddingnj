@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { useMutation, useQuery } from 'convex/react'
@@ -15,12 +16,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 const ADMIN_PASSWORD = 'admin'
 
 export default function AdminPage() {
+  const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [guestForm, setGuestForm] = useState({ name: '', email: '' })
+  const [guestForm, setGuestForm] = useState({ name: '' })
   const [expandedParentId, setExpandedParentId] = useState<string | null>(null)
-  const [childForm, setChildForm] = useState({ name: '', email: '' })
+  const [childForm, setChildForm] = useState({ name: '' })
 
   const guests = useQuery(api.guests.getGuests)
   const createGuest = useMutation(api.guests.createGuest)
@@ -37,11 +39,6 @@ export default function AdminPage() {
     }
   }
 
-  const handleLogout = () => {
-    setIsAuthenticated(false)
-    setPassword('')
-  }
-
   const handleCreateGuest = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!guestForm.name.trim()) return
@@ -49,9 +46,8 @@ export default function AdminPage() {
     try {
       await createGuest({
         name: guestForm.name.trim(),
-        email: guestForm.email.trim() || undefined,
       })
-      setGuestForm({ name: '', email: '' })
+      setGuestForm({ name: '' })
     } catch (error) {
       alert(`Error creating guest: ${(error as Error).message}`)
     }
@@ -69,7 +65,7 @@ export default function AdminPage() {
 
   const handleAddToParty = (parentId: string) => {
     setExpandedParentId(expandedParentId === parentId ? null : parentId)
-    setChildForm({ name: '', email: '' })
+    setChildForm({ name: '' })
   }
 
   const handleAddChild = async (e: React.FormEvent, parentId: string) => {
@@ -80,9 +76,8 @@ export default function AdminPage() {
       await addGuestToParty({
         parentId: parentId as Id<'guests'>,
         name: childForm.name.trim(),
-        email: childForm.email.trim() || undefined,
       })
-      setChildForm({ name: '', email: '' })
+      setChildForm({ name: '' })
       setExpandedParentId(null)
     } catch (error) {
       alert(`Error adding guest to party: ${(error as Error).message}`)
@@ -142,21 +137,14 @@ export default function AdminPage() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4 sm:gap-6">
-            <a
-              href="/"
-              className="font-serif text-xl tracking-wider transition-colors hover:opacity-80 sm:text-2xl"
-              style={{ color: '#2B4735' }}
-            >
-              NJ
-            </a>
-            <h1 className="font-serif text-xl sm:text-3xl">Guest Admin</h1>
+            <h1 className="font-serif text-xl sm:text-3xl">Admin</h1>
           </div>
           <Button
-            onClick={handleLogout}
+            onClick={() => router.push('/')}
             variant="outline"
             className="w-full sm:w-auto"
           >
-            Logout
+            Home
           </Button>
         </div>
 
@@ -193,7 +181,9 @@ export default function AdminPage() {
             className="flex flex-col gap-4 sm:flex-row"
           >
             <div className="flex-1">
-              <Label htmlFor="guestName" className="mb-2 block">Guest Name</Label>
+              <Label htmlFor="guestName" className="mb-2 block">
+                Guest Name
+              </Label>
               <Input
                 id="guestName"
                 value={guestForm.name}
@@ -202,18 +192,6 @@ export default function AdminPage() {
                 }
                 placeholder="Enter guest name"
                 required
-              />
-            </div>
-            <div className="flex-1">
-              <Label htmlFor="guestEmail" className="mb-2 block">Email (Optional)</Label>
-              <Input
-                id="guestEmail"
-                type="email"
-                value={guestForm.email}
-                onChange={(e) =>
-                  setGuestForm((prev) => ({ ...prev, email: e.target.value }))
-                }
-                placeholder="guest@example.com"
               />
             </div>
             <div className="flex items-end">
@@ -232,6 +210,7 @@ export default function AdminPage() {
                 <tr>
                   <th className="p-4 text-left font-semibold">Name</th>
                   <th className="p-4 text-left font-semibold">Email</th>
+                  <th className="p-4 text-left font-semibold">Phone</th>
                   <th className="p-4 text-left font-semibold">Status</th>
                   <th className="p-4 text-left font-semibold">Actions</th>
                 </tr>
@@ -249,6 +228,7 @@ export default function AdminPage() {
                       >
                         <td className="p-4 font-medium">{parent.name}</td>
                         <td className="p-4 text-sm">{parent.email || '-'}</td>
+                        <td className="p-4 text-sm">{parent.phone || '-'}</td>
                         <td className="p-4">
                           <span
                             className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
@@ -263,7 +243,7 @@ export default function AdminPage() {
                               ? 'Attending'
                               : parent.attending === false
                                 ? 'Not Attending'
-                                : 'Not Responded'}
+                                : '-'}
                           </span>
                         </td>
                         <td className="p-4">
@@ -305,6 +285,9 @@ export default function AdminPage() {
                           <td className="p-4 text-muted-foreground text-sm">
                             {child.email || '-'}
                           </td>
+                          <td className="p-4 text-muted-foreground text-sm">
+                            {child.phone || '-'}
+                          </td>
                           <td className="p-4">
                             <span
                               className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
@@ -319,7 +302,7 @@ export default function AdminPage() {
                                 ? 'Attending'
                                 : child.attending === false
                                   ? 'Not Attending'
-                                  : 'Not Responded'}
+                                  : '-'}
                             </span>
                           </td>
                           <td className="p-4">
@@ -343,7 +326,7 @@ export default function AdminPage() {
                           exit={{ opacity: 0, y: -10 }}
                           className="border-b bg-blue-50/50"
                         >
-                          <td colSpan={4} className="p-4">
+                          <td colSpan={5} className="p-4">
                             <form
                               onSubmit={(e) => handleAddChild(e, parent._id)}
                               className="flex gap-2"
@@ -359,18 +342,6 @@ export default function AdminPage() {
                                 }
                                 className="flex-1"
                                 required
-                              />
-                              <Input
-                                placeholder="Email (optional)"
-                                type="email"
-                                value={childForm.email}
-                                onChange={(e) =>
-                                  setChildForm((prev) => ({
-                                    ...prev,
-                                    email: e.target.value,
-                                  }))
-                                }
-                                className="flex-1"
                               />
                               <Button type="submit" size="sm">
                                 Add
@@ -407,7 +378,7 @@ export default function AdminPage() {
                           {parent.name}
                         </h3>
                         <p className="text-muted-foreground text-sm">
-                          {parent.email || 'No email'}
+                          {parent.email || 'No email'} • {parent.phone || 'No phone'}
                         </p>
                       </div>
                       <span
@@ -423,7 +394,7 @@ export default function AdminPage() {
                           ? 'Attending'
                           : parent.attending === false
                             ? 'Not Attending'
-                            : 'Not Responded'}
+                            : '-'}
                       </span>
                     </div>
                     <div className="mt-2 flex gap-2">
@@ -458,7 +429,7 @@ export default function AdminPage() {
                             ↳ {child.name}
                           </h4>
                           <p className="text-muted-foreground text-xs">
-                            {child.email || 'No email'}
+                            {child.email || 'No email'} • {child.phone || 'No phone'}
                           </p>
                         </div>
                         <span
@@ -474,7 +445,7 @@ export default function AdminPage() {
                             ? 'Attending'
                             : child.attending === false
                               ? 'Not Attending'
-                              : 'Not Responded'}
+                              : '-'}
                         </span>
                       </div>
                       <div className="mt-2">
@@ -507,17 +478,6 @@ export default function AdminPage() {
                             }))
                           }
                           required
-                        />
-                        <Input
-                          placeholder="Email (optional)"
-                          type="email"
-                          value={childForm.email}
-                          onChange={(e) =>
-                            setChildForm((prev) => ({
-                              ...prev,
-                              email: e.target.value,
-                            }))
-                          }
                         />
                         <div className="flex gap-2">
                           <Button type="submit" size="sm" className="flex-1">
