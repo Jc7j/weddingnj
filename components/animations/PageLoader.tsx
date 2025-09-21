@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { ANIMATION_CONFIG } from './config'
-
+import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion'
 import { gsap } from 'gsap'
 
 interface PageLoaderProps {
@@ -12,11 +11,71 @@ interface PageLoaderProps {
 
 export default function PageLoader({ onComplete }: PageLoaderProps) {
   const loaderRef = useRef<HTMLDivElement>(null)
-  const envelopeRef = useRef<SVGSVGElement>(null)
-  const flapRef = useRef<SVGPathElement>(null)
-  const sealRef = useRef<SVGCircleElement>(null)
-  const cardRef = useRef<SVGGElement>(null)
-  const cardTextRef = useRef<SVGGElement>(null)
+  const textContainerRef = useRef<HTMLDivElement>(null)
+  const particlesRef = useRef<HTMLDivElement>(null)
+  const [textChars, setTextChars] = useState<HTMLSpanElement[]>([])
+
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(false)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+
+  useEffect(() => {
+    const checkDevice = () => {
+      const mobile = window.innerWidth < 768
+      const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      setIsMobile(mobile)
+      setIsTouchDevice(touch)
+    }
+
+    checkDevice()
+    window.addEventListener('resize', checkDevice)
+    return () => window.removeEventListener('resize', checkDevice)
+  }, [])
+
+  // Framer Motion springs for smooth mouse tracking
+  const mouseX = useSpring(0, { stiffness: 100, damping: 15 })
+  const mouseY = useSpring(0, { stiffness: 100, damping: 15 })
+
+  // Transform values for parallax layers
+  const bgX = useTransform(mouseX, [-1, 1], [-20, 20])
+  const bgY = useTransform(mouseY, [-1, 1], [-20, 20])
+  const textX = useTransform(mouseX, [-1, 1], [-10, 10])
+  const textY = useTransform(mouseY, [-1, 1], [-10, 10])
+
+  // Split text into individual characters
+  useEffect(() => {
+    if (textContainerRef.current) {
+      const text = "You're Invited"
+      const chars: HTMLSpanElement[] = []
+      textContainerRef.current.innerHTML = ''
+
+      text.split('').forEach((char) => {
+        const span = document.createElement('span')
+        span.textContent = char === ' ' ? '\u00A0' : char
+        span.style.display = 'inline-block'
+        span.style.opacity = '0'
+        chars.push(span)
+        textContainerRef.current?.appendChild(span)
+      })
+
+      setTextChars(chars)
+    }
+  }, [])
+
+  // Mouse tracking (disabled on touch devices)
+  useEffect(() => {
+    if (isTouchDevice) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      mouseX.set(x)
+      mouseY.set(y)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [mouseX, mouseY, isTouchDevice])
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -28,239 +87,189 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
       return
     }
 
-    const completeCallback = onComplete
+    if (textChars.length === 0) return
 
-    // Set initial states
-    gsap.set(envelopeRef.current, {
-      scale: 0.8,
-      opacity: 0,
-      y: 20,
-    })
-    gsap.set(flapRef.current, {
-      transformOrigin: 'center top',
-    })
-    gsap.set(sealRef.current, {
-      scale: 1,
-      opacity: 1,
-    })
-    gsap.set(cardRef.current, {
-      y: 0,
-      opacity: 0,
-    })
-    gsap.set(cardTextRef.current, {
-      opacity: 0,
-    })
+    // Create floating particles
+    const createParticles = () => {
+      if (!particlesRef.current) return
 
-    // Create main animation timeline
+      const particleCount = isMobile ? 12 : 30
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div')
+        particle.className = 'absolute rounded-full'
+        const size = gsap.utils.random(2, 6)
+        particle.style.width = `${size}px`
+        particle.style.height = `${size}px`
+        particle.style.left = `${gsap.utils.random(0, 100)}%`
+        particle.style.top = `${gsap.utils.random(0, 100)}%`
+        particle.style.background = gsap.utils.random([
+          'rgba(230, 213, 240, 0.6)',
+          'rgba(212, 230, 213, 0.6)',
+          'rgba(240, 213, 213, 0.5)',
+          'rgba(213, 224, 230, 0.5)',
+        ])
+        particlesRef.current.appendChild(particle)
+      }
+    }
+
+    createParticles()
+
+    // GSAP Timeline - Total duration under 2 seconds
     const tl = gsap.timeline({
-      delay: ANIMATION_CONFIG.pageLoader.initialDelay / 1000,
       onComplete: () => {
-        completeCallback()
-
-        // Exit animation - entire loader fades and moves up
         gsap.to(loaderRef.current, {
           opacity: 0,
-          y: -50,
-          duration: ANIMATION_CONFIG.pageLoader.exitDuration / 1000,
-          ease: ANIMATION_CONFIG.easing.slide,
+          scale: 0.95,
+          filter: 'blur(10px)',
+          duration: 0.4,
+          ease: 'power2.inOut',
+          onComplete,
         })
       },
     })
 
-    // Animation sequence
-    tl.to(envelopeRef.current, {
-      scale: 1,
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power2.out',
+    // Initial setup
+    gsap.set(textChars, {
+      y: 100,
+      opacity: 0,
+      scale: 0,
+      rotation: () => gsap.utils.random(isMobile ? -90 : -180, isMobile ? 90 : 180),
     })
-      // Break the seal
+
+    // Particle floating animation (background) - limited duration
+    const particleAnimation = gsap.to(particlesRef.current?.children || [], {
+      y: () => gsap.utils.random(-200, -100),
+      x: () => gsap.utils.random(-50, 50),
+      opacity: () => gsap.utils.random(0.3, 0.8),
+      scale: () => gsap.utils.random(0.5, 1.5),
+      duration: 2,
+      ease: 'none',
+      repeat: 1,
+      yoyo: true,
+      stagger: {
+        each: 0.05,
+        from: 'random',
+      },
+    })
+
+    // Main animation sequence
+    tl
+      // Characters explosion entrance (0-0.8s)
       .to(
-        sealRef.current,
+        textChars,
         {
-          scale: 1.2,
-          opacity: 0,
-          duration: 0.5,
-          ease: 'power2.inOut',
-        },
-        '+=0.3'
-      )
-      // Open the flap
-      .to(
-        flapRef.current,
-        {
-          rotationX: -180,
-          duration: 0.8,
-          ease: 'power2.inOut',
-          transformPerspective: 800,
-        },
-        '-=0.2'
-      )
-      // Reveal the card - slide it up and out of the envelope
-      .to(
-        cardRef.current,
-        {
-          y: -250,
-          scale: 1.08,
+          y: 0,
           opacity: 1,
-          duration: 1.0,
-          ease: 'back.out(1.2)',
+          scale: 1,
+          rotation: 0,
+          duration: isMobile ? 0.5 : 0.6,
+          ease: 'back.out(2)',
+          stagger: {
+            each: 0.03,
+            from: 'center',
+          },
         },
-        '-=0.4'
+        0
       )
-      // Show card text with stagger effect
+      // Subtle pulse on complete (1-1.5s)
       .to(
-        cardTextRef.current,
+        textChars,
         {
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power2.out',
+          scale: 1.05,
+          duration: 0.3,
+          ease: 'power2.inOut',
+          stagger: {
+            each: 0.01,
+            from: 'center',
+            yoyo: true,
+            repeat: 1,
+          },
         },
-        '-=0.5'
+        1
       )
-      .to({}, { duration: 0.8 })
+      // Hold for a moment
+      .to({}, { duration: 0.2 })
 
     return () => {
       tl.kill()
+      particleAnimation?.kill()
     }
-  }, [onComplete])
+  }, [onComplete, textChars, isMobile])
 
   return (
-    <div
-      ref={loaderRef}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-[#F5E6D3] to-[#E6D5F0]"
-    >
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="-top-40 -right-40 absolute h-80 w-80 rounded-full bg-[#D4E6D5] opacity-20 blur-3xl" />
-        <div className="-bottom-40 -left-40 absolute h-80 w-80 rounded-full bg-[#F0D5D5] opacity-20 blur-3xl" />
-      </div>
-
-      <svg
-        ref={envelopeRef}
-        className="relative z-10 w-80 md:w-96 lg:w-[420px] xl:w-[480px]"
-        viewBox="0 0 320 400"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ perspective: '800px', overflow: 'visible' }}
-        aria-label="Wedding invitation envelope animation"
-        aria-hidden="true"
+    <AnimatePresence>
+      <motion.div
+        ref={loaderRef}
+        className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
       >
-        {/* Envelope shadow */}
-        <ellipse
-          cx="160"
-          cy="320"
-          rx="100"
-          ry="10"
-          fill="#000000"
-          opacity="0.1"
+        {/* Dynamic gradient background with parallax */}
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            x: bgX,
+            y: bgY,
+            background: `
+              radial-gradient(ellipse at 30% 20%, rgba(230, 213, 240, 0.4) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(212, 230, 213, 0.4) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, rgba(240, 213, 213, 0.3) 0%, transparent 70%),
+              linear-gradient(135deg, #F5E6D3 0%, #E6D5F0 25%, #D4E6D5 50%, #F0D5D5 75%, #D5E0E6 100%)
+            `,
+          }}
         />
 
-        {/* Envelope body */}
-        <path
-          d="M40 180 L280 180 L280 300 L40 300 Z"
-          fill="#FFF9F0"
-          stroke="#E6D5F0"
-          strokeWidth="2"
+        {/* Animated particles */}
+        <div
+          ref={particlesRef}
+          className="pointer-events-none absolute inset-0"
         />
 
-        {/* Inner shadow for depth */}
-        <path
-          d="M40 180 L280 180 L280 300 L40 300 Z"
-          fill="url(#envelopeGradient)"
-          opacity="0.3"
-        />
-
-        {/* Card inside envelope */}
-        <g ref={cardRef}>
-          <rect
-            x="60"
-            y="220"
-            width="200"
-            height="120"
-            rx="4"
-            fill="#FFFFFF"
-            stroke="#F0D5D5"
-            strokeWidth="1"
-          />
-          <g ref={cardTextRef}>
-            <text
-              x="160"
-              y="255"
-              textAnchor="middle"
-              className="fill-[#8B5A5A]"
-              style={{
-                fontSize: '22px',
-                fontFamily: 'serif',
-                fontWeight: 'bold',
-              }}
-            >
-              You're Invited
-            </text>
-            <text
-              x="160"
-              y="280"
-              textAnchor="middle"
-              className="fill-[#6B5B73]"
-              style={{ fontSize: '16px', fontFamily: 'sans-serif' }}
-            >
-              Nicole & James
-            </text>
-            <text
-              x="160"
-              y="305"
-              textAnchor="middle"
-              className="fill-[#6B5B73]"
-              style={{ fontSize: '14px', fontFamily: 'sans-serif' }}
-            >
-              May 21st, 2026
-            </text>
-          </g>
-        </g>
-
-        {/* Envelope flap (will rotate) */}
-        <path
-          ref={flapRef}
-          d="M40 180 L160 240 L280 180 Z"
-          fill="#FFF9F0"
-          stroke="#E6D5F0"
-          strokeWidth="2"
-        />
-
-        {/* Wax seal */}
-        <circle
-          ref={sealRef}
-          cx="160"
-          cy="210"
-          r="25"
-          fill="#8B5A5A"
-          stroke="#6B5B73"
-          strokeWidth="1"
-        />
-        <text
-          x="160"
-          y="215"
-          textAnchor="middle"
-          className="pointer-events-none fill-white"
-          style={{ fontSize: '16px', fontFamily: 'serif' }}
+        {/* Main content with Framer Motion */}
+        <motion.div
+          className="relative z-10 text-center"
+          style={{ x: textX, y: textY }}
         >
-          N&J
-        </text>
+          {/* Main text with GSAP animation */}
+          <div
+            ref={textContainerRef}
+            className={`text-center ${isMobile ? 'mb-2' : 'mb-6'}`}
+            style={{
+              fontFamily: 'Georgia, serif',
+              fontSize: isMobile ? 'clamp(2rem, 8vw, 6rem)' : 'clamp(3rem, 10vw, 10rem)',
+              fontWeight: 300,
+              letterSpacing: '-0.02em',
+              color: 'transparent',
+              background:
+                'linear-gradient(135deg, #3A3A3A 0%, #6B5B73 50%, #3A3A3A 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              textShadow: '0 0 40px rgba(230, 213, 240, 0.3)',
+              filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))',
+            }}
+          />
+        </motion.div>
 
-        {/* Gradients */}
-        <defs>
-          <linearGradient
-            id="envelopeGradient"
-            x1="0%"
-            y1="0%"
-            x2="0%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#E6D5F0" />
-            <stop offset="100%" stopColor="transparent" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
+        {/* Animated overlay patterns */}
+        <motion.div
+          className="pointer-events-none absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+              )
+            `,
+          }}
+        />
+      </motion.div>
+    </AnimatePresence>
   )
 }
