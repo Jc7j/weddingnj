@@ -1,37 +1,33 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { useQuery } from 'convex/react'
+import { useMutation, useQuery } from 'convex/react'
 
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { api } from '~/convex/_generated/api'
+import type { Id } from '~/convex/_generated/dataModel'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
-const ADMIN_PASSWORD = 'nicolejames2026'
+const ADMIN_PASSWORD = 'admin'
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [guestForm, setGuestForm] = useState({ name: '', email: '' })
 
-  const rsvps = useQuery(api.rsvps.getRsvps)
-
-  useEffect(() => {
-    const authenticated = sessionStorage.getItem('adminAuthenticated')
-    if (authenticated === 'true') {
-      setIsAuthenticated(true)
-    }
-  }, [])
+  const guests = useQuery(api.guests.getGuests)
+  const createGuest = useMutation(api.guests.createGuest)
+  const deleteGuest = useMutation(api.guests.deleteGuest)
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true)
-      sessionStorage.setItem('adminAuthenticated', 'true')
       setError('')
     } else {
       setError('Incorrect password')
@@ -40,26 +36,40 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
-    sessionStorage.removeItem('adminAuthenticated')
     setPassword('')
   }
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+  const handleCreateGuest = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!guestForm.name.trim()) return
+
+    try {
+      await createGuest({
+        name: guestForm.name.trim(),
+        email: guestForm.email.trim() || undefined,
+      })
+      setGuestForm({ name: '', email: '' })
+    } catch (error) {
+      alert(`Error creating guest: ${(error as Error).message}`)
+    }
   }
 
-  const attendingCount = rsvps?.filter((r) => r.attending).length ?? 0
-  const notAttendingCount = rsvps?.filter((r) => !r.attending).length ?? 0
-  const totalGuests =
-    rsvps
-      ?.filter((r) => r.attending)
-      .reduce((sum, r) => sum + r.numberOfGuests, 0) ?? 0
+  const handleDeleteGuest = async (guestId: string) => {
+    if (confirm('Are you sure you want to remove this guest?')) {
+      try {
+        await deleteGuest({ guestId: guestId as Id<'guests'> })
+      } catch {
+        alert('Error removing guest')
+      }
+    }
+  }
+
+  const totalGuests = guests?.length ?? 0
+  const attendingCount = guests?.filter((g) => g.attending === true).length ?? 0
+  const notAttendingCount =
+    guests?.filter((g) => g.attending === false).length ?? 0
+  const notRespondedCount =
+    guests?.filter((g) => g.attending === null).length ?? 0
 
   if (!isAuthenticated) {
     return (
@@ -108,7 +118,7 @@ export default function AdminPage() {
             >
               NJ
             </a>
-            <h1 className="font-serif text-xl sm:text-3xl">RSVP Admin</h1>
+            <h1 className="font-serif text-xl sm:text-3xl">Guest Admin</h1>
           </div>
           <Button
             onClick={handleLogout}
@@ -127,11 +137,9 @@ export default function AdminPage() {
         >
           <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
             <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Total RSVPs
+              Total Guests
             </p>
-            <p className="font-bold text-2xl sm:text-3xl">
-              {rsvps?.length ?? 0}
-            </p>
+            <p className="font-bold text-2xl sm:text-3xl">{totalGuests}</p>
           </div>
           <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
             <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
@@ -151,12 +159,56 @@ export default function AdminPage() {
           </div>
           <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
             <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Total Guests
+              Not Responded
             </p>
-            <p className="font-bold text-2xl text-blue-600 sm:text-3xl">
-              {totalGuests}
+            <p className="font-bold text-2xl text-orange-600 sm:text-3xl">
+              {notRespondedCount}
             </p>
           </div>
+        </motion.div>
+
+        {/* Guest Management Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-8 rounded-lg bg-white/80 p-6 shadow-xl backdrop-blur-sm"
+        >
+          <h2 className="mb-4 font-serif text-xl">Add New Guest</h2>
+          <form
+            onSubmit={handleCreateGuest}
+            className="flex flex-col gap-4 sm:flex-row"
+          >
+            <div className="flex-1">
+              <Label htmlFor="guestName">Guest Name</Label>
+              <Input
+                id="guestName"
+                value={guestForm.name}
+                onChange={(e) =>
+                  setGuestForm((prev) => ({ ...prev, name: e.target.value }))
+                }
+                placeholder="Enter guest name"
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <Label htmlFor="guestEmail">Email (Optional)</Label>
+              <Input
+                id="guestEmail"
+                type="email"
+                value={guestForm.email}
+                onChange={(e) =>
+                  setGuestForm((prev) => ({ ...prev, email: e.target.value }))
+                }
+                placeholder="guest@example.com"
+              />
+            </div>
+            <div className="flex items-end">
+              <Button type="submit" className="w-full sm:w-auto">
+                Add Guest
+              </Button>
+            </div>
+          </form>
         </motion.div>
 
         <motion.div
@@ -172,48 +224,48 @@ export default function AdminPage() {
                 <tr>
                   <th className="p-4 text-left font-semibold">Name</th>
                   <th className="p-4 text-left font-semibold">Email</th>
-                  <th className="p-4 text-left font-semibold">Attending</th>
-                  <th className="p-4 text-left font-semibold">Guests</th>
-                  <th className="p-4 text-left font-semibold">Dietary</th>
-                  <th className="p-4 text-left font-semibold">Message</th>
-                  <th className="p-4 text-left font-semibold">Date</th>
+                  <th className="p-4 text-left font-semibold">Status</th>
+                  <th className="p-4 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <AnimatePresence>
-                  {rsvps?.map((rsvp, index) => (
+                  {guests?.map((guest, index) => (
                     <motion.tr
-                      key={rsvp._id}
+                      key={guest._id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
                       className="border-b transition-colors hover:bg-accent/5"
                     >
-                      <td className="p-4 font-medium">{rsvp.name}</td>
-                      <td className="p-4 text-sm">{rsvp.email}</td>
+                      <td className="p-4 font-medium">{guest.name}</td>
+                      <td className="p-4 text-sm">{guest.email || '-'}</td>
                       <td className="p-4">
                         <span
                           className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
-                            rsvp.attending
+                            guest.attending === true
                               ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                              : guest.attending === false
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-orange-100 text-orange-800'
                           }`}
                         >
-                          {rsvp.attending ? 'Yes' : 'No'}
+                          {guest.attending === true
+                            ? 'Attending'
+                            : guest.attending === false
+                              ? 'Not Attending'
+                              : 'Not Responded'}
                         </span>
                       </td>
-                      <td className="p-4 text-center">{rsvp.numberOfGuests}</td>
-                      <td className="p-4 text-sm">
-                        {rsvp.dietaryRestrictions || '-'}
-                      </td>
-                      <td
-                        className="max-w-xs truncate p-4 text-sm"
-                        title={rsvp.message || ''}
-                      >
-                        {rsvp.message || '-'}
-                      </td>
-                      <td className="p-4 text-muted-foreground text-sm">
-                        {formatDate(rsvp.createdAt)}
+                      <td className="p-4">
+                        <Button
+                          onClick={() => handleDeleteGuest(guest._id)}
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:bg-red-50"
+                        >
+                          Remove
+                        </Button>
                       </td>
                     </motion.tr>
                   ))}
@@ -225,9 +277,9 @@ export default function AdminPage() {
           {/* Mobile Card View */}
           <div className="md:hidden">
             <AnimatePresence>
-              {rsvps?.map((rsvp, index) => (
+              {guests?.map((guest, index) => (
                 <motion.div
-                  key={rsvp._id}
+                  key={guest._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
@@ -235,51 +287,43 @@ export default function AdminPage() {
                 >
                   <div className="mb-2 flex items-start justify-between">
                     <div>
-                      <h3 className="font-semibold text-base">{rsvp.name}</h3>
+                      <h3 className="font-semibold text-base">{guest.name}</h3>
                       <p className="text-muted-foreground text-sm">
-                        {rsvp.email}
+                        {guest.email || 'No email'}
                       </p>
                     </div>
                     <span
                       className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
-                        rsvp.attending
+                        guest.attending === true
                           ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
+                          : guest.attending === false
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-orange-100 text-orange-800'
                       }`}
                     >
-                      {rsvp.attending ? 'Yes' : 'No'}
+                      {guest.attending === true
+                        ? 'Attending'
+                        : guest.attending === false
+                          ? 'Not Attending'
+                          : 'Not Responded'}
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Guests:</span>{' '}
-                      {rsvp.numberOfGuests}
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Date:</span>{' '}
-                      {formatDate(rsvp.createdAt).split(',')[0]}
-                    </div>
+                  <div className="mt-2">
+                    <Button
+                      onClick={() => handleDeleteGuest(guest._id)}
+                      variant="outline"
+                      size="sm"
+                      className="text-red-600 hover:bg-red-50"
+                    >
+                      Remove Guest
+                    </Button>
                   </div>
-                  {rsvp.dietaryRestrictions && (
-                    <div className="mt-2 text-sm">
-                      <span className="text-muted-foreground">Dietary:</span>{' '}
-                      {rsvp.dietaryRestrictions}
-                    </div>
-                  )}
-                  {rsvp.message && (
-                    <div className="mt-2 text-sm">
-                      <span className="text-muted-foreground">Message:</span>
-                      <p className="mt-1 text-muted-foreground">
-                        {rsvp.message}
-                      </p>
-                    </div>
-                  )}
                 </motion.div>
               ))}
             </AnimatePresence>
-            {(!rsvps || rsvps.length === 0) && (
+            {(!guests || guests.length === 0) && (
               <div className="py-8 text-center text-muted-foreground sm:py-12">
-                No RSVPs yet
+                No guests added yet
               </div>
             )}
           </div>

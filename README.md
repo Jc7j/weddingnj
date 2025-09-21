@@ -1,7 +1,6 @@
 TODOS:
 [x] Add password protected - james&nicole
 [x] Make Wedding Party TBD && FAQS && Order of Events TBD
-[] James and Nicole provide list of all the names who are coming so we can do the same thing as Zola as RSVP.
-   1. RSVP - require email so when we can send updates later on (i.e website has been updated)
 [x] Generate QR code for the website and send it to them.
+[] Allow admins to input wedding guests. They can also have a main person thats in charge of the group and that main person incharge of the group and say if theyre guests are going.
  

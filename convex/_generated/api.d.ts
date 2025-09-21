@@ -14,7 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
-import type * as rsvps from "../rsvps.js";
+import type * as guests from "../guests.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -26,7 +26,7 @@ import type * as rsvps from "../rsvps.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
-  rsvps: typeof rsvps;
+  guests: typeof guests;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
