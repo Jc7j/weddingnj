@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server'
+import { v } from 'convex/values'
 
 export default defineSchema({
   rsvps: defineTable({
@@ -10,5 +10,5 @@ export default defineSchema({
     dietaryRestrictions: v.optional(v.string()),
     message: v.optional(v.string()),
     createdAt: v.number(),
-  }).index("by_email", ["email"]),
-});
+  }).index('by_email', ['email']),
+})

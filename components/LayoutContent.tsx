@@ -1,7 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { createContext, useContext, useState } from 'react'
 
 import {
   PageLoader,
@@ -39,12 +39,14 @@ export function useRsvpDialog() {
 
 export default function LayoutContent({
   children,
+  hideHeader = false,
 }: {
   children: React.ReactNode
+  hideHeader?: boolean
 }) {
   const pathname = usePathname()
   const isAdminPage = pathname?.startsWith('/admin')
-  
+
   const { showLoader, handleLoaderComplete } = usePageLoad()
   const [isRsvpOpen, setIsRsvpOpen] = useState(false)
 
@@ -61,10 +63,8 @@ export default function LayoutContent({
     <>
       {showLoader && <PageLoader onComplete={handleLoaderComplete} />}
       <ConvexClientProvider>
-        <RsvpDialogContext.Provider
-          value={{ openRsvpDialog, closeRsvpDialog }}
-        >
-          <Header onRsvpClick={openRsvpDialog} />
+        <RsvpDialogContext.Provider value={{ openRsvpDialog, closeRsvpDialog }}>
+          {!hideHeader && <Header onRsvpClick={openRsvpDialog} />}
           {children}
           <FooterSection />
           <ScrollAnimations />

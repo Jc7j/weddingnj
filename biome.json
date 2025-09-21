@@ -61,7 +61,15 @@
               ":BLANK_LINE:",
               {
                 "type": false,
-                "source": ["@clerk/**", "@tanstack/**", "convex/**", "!~/**", "!@/**", "!../**", "!./**"]
+                "source": [
+                  "@clerk/**",
+                  "@tanstack/**",
+                  "convex/**",
+                  "!~/**",
+                  "!@/**",
+                  "!../**",
+                  "!./**"
+                ]
               },
               ":BLANK_LINE:",
               { "type": false, "source": ["~/**"] },
