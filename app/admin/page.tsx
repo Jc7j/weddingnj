@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { useMutation, useQuery } from 'convex/react'
 
@@ -8,8 +8,8 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { api } from '~/convex/_generated/api'
-import type { Id } from '~/convex/_generated/dataModel'
 
+import type { Id } from '~/convex/_generated/dataModel'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const ADMIN_PASSWORD = 'admin'
@@ -19,10 +19,13 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [guestForm, setGuestForm] = useState({ name: '', email: '' })
+  const [expandedParentId, setExpandedParentId] = useState<string | null>(null)
+  const [childForm, setChildForm] = useState({ name: '', email: '' })
 
   const guests = useQuery(api.guests.getGuests)
   const createGuest = useMutation(api.guests.createGuest)
   const deleteGuest = useMutation(api.guests.deleteGuest)
+  const addGuestToParty = useMutation(api.guests.addGuestToParty)
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,12 +67,40 @@ export default function AdminPage() {
     }
   }
 
-  const totalGuests = guests?.length ?? 0
-  const attendingCount = guests?.filter((g) => g.attending === true).length ?? 0
-  const notAttendingCount =
-    guests?.filter((g) => g.attending === false).length ?? 0
-  const notRespondedCount =
-    guests?.filter((g) => g.attending === null).length ?? 0
+  const handleAddToParty = (parentId: string) => {
+    setExpandedParentId(expandedParentId === parentId ? null : parentId)
+    setChildForm({ name: '', email: '' })
+  }
+
+  const handleAddChild = async (e: React.FormEvent, parentId: string) => {
+    e.preventDefault()
+    if (!childForm.name.trim()) return
+
+    try {
+      await addGuestToParty({
+        parentId: parentId as Id<'guests'>,
+        name: childForm.name.trim(),
+        email: childForm.email.trim() || undefined,
+      })
+      setChildForm({ name: '', email: '' })
+      setExpandedParentId(null)
+    } catch (error) {
+      alert(`Error adding guest to party: ${(error as Error).message}`)
+    }
+  }
+
+  // Calculate statistics including children
+  const allGuests =
+    guests?.flatMap((parent) => [parent, ...parent.children]) ?? []
+  const totalGuests = allGuests.length
+  const totalParties = guests?.length ?? 0
+  const attendingCount = allGuests.filter((g) => g.attending === true).length
+  const notAttendingCount = allGuests.filter(
+    (g) => g.attending === false
+  ).length
+  const notRespondedCount = allGuests.filter(
+    (g) => g.attending === undefined
+  ).length
 
   if (!isAuthenticated) {
     return (
@@ -129,58 +160,40 @@ export default function AdminPage() {
           </Button>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4"
-        >
-          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
-            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Total Guests
-            </p>
-            <p className="font-bold text-2xl sm:text-3xl">{totalGuests}</p>
+        {/* Statistics Bar */}
+        <div className="mb-8 rounded-lg bg-white/80 p-4">
+          <div className="flex flex-wrap gap-4 text-sm">
+            <span>
+              <strong>Guests:</strong> {totalGuests}
+            </span>
+            <span className="text-muted-foreground">|</span>
+            <span>
+              <strong>Parties:</strong> {totalParties}
+            </span>
+            <span className="text-muted-foreground">|</span>
+            <span className="text-green-700">
+              <strong>Attending:</strong> {attendingCount}
+            </span>
+            <span className="text-muted-foreground">|</span>
+            <span className="text-red-700">
+              <strong>Not Attending:</strong> {notAttendingCount}
+            </span>
+            <span className="text-muted-foreground">|</span>
+            <span className="text-orange-700">
+              <strong>Pending:</strong> {notRespondedCount}
+            </span>
           </div>
-          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
-            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Attending
-            </p>
-            <p className="font-bold text-2xl text-green-600 sm:text-3xl">
-              {attendingCount}
-            </p>
-          </div>
-          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
-            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Not Attending
-            </p>
-            <p className="font-bold text-2xl text-red-600 sm:text-3xl">
-              {notAttendingCount}
-            </p>
-          </div>
-          <div className="rounded-lg bg-white/80 p-4 shadow-lg backdrop-blur-sm sm:p-6">
-            <p className="mb-1 text-muted-foreground text-xs sm:mb-2 sm:text-sm">
-              Not Responded
-            </p>
-            <p className="font-bold text-2xl text-orange-600 sm:text-3xl">
-              {notRespondedCount}
-            </p>
-          </div>
-        </motion.div>
+        </div>
 
         {/* Guest Management Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="mb-8 rounded-lg bg-white/80 p-6 shadow-xl backdrop-blur-sm"
-        >
+        <div className="mb-8 rounded-lg bg-white/80 p-6">
           <h2 className="mb-4 font-serif text-xl">Add New Guest</h2>
           <form
             onSubmit={handleCreateGuest}
             className="flex flex-col gap-4 sm:flex-row"
           >
             <div className="flex-1">
-              <Label htmlFor="guestName">Guest Name</Label>
+              <Label htmlFor="guestName" className="mb-2 block">Guest Name</Label>
               <Input
                 id="guestName"
                 value={guestForm.name}
@@ -192,7 +205,7 @@ export default function AdminPage() {
               />
             </div>
             <div className="flex-1">
-              <Label htmlFor="guestEmail">Email (Optional)</Label>
+              <Label htmlFor="guestEmail" className="mb-2 block">Email (Optional)</Label>
               <Input
                 id="guestEmail"
                 type="email"
@@ -209,14 +222,9 @@ export default function AdminPage() {
               </Button>
             </div>
           </form>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="rounded-lg bg-white/80 shadow-xl backdrop-blur-sm"
-        >
+        <div className="rounded-lg bg-white/80">
           {/* Desktop Table View */}
           <div className="hidden overflow-x-auto md:block">
             <table className="w-full">
@@ -230,44 +238,156 @@ export default function AdminPage() {
               </thead>
               <tbody>
                 <AnimatePresence>
-                  {guests?.map((guest, index) => (
-                    <motion.tr
-                      key={guest._id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="border-b transition-colors hover:bg-accent/5"
-                    >
-                      <td className="p-4 font-medium">{guest.name}</td>
-                      <td className="p-4 text-sm">{guest.email || '-'}</td>
-                      <td className="p-4">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
-                            guest.attending === true
-                              ? 'bg-green-100 text-green-800'
-                              : guest.attending === false
-                                ? 'bg-red-100 text-red-800'
-                                : 'bg-orange-100 text-orange-800'
-                          }`}
+                  {guests?.map((parent, index) => (
+                    <React.Fragment key={parent._id}>
+                      {/* Parent Row */}
+                      <motion.tr
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="border-b transition-colors hover:bg-accent/5"
+                      >
+                        <td className="p-4 font-medium">{parent.name}</td>
+                        <td className="p-4 text-sm">{parent.email || '-'}</td>
+                        <td className="p-4">
+                          <span
+                            className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
+                              parent.attending === true
+                                ? 'bg-green-100 text-green-800'
+                                : parent.attending === false
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-orange-100 text-orange-800'
+                            }`}
+                          >
+                            {parent.attending === true
+                              ? 'Attending'
+                              : parent.attending === false
+                                ? 'Not Attending'
+                                : 'Not Responded'}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={() => handleAddToParty(parent._id)}
+                              variant="outline"
+                              size="sm"
+                              className="text-blue-600 hover:bg-blue-50"
+                            >
+                              Add to Party
+                            </Button>
+                            <Button
+                              onClick={() => handleDeleteGuest(parent._id)}
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:bg-red-50"
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        </td>
+                      </motion.tr>
+
+                      {/* Child Rows */}
+                      {parent.children?.map((child, childIndex) => (
+                        <motion.tr
+                          key={child._id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: index * 0.05 + (childIndex + 1) * 0.02,
+                          }}
+                          className="border-b bg-muted/20 transition-colors hover:bg-accent/5"
                         >
-                          {guest.attending === true
-                            ? 'Attending'
-                            : guest.attending === false
-                              ? 'Not Attending'
-                              : 'Not Responded'}
-                        </span>
-                      </td>
-                      <td className="p-4">
-                        <Button
-                          onClick={() => handleDeleteGuest(guest._id)}
-                          variant="outline"
-                          size="sm"
-                          className="text-red-600 hover:bg-red-50"
+                          <td className="p-4 pl-8 font-medium text-muted-foreground text-sm">
+                            ↳ {child.name}
+                          </td>
+                          <td className="p-4 text-muted-foreground text-sm">
+                            {child.email || '-'}
+                          </td>
+                          <td className="p-4">
+                            <span
+                              className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
+                                child.attending === true
+                                  ? 'bg-green-100 text-green-800'
+                                  : child.attending === false
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-orange-100 text-orange-800'
+                              }`}
+                            >
+                              {child.attending === true
+                                ? 'Attending'
+                                : child.attending === false
+                                  ? 'Not Attending'
+                                  : 'Not Responded'}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <Button
+                              onClick={() => handleDeleteGuest(child._id)}
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:bg-red-50"
+                            >
+                              Remove
+                            </Button>
+                          </td>
+                        </motion.tr>
+                      ))}
+
+                      {/* Inline Add Form */}
+                      {expandedParentId === parent._id && (
+                        <motion.tr
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="border-b bg-blue-50/50"
                         >
-                          Remove
-                        </Button>
-                      </td>
-                    </motion.tr>
+                          <td colSpan={4} className="p-4">
+                            <form
+                              onSubmit={(e) => handleAddChild(e, parent._id)}
+                              className="flex gap-2"
+                            >
+                              <Input
+                                placeholder="Guest name"
+                                value={childForm.name}
+                                onChange={(e) =>
+                                  setChildForm((prev) => ({
+                                    ...prev,
+                                    name: e.target.value,
+                                  }))
+                                }
+                                className="flex-1"
+                                required
+                              />
+                              <Input
+                                placeholder="Email (optional)"
+                                type="email"
+                                value={childForm.email}
+                                onChange={(e) =>
+                                  setChildForm((prev) => ({
+                                    ...prev,
+                                    email: e.target.value,
+                                  }))
+                                }
+                                className="flex-1"
+                              />
+                              <Button type="submit" size="sm">
+                                Add
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setExpandedParentId(null)}
+                              >
+                                Cancel
+                              </Button>
+                            </form>
+                          </td>
+                        </motion.tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </AnimatePresence>
               </tbody>
@@ -277,48 +397,146 @@ export default function AdminPage() {
           {/* Mobile Card View */}
           <div className="md:hidden">
             <AnimatePresence>
-              {guests?.map((guest, index) => (
-                <motion.div
-                  key={guest._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="border-b p-4 last:border-b-0"
-                >
-                  <div className="mb-2 flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-base">{guest.name}</h3>
-                      <p className="text-muted-foreground text-sm">
-                        {guest.email || 'No email'}
-                      </p>
+              {guests?.map((parent) => (
+                <div key={parent._id}>
+                  {/* Parent Card */}
+                  <div className="border-b p-4">
+                    <div className="mb-2 flex items-start justify-between">
+                      <div>
+                        <h3 className="font-semibold text-base">
+                          {parent.name}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {parent.email || 'No email'}
+                        </p>
+                      </div>
+                      <span
+                        className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
+                          parent.attending === true
+                            ? 'bg-green-100 text-green-800'
+                            : parent.attending === false
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-orange-100 text-orange-800'
+                        }`}
+                      >
+                        {parent.attending === true
+                          ? 'Attending'
+                          : parent.attending === false
+                            ? 'Not Attending'
+                            : 'Not Responded'}
+                      </span>
                     </div>
-                    <span
-                      className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
-                        guest.attending === true
-                          ? 'bg-green-100 text-green-800'
-                          : guest.attending === false
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-orange-100 text-orange-800'
-                      }`}
-                    >
-                      {guest.attending === true
-                        ? 'Attending'
-                        : guest.attending === false
-                          ? 'Not Attending'
-                          : 'Not Responded'}
-                    </span>
+                    <div className="mt-2 flex gap-2">
+                      <Button
+                        onClick={() => handleAddToParty(parent._id)}
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600 hover:bg-blue-50"
+                      >
+                        Add to Party
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteGuest(parent._id)}
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:bg-red-50"
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
-                  <div className="mt-2">
-                    <Button
-                      onClick={() => handleDeleteGuest(guest._id)}
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 hover:bg-red-50"
+
+                  {/* Child Cards */}
+                  {parent.children?.map((child) => (
+                    <div
+                      key={child._id}
+                      className="ml-4 border-b bg-muted/20 p-3"
                     >
-                      Remove Guest
-                    </Button>
-                  </div>
-                </motion.div>
+                      <div className="mb-2 flex items-start justify-between">
+                        <div>
+                          <h4 className="font-medium text-muted-foreground text-sm">
+                            ↳ {child.name}
+                          </h4>
+                          <p className="text-muted-foreground text-xs">
+                            {child.email || 'No email'}
+                          </p>
+                        </div>
+                        <span
+                          className={`inline-flex rounded-full px-2 py-1 font-semibold text-xs ${
+                            child.attending === true
+                              ? 'bg-green-100 text-green-800'
+                              : child.attending === false
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-orange-100 text-orange-800'
+                          }`}
+                        >
+                          {child.attending === true
+                            ? 'Attending'
+                            : child.attending === false
+                              ? 'Not Attending'
+                              : 'Not Responded'}
+                        </span>
+                      </div>
+                      <div className="mt-2">
+                        <Button
+                          onClick={() => handleDeleteGuest(child._id)}
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:bg-red-50"
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Inline Add Form for Mobile */}
+                  {expandedParentId === parent._id && (
+                    <div className="border-b bg-blue-50/50 p-4">
+                      <form
+                        onSubmit={(e) => handleAddChild(e, parent._id)}
+                        className="space-y-2"
+                      >
+                        <Input
+                          placeholder="Guest name"
+                          value={childForm.name}
+                          onChange={(e) =>
+                            setChildForm((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          required
+                        />
+                        <Input
+                          placeholder="Email (optional)"
+                          type="email"
+                          value={childForm.email}
+                          onChange={(e) =>
+                            setChildForm((prev) => ({
+                              ...prev,
+                              email: e.target.value,
+                            }))
+                          }
+                        />
+                        <div className="flex gap-2">
+                          <Button type="submit" size="sm" className="flex-1">
+                            Add Guest
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setExpandedParentId(null)}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                </div>
               ))}
             </AnimatePresence>
             {(!guests || guests.length === 0) && (
@@ -327,7 +545,7 @@ export default function AdminPage() {
               </div>
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

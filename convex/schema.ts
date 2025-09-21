@@ -6,5 +6,8 @@ export default defineSchema({
     name: v.string(),
     email: v.optional(v.string()),
     attending: v.optional(v.boolean()),
-  }).index('by_name', ['name']),
+    parentId: v.optional(v.id('guests')),
+  })
+    .index('by_name', ['name'])
+    .index('by_parent', ['parentId']),
 })
