@@ -2,8 +2,7 @@ import { Dancing_Script, Geist, Geist_Mono } from 'next/font/google'
 
 import type { Metadata } from 'next'
 import './globals.css'
-
-import LayoutContent from '~/components/LayoutContent'
+import { ConvexClientProvider } from '~/components/ConvexClientProvider'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -36,7 +35,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased`}
       >
-        {children}
+        <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>
     </html>
   )

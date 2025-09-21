@@ -8,7 +8,6 @@ import {
   ScrollAnimations,
   usePageLoad,
 } from '~/components/animations'
-import { ConvexClientProvider } from '~/components/ConvexClientProvider'
 import RsvpForm from '~/components/RsvpForm'
 import {
   Dialog,
@@ -53,34 +52,32 @@ export default function LayoutContent({
   const openRsvpDialog = () => setIsRsvpOpen(true)
   const closeRsvpDialog = () => setIsRsvpOpen(false)
 
-  // For admin pages, only provide Convex without decorative elements
+  // For admin pages, only provide basic layout without decorative elements
   if (isAdminPage) {
-    return <ConvexClientProvider>{children}</ConvexClientProvider>
+    return children
   }
 
   // For main wedding site, include all decorative elements
   return (
     <>
       {showLoader && <PageLoader onComplete={handleLoaderComplete} />}
-      <ConvexClientProvider>
-        <RsvpDialogContext.Provider value={{ openRsvpDialog, closeRsvpDialog }}>
-          {!hideHeader && <Header onRsvpClick={openRsvpDialog} />}
-          {children}
-          <FooterSection />
-          <ScrollAnimations />
+      <RsvpDialogContext.Provider value={{ openRsvpDialog, closeRsvpDialog }}>
+        {!hideHeader && <Header onRsvpClick={openRsvpDialog} />}
+        {children}
+        <FooterSection />
+        <ScrollAnimations />
 
-          <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
-            <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-center font-serif text-2xl">
-                  Please Respond
-                </DialogTitle>
-              </DialogHeader>
-              <RsvpForm />
-            </DialogContent>
-          </Dialog>
-        </RsvpDialogContext.Provider>
-      </ConvexClientProvider>
+        <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
+          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-center font-serif text-2xl">
+                Please Respond
+              </DialogTitle>
+            </DialogHeader>
+            <RsvpForm />
+          </DialogContent>
+        </Dialog>
+      </RsvpDialogContext.Provider>
     </>
   )
 }
