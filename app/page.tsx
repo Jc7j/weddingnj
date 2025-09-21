@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-import LayoutContent from '~/components/LayoutContent'
 import AuthenticatedContent from '~/components/AuthenticatedContent'
+import LayoutContent from '~/components/LayoutContent'
 import PasswordGate from '~/components/PasswordGate'
 import { checkAuthentication } from '~/lib/auth'
 
@@ -11,12 +11,8 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const authenticated = await checkAuthentication()
-      setIsAuthenticated(authenticated)
-    }
-
-    checkAuth()
+    const authenticated = checkAuthentication()
+    setIsAuthenticated(authenticated)
   }, [])
 
   const handleAuthenticated = () => {

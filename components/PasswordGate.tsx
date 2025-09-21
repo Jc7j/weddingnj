@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useAction } from 'convex/react'
+import { api } from '~/convex/_generated/api'
 
 interface PasswordGateProps {
   onAuthenticated: () => void
@@ -11,25 +13,26 @@ export default function PasswordGate({ onAuthenticated }: PasswordGateProps) {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+  const checkPassword = useAction(api.auth.checkPassword)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_CONVEX_URL}/auth`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ password }),
-        }
-      )
+      const isValid = await checkPassword({ password })
 
-      if (response.ok) {
+      if (isValid) {
+        // Store auth status in localStorage with 7-day expiry
+        const expiryDate = new Date()
+        expiryDate.setDate(expiryDate.getDate() + 7)
+
+        localStorage.setItem('wedding_auth', JSON.stringify({
+          authenticated: true,
+          expires: expiryDate.getTime()
+        }))
+
         onAuthenticated()
       } else {
         setError('Incorrect password. Please try again.')

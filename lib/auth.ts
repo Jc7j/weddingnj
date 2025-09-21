@@ -1,20 +1,26 @@
 /**
- * Check if user is authenticated by verifying cookie via Convex HTTP endpoint
+ * Check if user is authenticated by verifying localStorage token
  */
-export async function checkAuthentication(): Promise<boolean> {
+export function checkAuthentication(): boolean {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CONVEX_URL}/auth`, {
-      method: 'GET',
-      credentials: 'include', // Include cookies in the request
-    })
+    const authData = localStorage.getItem('wedding_auth')
 
-    if (response.ok) {
-      const data = await response.json()
-      return data.authenticated === true
+    if (!authData) {
+      return false
     }
 
-    return false
+    const { authenticated, expires } = JSON.parse(authData)
+
+    // Check if token has expired
+    if (Date.now() > expires) {
+      localStorage.removeItem('wedding_auth')
+      return false
+    }
+
+    return authenticated === true
   } catch {
+    // If there's any error parsing, clear the invalid data
+    localStorage.removeItem('wedding_auth')
     return false
   }
 }
