@@ -237,16 +237,22 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
             className={`text-center ${isMobile ? 'mb-2' : 'mb-6'}`}
             style={{
               fontFamily: 'Georgia, serif',
-              fontSize: isMobile ? 'clamp(2rem, 8vw, 6rem)' : 'clamp(3rem, 10vw, 10rem)',
+              fontSize: isMobile ? 'clamp(2.5rem, 10vw, 5rem)' : 'clamp(3rem, 10vw, 10rem)',
               fontWeight: 300,
               letterSpacing: '-0.02em',
-              color: 'transparent',
-              background:
-                'linear-gradient(135deg, #3A3A3A 0%, #6B5B73 50%, #3A3A3A 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              textShadow: '0 0 40px rgba(230, 213, 240, 0.3)',
-              filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))',
+              ...(isMobile || isTouchDevice ? {
+                // Mobile fallback: solid color for better compatibility
+                color: '#3A3A3A',
+                textShadow: '0 2px 8px rgba(230, 213, 240, 0.4)',
+              } : {
+                // Desktop: premium gradient effect
+                color: 'transparent',
+                background: 'linear-gradient(135deg, #3A3A3A 0%, #6B5B73 50%, #3A3A3A 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                textShadow: '0 0 40px rgba(230, 213, 240, 0.3)',
+                filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))',
+              })
             }}
           />
         </motion.div>
