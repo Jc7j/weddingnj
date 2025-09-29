@@ -34,11 +34,21 @@ export const createGuest = mutation({
 export const findGuestByName = query({
   args: { name: v.string() },
   handler: async (ctx, args) => {
-    // Case-insensitive search
+    // Normalize function for flexible matching
+    const normalize = (name: string) => {
+      return name
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+        .replace(/[''`]/g, "'") // Normalize apostrophes
+        .replace(/[-–—]/g, '-') // Normalize dashes
+        .replace(/[.,]/g, '') // Remove periods and commas
+    }
+
+    const normalizedInput = normalize(args.name)
     const guests = await ctx.db.query('guests').collect()
-    return guests.find(
-      (guest) => guest.name.toLowerCase() === args.name.toLowerCase()
-    )
+
+    return guests.find((guest) => normalize(guest.name) === normalizedInput)
   },
 })
 
