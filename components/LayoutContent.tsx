@@ -67,7 +67,7 @@ export default function LayoutContent({
         <ScrollAnimations />
 
         <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
-          <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
+          <DialogContent className="sm:max-w-4xl">
             <DialogTitle className="sr-only">RSVP Form</DialogTitle>
             <RsvpForm />
           </DialogContent>

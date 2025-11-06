@@ -16,11 +16,6 @@ const venueDetails = [
     label: 'Address',
     value: "Imelda's Garden\nCuenca, Batangas\nPhilippines",
   },
-  {
-    icon: '🚗',
-    label: 'Parking',
-    value: 'Free parking available\non-site',
-  },
 ]
 
 export default function VenueSection() {

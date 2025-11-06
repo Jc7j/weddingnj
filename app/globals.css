@@ -68,8 +68,8 @@ html {
   /* Popover same as card */
   --popover: oklch(0.98 0.015 70);
   --popover-foreground: oklch(0.25 0.01 0);
-  /* Soft lavender primary */
-  --primary: oklch(0.85 0.08 310);
+  /* Dark green primary */
+  --primary: oklch(0.28 0.05 140);
   --primary-foreground: oklch(0.98 0 0);
   /* Sage green secondary */
   --secondary: oklch(0.88 0.06 140);
@@ -114,8 +114,8 @@ html {
   /* Popover same as card */
   --popover: oklch(0.2 0.01 0);
   --popover-foreground: oklch(0.96 0.02 70);
-  /* Soft lavender primary */
-  --primary: oklch(0.75 0.08 310);
+  /* Dark green primary */
+  --primary: oklch(0.32 0.05 140);
   --primary-foreground: oklch(0.15 0.01 0);
   /* Sage green secondary */
   --secondary: oklch(0.78 0.06 140);

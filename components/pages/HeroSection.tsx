@@ -412,7 +412,6 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
             ref={buttonRef}
             size="lg"
             className="group rounded-full px-8 py-3 font-medium text-white tracking-wide shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl sm:px-12"
-            style={{ backgroundColor: '#2B4735' }}
             onClick={onRsvpClick}
           >
             <span className="relative">

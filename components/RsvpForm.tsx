@@ -24,8 +24,7 @@ interface Guest {
 
 interface GuestContactInfo {
   attending: boolean | null
-  email: string
-  phone: string
+  contact: string
 }
 
 export default function RsvpForm() {
@@ -63,8 +62,7 @@ export default function RsvpForm() {
       allMembers.forEach((member) => {
         initialDetails[member._id] = {
           attending: member.attending ?? null,
-          email: member.email || '',
-          phone: member.phone || '',
+          contact: member.email || member.phone || '',
         }
       })
 
@@ -78,12 +76,17 @@ export default function RsvpForm() {
 
     try {
       const allPartyMembers = [foundGuest, ...(foundGuest.children || [])]
-      const partyUpdates = allPartyMembers.map((member) => ({
-        guestId: member._id as Id<'guests'>,
-        attending: guestDetails[member._id]?.attending ?? false,
-        email: guestDetails[member._id]?.email || undefined,
-        phone: guestDetails[member._id]?.phone || undefined,
-      }))
+      const partyUpdates = allPartyMembers.map((member) => {
+        const contact = guestDetails[member._id]?.contact || ''
+        const isEmail = contact.includes('@')
+
+        return {
+          guestId: member._id as Id<'guests'>,
+          attending: guestDetails[member._id]?.attending ?? false,
+          email: isEmail ? contact : undefined,
+          phone: !isEmail && contact ? contact : undefined,
+        }
+      })
 
       await updatePartyRsvp({
         partyUpdates,
@@ -104,7 +107,7 @@ export default function RsvpForm() {
     ? [foundGuest, ...(foundGuest.children || [])]
     : []
 
-  // Form validation - check that all guests have made attendance decision and attending guests have email and phone
+  // Form validation - check that all guests have made attendance decision and attending guests have contact info
   const isFormValid = () => {
     return allPartyMembers.every((member) => {
       const details = guestDetails[member._id]
@@ -113,9 +116,9 @@ export default function RsvpForm() {
       // Must have made attendance decision (cannot be null)
       if (details.attending === null) return false
 
-      // If attending, must have email and phone
+      // If attending, must have contact info
       if (details.attending === true) {
-        return details.email.trim() !== '' && details.phone.trim() !== ''
+        return details.contact.trim() !== ''
       }
 
       // If not attending, just need attendance decision (already checked above)
@@ -354,54 +357,28 @@ export default function RsvpForm() {
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.15 }}
-                          className="space-y-3"
                         >
-                          <div>
-                            <Label className="mb-1 block font-medium text-gray-700 text-sm">
-                              Email *
-                            </Label>
-                            <Input
-                              type="email"
-                              value={guestDetails[member._id]?.email || ''}
-                              onChange={(e) =>
-                                setGuestDetails((prev) => ({
-                                  ...prev,
-                                  [member._id]: {
-                                    ...prev[member._id],
-                                    email: e.target.value,
-                                  },
-                                }))
-                              }
-                              placeholder="Enter email address"
-                              required={
-                                guestDetails[member._id]?.attending === true
-                              }
-                              className="w-full"
-                            />
-                          </div>
-                          <div>
-                            <Label className="mb-1 block font-medium text-gray-700 text-sm">
-                              Phone *
-                            </Label>
-                            <Input
-                              type="tel"
-                              value={guestDetails[member._id]?.phone || ''}
-                              onChange={(e) =>
-                                setGuestDetails((prev) => ({
-                                  ...prev,
-                                  [member._id]: {
-                                    ...prev[member._id],
-                                    phone: e.target.value,
-                                  },
-                                }))
-                              }
-                              placeholder="Enter phone number"
-                              required={
-                                guestDetails[member._id]?.attending === true
-                              }
-                              className="w-full"
-                            />
-                          </div>
+                          <Label className="mb-1 block font-medium text-gray-700 text-sm">
+                            Email or Phone Number *
+                          </Label>
+                          <Input
+                            type="text"
+                            value={guestDetails[member._id]?.contact || ''}
+                            onChange={(e) =>
+                              setGuestDetails((prev) => ({
+                                ...prev,
+                                [member._id]: {
+                                  ...prev[member._id],
+                                  contact: e.target.value,
+                                },
+                              }))
+                            }
+                            placeholder="..."
+                            required={
+                              guestDetails[member._id]?.attending === true
+                            }
+                            className="w-full"
+                          />
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -479,8 +456,8 @@ export default function RsvpForm() {
                         </div>
                       </div>
 
-                      {/* Email Field */}
-                      <div className="col-span-4">
+                      {/* Contact Field */}
+                      <div className="col-span-7">
                         <AnimatePresence>
                           {guestDetails[member._id]?.attending === true ? (
                             <motion.div
@@ -490,55 +467,18 @@ export default function RsvpForm() {
                               transition={{ duration: 0.15 }}
                             >
                               <Input
-                                type="email"
-                                value={guestDetails[member._id]?.email || ''}
+                                type="text"
+                                value={guestDetails[member._id]?.contact || ''}
                                 onChange={(e) =>
                                   setGuestDetails((prev) => ({
                                     ...prev,
                                     [member._id]: {
                                       ...prev[member._id],
-                                      email: e.target.value,
+                                      contact: e.target.value,
                                     },
                                   }))
                                 }
-                                placeholder="Email address"
-                                required={
-                                  guestDetails[member._id]?.attending === true
-                                }
-                                className="h-9 w-full text-sm"
-                              />
-                            </motion.div>
-                          ) : (
-                            <div className="text-muted-foreground text-sm">
-                              —
-                            </div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      {/* Phone Field */}
-                      <div className="col-span-3">
-                        <AnimatePresence>
-                          {guestDetails[member._id]?.attending === true ? (
-                            <motion.div
-                              initial={{ opacity: 0, width: 0 }}
-                              animate={{ opacity: 1, width: 'auto' }}
-                              exit={{ opacity: 0, width: 0 }}
-                              transition={{ duration: 0.15 }}
-                            >
-                              <Input
-                                type="tel"
-                                value={guestDetails[member._id]?.phone || ''}
-                                onChange={(e) =>
-                                  setGuestDetails((prev) => ({
-                                    ...prev,
-                                    [member._id]: {
-                                      ...prev[member._id],
-                                      phone: e.target.value,
-                                    },
-                                  }))
-                                }
-                                placeholder="Phone number"
+                                placeholder="Email or phone number"
                                 required={
                                   guestDetails[member._id]?.attending === true
                                 }
