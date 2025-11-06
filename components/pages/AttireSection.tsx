@@ -121,19 +121,9 @@ export default function AttireSection() {
           <h2 className="mb-4 font-serif text-2xl text-foreground/90 sm:mb-6 sm:text-3xl lg:text-5xl">
             Dress Code & Attire
           </h2>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-sm leading-relaxed sm:text-base lg:text-lg">
-            We invite you to join us in cocktail attire. Please consider wearing
-            colors from our curated palette below to create a harmonious
-            celebration. The venue is outdoors, so consider bringing a light
-            jacket for the evening.
-          </p>
         </div>
-
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div ref={paletteRef}>
-            <h3 className="mb-8 text-center font-medium text-muted-foreground text-xs tracking-[0.2em] lg:text-left">
-              SUGGESTED COLOUR PALETTE
-            </h3>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
               {colorPalette.map((color) => (
                 <div

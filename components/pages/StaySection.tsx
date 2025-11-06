@@ -184,6 +184,25 @@ export default function StaySection() {
           </h2>
         </div>
 
+        {/* Grab Transportation Info */}
+        <div
+          ref={grabRef}
+          className="mb-12 rounded-lg border border-muted/30 bg-muted/10 px-6 py-4"
+        >
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-lg">🚗</span>
+            <div className="text-sm">
+              <span className="font-medium text-foreground">
+                Getting Around:{' '}
+              </span>
+              <span className="text-muted-foreground">
+                Use Grab (like Uber) for rides, food, and groceries—the safest
+                way to travel locally.
+              </span>
+            </div>
+          </div>
+        </div>
+
         {/* Main Content */}
         <div className="space-y-16">
           {/* Accommodations List */}
@@ -311,50 +330,6 @@ export default function StaySection() {
               <Globe className="h-5 w-5" />
               Search Airbnb
             </a>
-          </div>
-
-          {/* Grab Transportation Section */}
-          <div
-            ref={grabRef}
-            className="rounded-xl bg-white p-8 shadow-lg lg:p-12"
-          >
-            <h3 className="mb-4 font-serif text-2xl text-foreground lg:text-3xl">
-              Getting Around with Grab
-            </h3>
-            <p className="mb-6 text-muted-foreground">
-              Grab is the equivalent to Uber in the Philippines—the safest way
-              to travel according to reviews online.
-            </p>
-
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <span className="text-lg">🚗</span>
-                <div>
-                  <span className="font-medium">Order Rides</span>
-                  <p className="text-muted-foreground">
-                    Safe and reliable transportation throughout the area
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-lg">🍔</span>
-                <div>
-                  <span className="font-medium">Food Delivery</span>
-                  <p className="text-muted-foreground">
-                    Get meals delivered from local restaurants
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-lg">🛒</span>
-                <div>
-                  <span className="font-medium">Grocery Delivery</span>
-                  <p className="text-muted-foreground">
-                    Order essentials and have them brought to you
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
