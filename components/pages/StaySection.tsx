@@ -212,84 +212,80 @@ export default function StaySection() {
                 key={accommodation.name}
                 className="accommodation-card rounded-xl bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl lg:p-8"
               >
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="flex-1">
-                    <div className="mb-3 flex items-center gap-3">
-                      <h3 className="font-serif text-foreground text-xl lg:text-2xl">
-                        {accommodation.name}
-                      </h3>
-                      <span className="rounded bg-primary/10 px-2 py-1 font-medium text-primary text-xs">
-                        {accommodation.priceCategory}
+                <div className="mb-3 flex items-center gap-3">
+                  <h3 className="font-serif text-foreground text-xl lg:text-2xl">
+                    {accommodation.name}
+                  </h3>
+                  <span className="rounded bg-primary/10 px-2 py-1 font-medium text-primary text-xs">
+                    {accommodation.priceCategory}
+                  </span>
+                </div>
+
+                <p className="mb-4 text-muted-foreground text-sm">
+                  {accommodation.description}
+                </p>
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 text-xs">💰</span>
+                    <span className="font-medium">
+                      ${accommodation.pricePerNight}/night
+                    </span>
+                  </div>
+
+                  {accommodation.capacity && (
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 text-xs">👥</span>
+                      <span className="text-muted-foreground">
+                        {accommodation.capacity}
                       </span>
                     </div>
+                  )}
 
-                    <p className="mb-4 text-muted-foreground text-sm">
-                      {accommodation.description}
-                    </p>
-
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-start gap-2">
-                        <span className="mt-0.5 text-xs">💰</span>
-                        <span className="font-medium">
-                          ${accommodation.pricePerNight}/night
-                        </span>
-                      </div>
-
-                      {accommodation.capacity && (
-                        <div className="flex items-start gap-2">
-                          <span className="mt-0.5 text-xs">👥</span>
-                          <span className="text-muted-foreground">
-                            {accommodation.capacity}
-                          </span>
-                        </div>
-                      )}
-
-                      {accommodation.details && (
-                        <div className="flex items-start gap-2">
-                          <span className="mt-0.5 text-xs">🏠</span>
-                          <span className="text-muted-foreground">
-                            {accommodation.details}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="flex items-start gap-2">
-                        <span className="mt-0.5 text-xs">🚗</span>
-                        <span className="text-muted-foreground">
-                          {accommodation.driveTime} - {accommodation.distance}
-                        </span>
-                      </div>
-
-                      <div className="flex items-start gap-2">
-                        <span className="mt-0.5 text-xs">✈️</span>
-                        <span className="text-muted-foreground">
-                          {accommodation.airportTime}
-                          {accommodation.note &&
-                            ' (depending on traffic, might be higher)'}
-                        </span>
-                      </div>
-
-                      {accommodation.note && (
-                        <div className="flex items-start gap-2">
-                          <span className="mt-0.5 text-xs">ℹ️</span>
-                          <span className="text-muted-foreground text-xs italic">
-                            {accommodation.note}
-                          </span>
-                        </div>
-                      )}
+                  {accommodation.details && (
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 text-xs">🏠</span>
+                      <span className="text-muted-foreground">
+                        {accommodation.details}
+                      </span>
                     </div>
+                  )}
 
-                    <a
-                      href={accommodation.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 text-primary underline-offset-2 hover:underline"
-                    >
-                      <Globe className="h-4 w-4" />
-                      View Details
-                    </a>
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 text-xs">🚗</span>
+                    <span className="text-muted-foreground">
+                      {accommodation.driveTime} - {accommodation.distance}
+                    </span>
                   </div>
+
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 text-xs">✈️</span>
+                    <span className="text-muted-foreground">
+                      {accommodation.airportTime}
+                      {accommodation.note &&
+                        ' (depending on traffic, might be higher)'}
+                    </span>
+                  </div>
+
+                  {accommodation.note && (
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 text-xs">ℹ️</span>
+                      <span className="text-muted-foreground text-xs italic">
+                        {accommodation.note}
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                <a
+                  href={accommodation.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-primary underline-offset-2 hover:underline"
+                >
+                  <Globe className="h-4 w-4" />
+                  View Details
+                </a>
               </div>
             ))}
           </div>

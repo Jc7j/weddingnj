@@ -128,21 +128,19 @@ export default function AttireSection() {
               {colorPalette.map((color) => (
                 <div
                   key={color.name}
-                  className="color-card group cursor-pointer transition-transform duration-200 hover:scale-105"
+                  className="color-card group cursor-pointer overflow-hidden rounded-lg shadow-md transition-transform duration-200 hover:scale-105"
                 >
-                  <div className="overflow-hidden rounded-lg shadow-md">
-                    <div
-                      className="aspect-square w-full"
-                      style={{ backgroundColor: color.hex }}
-                    />
-                    <div className="bg-white p-2 text-center sm:p-3">
-                      <p className="font-medium text-foreground text-xs sm:text-sm">
-                        {color.name}
-                      </p>
-                      <p className="mt-0.5 font-mono text-[10px] text-muted-foreground sm:mt-1 sm:text-xs">
-                        {color.hex}
-                      </p>
-                    </div>
+                  <div
+                    className="aspect-square w-full"
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <div className="bg-white p-2 text-center sm:p-3">
+                    <p className="font-medium text-foreground text-xs sm:text-sm">
+                      {color.name}
+                    </p>
+                    <p className="mt-0.5 font-mono text-[10px] text-muted-foreground sm:mt-1 sm:text-xs">
+                      {color.hex}
+                    </p>
                   </div>
                 </div>
               ))}

@@ -105,66 +105,61 @@ export default function Header({ onRsvpClick }: HeaderProps) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden md:hidden"
+            className="container mx-auto overflow-hidden border-t bg-background px-4 py-4 md:hidden"
           >
-            <div className="container mx-auto border-t bg-background px-4 py-4">
-              <motion.ul
-                className="space-y-4"
-                initial="closed"
-                animate="open"
-                exit="closed"
-                variants={{
-                  open: {
-                    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-                  },
-                  closed: {
-                    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-                  },
-                }}
-              >
-                {navItems.map((item) => (
-                  <motion.li
-                    key={item.href}
-                    variants={{
-                      open: { opacity: 1, y: 0 },
-                      closed: { opacity: 0, y: -10 },
-                    }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Button
-                      variant="ghost"
-                      onClick={() => scrollToSection(item.href)}
-                      className="block py-2 font-medium text-sm transition-colors hover:text-primary"
-                    >
-                      {item.label}
-                    </Button>
-                  </motion.li>
-                ))}
+            <motion.ul
+              className="space-y-4"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: {
+                  transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+                },
+                closed: {
+                  transition: { staggerChildren: 0.05, staggerDirection: -1 },
+                },
+              }}
+            >
+              {navItems.map((item) => (
                 <motion.li
+                  key={item.href}
                   variants={{
                     open: { opacity: 1, y: 0 },
                     closed: { opacity: 0, y: -10 },
                   }}
                   transition={{ duration: 0.2 }}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <Button
+                    variant="ghost"
+                    onClick={() => scrollToSection(item.href)}
+                    className="block py-2 font-medium text-sm transition-colors hover:text-primary"
                   >
-                    <Button
-                      size="sm"
-                      className="w-full rounded-full px-8 py-2 font-medium text-white tracking-wide transition-colors hover:opacity-90"
-                      onClick={() => {
-                        setIsMenuOpen(false)
-                        onRsvpClick()
-                      }}
-                    >
-                      RSVP
-                    </Button>
-                  </motion.div>
+                    {item.label}
+                  </Button>
                 </motion.li>
-              </motion.ul>
-            </div>
+              ))}
+              <motion.li
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: -10 },
+                }}
+                transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  size="sm"
+                  className="w-full rounded-full px-8 py-2 font-medium text-white tracking-wide transition-colors hover:opacity-90"
+                  onClick={() => {
+                    setIsMenuOpen(false)
+                    onRsvpClick()
+                  }}
+                >
+                  RSVP
+                </Button>
+              </motion.li>
+            </motion.ul>
           </motion.div>
         )}
       </AnimatePresence>

@@ -126,6 +126,64 @@ export default function RsvpForm() {
     })
   }
 
+  // Helper: Render attendance radio buttons
+  function renderAttendanceRadios(member: Guest, isMobile: boolean) {
+    const baseClasses = isMobile
+      ? 'flex flex-1 cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm transition-colors'
+      : 'flex flex-1 cursor-pointer items-center justify-center rounded border px-2 py-1 text-xs transition-colors'
+
+    return (
+      <div className={`flex ${isMobile ? 'gap-2' : 'gap-1'}`} role="radiogroup" aria-label={`Attendance ${isMobile ? 'choice' : ''} for ${member.name}`}>
+        <Label className={`${baseClasses} ${guestDetails[member._id]?.attending === true ? 'border-green-600 bg-green-100 text-green-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+          <input
+            type="radio"
+            name={`attending-${member._id}`}
+            checked={guestDetails[member._id]?.attending === true}
+            onChange={() => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], attending: true } }))}
+            className="sr-only"
+          />
+          Yes
+        </Label>
+        <Label className={`${baseClasses} ${guestDetails[member._id]?.attending === false ? 'border-red-600 bg-red-100 text-red-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+          <input
+            type="radio"
+            name={`attending-${member._id}`}
+            checked={guestDetails[member._id]?.attending === false}
+            onChange={() => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], attending: false } }))}
+            className="sr-only"
+          />
+          No
+        </Label>
+      </div>
+    )
+  }
+
+  // Helper: Render contact input with animation
+  function renderContactInput(member: Guest, isMobile: boolean) {
+    if (guestDetails[member._id]?.attending !== true) {
+      return !isMobile ? <div className="text-muted-foreground text-sm">—</div> : null
+    }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, [isMobile ? 'height' : 'width']: 0 }}
+        animate={{ opacity: 1, [isMobile ? 'height' : 'width']: 'auto' }}
+        exit={{ opacity: 0, [isMobile ? 'height' : 'width']: 0 }}
+        transition={{ duration: 0.15 }}
+      >
+        {isMobile && <Label className="mb-1 block font-medium text-gray-700 text-sm">Email or Phone Number *</Label>}
+        <Input
+          type="text"
+          value={guestDetails[member._id]?.contact || ''}
+          onChange={(e) => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], contact: e.target.value } }))}
+          placeholder={isMobile ? '...' : 'Email or phone number'}
+          required={guestDetails[member._id]?.attending === true}
+          className={isMobile ? 'w-full' : 'h-9 w-full text-sm'}
+        />
+      </motion.div>
+    )
+  }
+
   // Show search form if no guest found
   if (!foundGuest) {
     return (
@@ -259,11 +317,7 @@ export default function RsvpForm() {
           </div>
 
           {/* Guest Rows */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-3"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
             <AnimatePresence>
               {allPartyMembers.map((member, index) => (
                 <motion.div
@@ -271,227 +325,34 @@ export default function RsvpForm() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.02 }}
-                  className={`rounded-lg border bg-white/50 p-3 shadow-sm transition-colors hover:bg-white/70 ${
-                    index % 2 === 0 ? 'bg-white/40' : 'bg-white/60'
-                  }`}
+                  className={`rounded-lg border bg-white/50 p-3 shadow-sm transition-colors hover:bg-white/70 ${index % 2 === 0 ? 'bg-white/40' : 'bg-white/60'}`}
                 >
                   {/* Mobile Layout */}
                   <div className="space-y-3 lg:hidden">
-                    {/* Guest Name */}
                     <div className="border-gray-200 border-b pb-2">
-                      <h4 className="font-medium text-gray-900">
-                        {member.name}
-                      </h4>
+                      <h4 className="font-medium text-gray-900">{member.name}</h4>
                     </div>
-
-                    {/* Attendance Selection */}
                     <div>
-                      <Label className="mb-2 block font-medium text-gray-700 text-sm">
-                        Attending *
-                      </Label>
-                      <div
-                        className="flex gap-2"
-                        role="radiogroup"
-                        aria-label={`Attendance choice for ${member.name}`}
-                      >
-                        <Label
-                          className={`flex flex-1 cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm transition-colors ${
-                            guestDetails[member._id]?.attending === true
-                              ? 'border-green-600 bg-green-100 text-green-800'
-                              : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name={`attending-${member._id}`}
-                            checked={
-                              guestDetails[member._id]?.attending === true
-                            }
-                            onChange={() =>
-                              setGuestDetails((prev) => ({
-                                ...prev,
-                                [member._id]: {
-                                  ...prev[member._id],
-                                  attending: true,
-                                },
-                              }))
-                            }
-                            className="sr-only"
-                          />
-                          Yes
-                        </Label>
-                        <Label
-                          className={`flex flex-1 cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm transition-colors ${
-                            guestDetails[member._id]?.attending === false
-                              ? 'border-red-600 bg-red-100 text-red-800'
-                              : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name={`attending-${member._id}`}
-                            checked={
-                              guestDetails[member._id]?.attending === false
-                            }
-                            onChange={() =>
-                              setGuestDetails((prev) => ({
-                                ...prev,
-                                [member._id]: {
-                                  ...prev[member._id],
-                                  attending: false,
-                                },
-                              }))
-                            }
-                            className="sr-only"
-                          />
-                          No
-                        </Label>
-                      </div>
+                      <Label className="mb-2 block font-medium text-gray-700 text-sm">Attending *</Label>
+                      {renderAttendanceRadios(member, true)}
                     </div>
-
-                    {/* Contact Information - Mobile */}
                     <AnimatePresence>
-                      {guestDetails[member._id]?.attending === true && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.15 }}
-                        >
-                          <Label className="mb-1 block font-medium text-gray-700 text-sm">
-                            Email or Phone Number *
-                          </Label>
-                          <Input
-                            type="text"
-                            value={guestDetails[member._id]?.contact || ''}
-                            onChange={(e) =>
-                              setGuestDetails((prev) => ({
-                                ...prev,
-                                [member._id]: {
-                                  ...prev[member._id],
-                                  contact: e.target.value,
-                                },
-                              }))
-                            }
-                            placeholder="..."
-                            required={
-                              guestDetails[member._id]?.attending === true
-                            }
-                            className="w-full"
-                          />
-                        </motion.div>
-                      )}
+                      {guestDetails[member._id]?.attending === true && renderContactInput(member, true)}
                     </AnimatePresence>
                   </div>
 
                   {/* Desktop Layout */}
-                  <div className="hidden lg:block">
-                    <div className="grid grid-cols-12 items-center gap-12">
-                      {/* Guest Name */}
-                      <div className="col-span-3">
-                        <h4 className="truncate font-medium text-gray-900">
-                          {member.name}
-                        </h4>
-                      </div>
-
-                      {/* Attendance Selection */}
-                      <div className="col-span-2">
-                        <div
-                          className="flex gap-1"
-                          role="radiogroup"
-                          aria-label={`Attendance for ${member.name}`}
-                        >
-                          <Label
-                            className={`flex flex-1 cursor-pointer items-center justify-center rounded border px-2 py-1 text-xs transition-colors ${
-                              guestDetails[member._id]?.attending === true
-                                ? 'border-green-600 bg-green-100 text-green-800'
-                                : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name={`attending-${member._id}`}
-                              checked={
-                                guestDetails[member._id]?.attending === true
-                              }
-                              onChange={() =>
-                                setGuestDetails((prev) => ({
-                                  ...prev,
-                                  [member._id]: {
-                                    ...prev[member._id],
-                                    attending: true,
-                                  },
-                                }))
-                              }
-                              className="sr-only"
-                            />
-                            Yes
-                          </Label>
-                          <Label
-                            className={`flex flex-1 cursor-pointer items-center justify-center rounded border px-2 py-1 text-xs transition-colors ${
-                              guestDetails[member._id]?.attending === false
-                                ? 'border-red-600 bg-red-100 text-red-800'
-                                : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name={`attending-${member._id}`}
-                              checked={
-                                guestDetails[member._id]?.attending === false
-                              }
-                              onChange={() =>
-                                setGuestDetails((prev) => ({
-                                  ...prev,
-                                  [member._id]: {
-                                    ...prev[member._id],
-                                    attending: false,
-                                  },
-                                }))
-                              }
-                              className="sr-only"
-                            />
-                            No
-                          </Label>
-                        </div>
-                      </div>
-
-                      {/* Contact Field */}
-                      <div className="col-span-7">
-                        <AnimatePresence>
-                          {guestDetails[member._id]?.attending === true ? (
-                            <motion.div
-                              initial={{ opacity: 0, width: 0 }}
-                              animate={{ opacity: 1, width: 'auto' }}
-                              exit={{ opacity: 0, width: 0 }}
-                              transition={{ duration: 0.15 }}
-                            >
-                              <Input
-                                type="text"
-                                value={guestDetails[member._id]?.contact || ''}
-                                onChange={(e) =>
-                                  setGuestDetails((prev) => ({
-                                    ...prev,
-                                    [member._id]: {
-                                      ...prev[member._id],
-                                      contact: e.target.value,
-                                    },
-                                  }))
-                                }
-                                placeholder="Email or phone number"
-                                required={
-                                  guestDetails[member._id]?.attending === true
-                                }
-                                className="h-9 w-full text-sm"
-                              />
-                            </motion.div>
-                          ) : (
-                            <div className="text-muted-foreground text-sm">
-                              —
-                            </div>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                  <div className="hidden grid-cols-12 items-center gap-12 lg:grid">
+                    <div className="col-span-3">
+                      <h4 className="truncate font-medium text-gray-900">{member.name}</h4>
+                    </div>
+                    <div className="col-span-2">
+                      {renderAttendanceRadios(member, false)}
+                    </div>
+                    <div className="col-span-7">
+                      <AnimatePresence>
+                        {renderContactInput(member, false)}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </motion.div>

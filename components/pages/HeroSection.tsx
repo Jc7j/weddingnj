@@ -305,68 +305,57 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
       {/* Scattered Photos */}
       {imagePositions.map((position, index) => (
-        <div key={position.id}>
+        <>
           {/* Desktop Images */}
           <div
+            key={`${position.id}-desktop`}
             ref={(el) => {
               if (el) imagesRef.current[index] = el
             }}
-            className="absolute hidden lg:block"
+            className="group absolute hidden overflow-hidden rounded-lg shadow-lg transition-all duration-500 before:absolute before:inset-0 before:bg-gradient-to-t before:from-black/10 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300 hover:shadow-2xl group-hover:before:opacity-100 lg:block"
             style={{
               top: position.desktop.top,
               bottom: position.desktop.bottom,
               left: position.desktop.left,
               right: position.desktop.right,
+              width: position.desktop.width,
+              height: position.desktop.height,
               transform: `rotate(${position.desktop.rotation}deg)`,
             }}
           >
-            <div
-              className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-500 hover:shadow-2xl"
-              style={{
-                width: position.desktop.width,
-                height: position.desktop.height,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <Image
-                src={position.src}
-                alt={position.alt}
-                fill
-                className="object-cover transition-all duration-500 group-hover:rotate-1 group-hover:scale-105"
-                sizes="(max-width: 768px) 160px, 320px"
-                priority
-              />
-            </div>
+            <Image
+              src={position.src}
+              alt={position.alt}
+              fill
+              className="object-cover transition-all duration-500 group-hover:rotate-1 group-hover:scale-105"
+              sizes="(max-width: 768px) 160px, 320px"
+              priority
+            />
           </div>
 
           {/* Mobile Images */}
           <div
-            className="absolute block lg:hidden"
+            key={`${position.id}-mobile`}
+            className="absolute block overflow-hidden rounded-md shadow-md lg:hidden"
             style={{
               top: position.mobile.top,
               bottom: position.mobile.bottom,
               left: position.mobile.left,
               right: position.mobile.right,
+              width: position.mobile.width,
+              height: position.mobile.height,
               transform: `rotate(${position.mobile.rotation}deg)`,
             }}
           >
-            <div
-              className="relative overflow-hidden rounded-md shadow-md"
-              style={{
-                width: position.mobile.width,
-                height: position.mobile.height,
-              }}
-            >
-              <Image
-                src={position.src}
-                alt={position.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 160px, 320px"
-              />
-            </div>
+            <Image
+              src={position.src}
+              alt={position.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 160px, 320px"
+            />
           </div>
-        </div>
+        </>
       ))}
 
       {/* Main Content with Soft Glow */}

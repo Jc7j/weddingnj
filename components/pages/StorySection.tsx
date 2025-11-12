@@ -234,38 +234,34 @@ export default function StorySection() {
             </div>
 
             {/* Image with Frame */}
-            <div className="gstory-image relative order-1 lg:order-2">
-              <div className="relative mx-auto max-w-[240px] sm:max-w-sm lg:max-w-none">
-                {/* Decorative Frame */}
-                <div
-                  className="-inset-4 absolute rounded-2xl opacity-20"
-                  style={{ backgroundColor: currentPart.accentColor }}
-                />
-                <div className="-inset-2 absolute rounded-2xl border-2 border-white/30" />
+            <div className="gstory-image relative order-1 mx-auto max-w-[240px] sm:max-w-sm lg:order-2 lg:max-w-none">
+              {/* Decorative Frame with dynamic color */}
+              <div
+                className="-inset-4 absolute rounded-2xl opacity-20"
+                style={{ backgroundColor: currentPart.accentColor }}
+              />
+              {/* Main Image Container */}
+              <div
+                ref={imageRef}
+                className="after:-inset-2 relative overflow-hidden rounded-xl shadow-2xl after:absolute after:rounded-2xl after:border-2 after:border-white/30"
+              >
+                <div className="relative aspect-[4/3] sm:aspect-[3/4]">
+                  <Image
+                    src={currentPart.image}
+                    alt={currentPart.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={currentPartIndex === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                </div>
 
-                {/* Main Image Container */}
-                <div
-                  ref={imageRef}
-                  className="relative overflow-hidden rounded-xl shadow-2xl"
-                >
-                  <div className="relative aspect-[4/3] sm:aspect-[3/4]">
-                    <Image
-                      src={currentPart.image}
-                      alt={currentPart.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority={currentPartIndex === 0}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                  </div>
-
-                  {/* Image Label */}
-                  <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    <p className="font-medium text-sm text-white">
-                      Part {currentPartIndex + 1} of 4
-                    </p>
-                  </div>
+                {/* Image Label */}
+                <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  <p className="font-medium text-sm text-white">
+                    Part {currentPartIndex + 1} of 4
+                  </p>
                 </div>
               </div>
             </div>

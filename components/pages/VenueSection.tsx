@@ -161,7 +161,7 @@ export default function VenueSection() {
           <div className="space-y-8">
             {/* Venue Images */}
             <div ref={imagesRef} className="grid grid-cols-2 gap-4">
-              <div className="venue-image group relative col-span-2 aspect-[16/10] overflow-hidden rounded-xl shadow-lg">
+              <div className="venue-image group relative col-span-2 aspect-[16/10] overflow-hidden rounded-xl shadow-lg after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/30 after:via-transparent after:to-transparent">
                 <Image
                   src="/venue/Venue-1.png"
                   alt="Main venue view"
@@ -169,7 +169,6 @@ export default function VenueSection() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
               <div className="venue-image group relative aspect-square overflow-hidden rounded-xl shadow-lg">
                 <Image

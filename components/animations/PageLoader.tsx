@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion'
+import { motion, useSpring, useTransform } from 'framer-motion'
 import { gsap } from 'gsap'
 
 interface PageLoaderProps {
@@ -197,14 +197,13 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
   }, [onComplete, textChars, isMobile])
 
   return (
-    <AnimatePresence>
-      <motion.div
-        ref={loaderRef}
-        className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
+    <motion.div
+      ref={loaderRef}
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
         {/* Dynamic gradient background with parallax */}
         <motion.div
           className="absolute inset-0"
@@ -276,6 +275,5 @@ export default function PageLoader({ onComplete }: PageLoaderProps) {
           }}
         />
       </motion.div>
-    </AnimatePresence>
   )
 }

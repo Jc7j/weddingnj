@@ -285,50 +285,35 @@ export default function DetailsSection() {
               return (
                 <div
                   key={item.id}
-                  className={`detail-item mb-6 sm:mb-8 lg:mb-0 ${
+                  className={`detail-item group relative mb-6 w-full overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl sm:mb-8 lg:mb-0 ${
                     isLeft ? 'lg:pr-[55%]' : 'lg:pl-[55%]'
-                  } w-full`}
+                  } after:-translate-y-8 ml-6 p-4 before:absolute before:inset-0 before:bg-gradient-to-t before:from-black/5 before:to-transparent before:opacity-0 before:transition-opacity before:duration-300 after:absolute after:top-0 after:right-0 after:h-16 after:w-16 after:translate-x-8 after:rotate-45 after:bg-white/10 group-hover:before:opacity-100 sm:ml-8 sm:p-6 lg:ml-0 lg:p-8`}
+                  style={{ backgroundColor: item.bgColor }}
                 >
-                  {/* Card */}
-                  <div
-                    className="group relative ml-6 overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl sm:ml-8 lg:ml-0"
-                    style={{ backgroundColor: item.bgColor }}
-                  >
-                    <div className="p-4 sm:p-6 lg:p-8">
-                      {/* Number and Label */}
-                      <div className="mb-3 flex items-center sm:mb-4">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/50 font-bold text-foreground/70 text-xs sm:h-8 sm:w-8 sm:text-sm">
-                            {index + 1}
-                          </span>
-                          <p className="font-medium text-[10px] text-foreground/70 tracking-[0.2em] sm:text-xs">
-                            {item.label}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Title and Time */}
-                      <div className="mb-3 sm:mb-4">
-                        <h3 className="mb-2 font-serif text-foreground text-xl sm:text-2xl lg:text-3xl">
-                          {item.title}
-                        </h3>
-                        <p className="font-medium text-foreground/50 text-xs sm:text-sm">
-                          {item.time}
-                        </p>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-foreground/70 text-xs leading-relaxed sm:text-sm lg:text-base">
-                        {item.description}
-                      </p>
-
-                      {/* Decorative Corner */}
-                      <div className="-translate-y-8 absolute top-0 right-0 h-16 w-16 translate-x-8 rotate-45 bg-white/10" />
-                    </div>
-
-                    {/* Hover Effect Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  {/* Number and Label */}
+                  <div className="mb-3 flex items-center gap-2 sm:mb-4 sm:gap-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/50 font-bold text-foreground/70 text-xs sm:h-8 sm:w-8 sm:text-sm">
+                      {index + 1}
+                    </span>
+                    <p className="font-medium text-[10px] text-foreground/70 tracking-[0.2em] sm:text-xs">
+                      {item.label}
+                    </p>
                   </div>
+
+                  {/* Title and Time */}
+                  <div className="mb-3 sm:mb-4">
+                    <h3 className="mb-2 font-serif text-foreground text-xl sm:text-2xl lg:text-3xl">
+                      {item.title}
+                    </h3>
+                    <p className="font-medium text-foreground/50 text-xs sm:text-sm">
+                      {item.time}
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-foreground/70 text-xs leading-relaxed sm:text-sm lg:text-base">
+                    {item.description}
+                  </p>
                 </div>
               )
             })}

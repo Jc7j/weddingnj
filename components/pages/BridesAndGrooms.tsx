@@ -180,7 +180,6 @@ export default function BridesAndGroomsSection() {
                   className="relative px-6 pt-6 pb-4"
                   style={{ backgroundColor: `${member.bgColor}40` }}
                 >
-                  {/* Name and Role */}
                   <h3 className="mb-1 font-serif text-foreground text-xl">
                     {member.name}
                   </h3>
@@ -195,7 +194,7 @@ export default function BridesAndGroomsSection() {
                 </div>
 
                 {/* Image Container */}
-                <div className="relative mx-4 mb-4 h-64 overflow-hidden rounded-2xl shadow-inner">
+                <div className="relative mx-4 mb-4 h-64 overflow-hidden rounded-2xl shadow-inner after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/20 after:to-transparent">
                   <div
                     className="absolute inset-0 opacity-10"
                     style={{ backgroundColor: member.accentColor }}
@@ -207,7 +206,6 @@ export default function BridesAndGroomsSection() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
 
                 {/* Story */}
@@ -217,7 +215,7 @@ export default function BridesAndGroomsSection() {
                   </p>
                 </div>
 
-                {/* Decorative Elements */}
+                {/* Decorative Bottom Stripe */}
                 <div
                   className="absolute right-0 bottom-0 left-0 h-1"
                   style={{ backgroundColor: member.accentColor }}
