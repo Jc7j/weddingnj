@@ -44,7 +44,7 @@ export default function Header({ onRsvpClick }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-gradient-to-b from-white/50 to-transparent">
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-b from-background/50 to-transparent">
       <div className="container mx-auto px-4">
         <nav className="flex h-16 items-center justify-between">
           <Link

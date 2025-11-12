@@ -103,13 +103,6 @@ export default function StorySection() {
     }
   }
 
-  // Set initial background color
-  useEffect(() => {
-    document.body.style.backgroundColor = storyParts[0].bgColor
-    return () => {
-      document.body.style.backgroundColor = ''
-    }
-  }, [])
 
   // Animate content transitions
   useEffect(() => {
@@ -152,20 +145,13 @@ export default function StorySection() {
       }
     )
 
-    // Update background color
-    gsap.to(document.body, {
-      backgroundColor: part.bgColor,
-      duration: 0.6,
-      ease: 'power2.inOut',
-    })
   }, [currentPartIndex])
 
   return (
     <section
       id="story"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden"
-      style={{ backgroundColor: currentPart.bgColor }}
+      className="relative min-h-screen w-full overflow-hidden bg-background"
     >
       <DecorativeBackground variant="light" density="sparse" />
 

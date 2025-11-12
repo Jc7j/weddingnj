@@ -61,7 +61,7 @@ const weddingParty = [
     relationship: 'Sister',
     story:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-    bgColor: '#F0E6D5',
+    bgColor: '#D5F0E6',
     accentColor: '#E6D5F0',
     image: '/dogs/choco.png',
   },

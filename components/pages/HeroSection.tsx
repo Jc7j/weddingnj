@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 import { Button } from '~/components/ui/button'
 import DecorativeBackground from '~/components/ui/decorative-background'
@@ -305,7 +305,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
 
       {/* Scattered Photos */}
       {imagePositions.map((position, index) => (
-        <>
+        <Fragment key={position.id}>
           {/* Desktop Images */}
           <div
             key={`${position.id}-desktop`}
@@ -355,7 +355,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
               sizes="(max-width: 768px) 160px, 320px"
             />
           </div>
-        </>
+        </Fragment>
       ))}
 
       {/* Main Content with Soft Glow */}

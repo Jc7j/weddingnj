@@ -16,7 +16,7 @@ const detailItems = [
     description:
       'Join us for drinks and light appetizers as we kick off our wedding weekend at the resort lounge.',
     position: 'left',
-    bgColor: '#F0E6D5',
+    bgColor: '#D5F0E6',
   },
   {
     id: 'ceremony',
