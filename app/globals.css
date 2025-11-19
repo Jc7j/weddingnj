@@ -60,26 +60,26 @@ html {
   --radius: 0.625rem;
   /* Mint green background */
   --background: oklch(0.96 0.02 165);
-  /* Dark charcoal foreground */
-  --foreground: oklch(0.25 0.01 0);
+  /* Sage green text */
+  --foreground: oklch(0.42 0.04 130);
   /* Light cream card */
   --card: oklch(0.98 0.015 70);
-  --card-foreground: oklch(0.25 0.01 0);
+  --card-foreground: oklch(0.42 0.04 130);
   /* Popover same as card */
   --popover: oklch(0.98 0.015 70);
-  --popover-foreground: oklch(0.25 0.01 0);
+  --popover-foreground: oklch(0.42 0.04 130);
   /* Dark green primary */
   --primary: oklch(0.28 0.05 140);
   --primary-foreground: oklch(0.98 0 0);
   /* Sage green secondary */
   --secondary: oklch(0.88 0.06 140);
-  --secondary-foreground: oklch(0.25 0.01 0);
+  --secondary-foreground: oklch(0.42 0.04 130);
   /* Muted blue-gray */
   --muted: oklch(0.92 0.02 220);
   --muted-foreground: oklch(0.45 0.02 220);
   /* Dusty rose accent */
   --accent: oklch(0.9 0.05 10);
-  --accent-foreground: oklch(0.25 0.01 0);
+  --accent-foreground: oklch(0.42 0.04 130);
   /* Soft red for destructive */
   --destructive: oklch(0.65 0.15 25);
   /* Soft borders */
@@ -106,26 +106,26 @@ html {
 .dark {
   /* Dark mint background */
   --background: oklch(0.15 0.02 165);
-  /* Light cream foreground */
-  --foreground: oklch(0.96 0.02 70);
+  /* Sage green text */
+  --foreground: oklch(0.42 0.04 130);
   /* Slightly lighter card */
   --card: oklch(0.2 0.01 0);
-  --card-foreground: oklch(0.96 0.02 70);
+  --card-foreground: oklch(0.42 0.04 130);
   /* Popover same as card */
   --popover: oklch(0.2 0.01 0);
-  --popover-foreground: oklch(0.96 0.02 70);
+  --popover-foreground: oklch(0.42 0.04 130);
   /* Dark green primary */
   --primary: oklch(0.32 0.05 140);
   --primary-foreground: oklch(0.15 0.01 0);
   /* Sage green secondary */
   --secondary: oklch(0.78 0.06 140);
-  --secondary-foreground: oklch(0.15 0.01 0);
+  --secondary-foreground: oklch(0.42 0.04 130);
   /* Muted blue-gray */
   --muted: oklch(0.3 0.02 220);
   --muted-foreground: oklch(0.65 0.02 220);
   /* Dusty rose accent */
   --accent: oklch(0.8 0.05 10);
-  --accent-foreground: oklch(0.15 0.01 0);
+  --accent-foreground: oklch(0.42 0.04 130);
   /* Soft red for destructive */
   --destructive: oklch(0.55 0.15 25);
   /* Soft borders */
