@@ -1,21 +1,19 @@
-import { Dancing_Script, Geist, Geist_Mono } from 'next/font/google'
+import { Cormorant_Garamond } from 'next/font/google'
+import localFont from 'next/font/local'
 
 import type { Metadata } from 'next'
 import './globals.css'
+
 import { ConvexClientProvider } from '~/components/ConvexClientProvider'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const billionMiracles = localFont({
+  src: '../fonts/Billion Miracles Personal Use Only.ttf',
+  variable: '--font-heading',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
-
-const dancingScript = Dancing_Script({
-  variable: '--font-dancing-script',
+const cormorantGaramond = Cormorant_Garamond({
+  variable: '--font-body',
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
 })
 
@@ -33,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} antialiased`}
+        className={`${billionMiracles.variable} ${cormorantGaramond.variable} antialiased`}
       >
         <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>

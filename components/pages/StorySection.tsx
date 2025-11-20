@@ -103,7 +103,6 @@ export default function StorySection() {
     }
   }
 
-
   // Animate content transitions
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -116,8 +115,6 @@ export default function StorySection() {
     const content = contentRef.current
     const image = imageRef.current
     if (!content || !image) return
-
-    const part = storyParts[currentPartIndex]
 
     // Simple fade transition for text
     const textElements = content.querySelectorAll('.story-text')
@@ -144,7 +141,6 @@ export default function StorySection() {
         ease: 'power2.out',
       }
     )
-
   }, [currentPartIndex])
 
   return (
@@ -229,19 +225,17 @@ export default function StorySection() {
               {/* Main Image Container */}
               <div
                 ref={imageRef}
-                className="after:-inset-2 relative overflow-hidden rounded-xl shadow-2xl after:absolute after:rounded-2xl after:border-2 after:border-white/30"
+                className="after:-inset-2 relative aspect-[4/3] overflow-hidden rounded-xl shadow-2xl after:absolute after:rounded-2xl after:border-2 after:border-white/30 sm:aspect-[3/4]"
               >
-                <div className="relative aspect-[4/3] sm:aspect-[3/4]">
-                  <Image
-                    src={currentPart.image}
-                    alt={currentPart.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority={currentPartIndex === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                </div>
+                <Image
+                  src={currentPart.image}
+                  alt={currentPart.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={currentPartIndex === 0}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
                 {/* Image Label */}
                 <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-4">

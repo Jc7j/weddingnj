@@ -149,7 +149,6 @@ interface HeroProps {
 
 export default function HeroSection({ onRsvpClick }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
   const dateRef = useRef<HTMLDivElement>(null)
   const locationRef = useRef<HTMLParagraphElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -167,7 +166,6 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
       // Set initial states
       gsap.set(
         [
-          titleRef.current,
           dateRef.current,
           locationRef.current,
           buttonRef.current,
@@ -213,21 +211,11 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
           '-=0.8'
         )
         .to(
-          titleRef.current,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          '-=0.6'
-        )
-        .to(
           locationRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: 'power2.out',
           },
           '-=0.4'
@@ -366,32 +354,26 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
         <div className="relative">
           <div ref={dateRef} className="mb-8 space-y-2">
             <p
-              className="mb-2 font-light text-xs uppercase tracking-[0.3em]"
+              className="mb-2 font-light text-sm uppercase tracking-[0.3em] sm:text-base md:text-lg lg:text-xl"
               style={{ color: '#2B4735' }}
             >
               Save the Date
             </p>
             <div
-              className="flex items-center justify-center gap-3 text-lg tracking-[0.2em]"
+              className="flex items-center justify-center gap-3 text-2xl tracking-[0.2em] sm:text-3xl md:text-4xl lg:text-5xl"
               style={{ color: '#2B4735' }}
             >
               <span className="font-medium">THURSDAY</span>
-              <span className="text-xl opacity-40">•</span>
+              <span className="text-3xl opacity-40 sm:text-4xl md:text-5xl">
+                •
+              </span>
               <span>05.21.2026</span>
             </div>
           </div>
 
-          <h1
-            ref={titleRef}
-            className="mb-6 font-serif text-5xl tracking-wider sm:text-6xl md:text-8xl lg:text-9xl"
-            style={{ color: '#2B4735' }}
-          >
-            NICOLE & JAMES
-          </h1>
-
           <p
             ref={locationRef}
-            className="mb-12 font-script text-4xl sm:text-5xl md:text-6xl"
+            className="mb-16 font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl"
             style={{ color: '#2B4735' }}
           >
             Philippines
@@ -419,7 +401,7 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
         className="absolute inset-x-0 bottom-16 z-20 flex flex-col items-center"
       >
         <p
-          className="mb-3 font-light text-sm uppercase tracking-[0.2em] opacity-70"
+          className="mb-3 font-light text-sm uppercase tracking-[0.2em] opacity-70 sm:text-base"
           style={{ color: '#2B4735' }}
         >
           Discover our story

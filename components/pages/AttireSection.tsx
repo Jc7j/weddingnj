@@ -196,7 +196,7 @@ export default function AttireSection() {
     <section
       id="attire"
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-background py-20 lg:py-32"
+      className="relative w-full overflow-hidden bg-background py-8 lg:py-12"
     >
       <DecorativeBackground variant="light" density="sparse" />
 
@@ -225,13 +225,13 @@ export default function AttireSection() {
 
           {/* Center Column - Attire Information (Desktop Only) */}
           <div className="flex flex-col items-center justify-center text-center">
-            <h2 className="mb-8 font-serif text-6xl text-foreground/90 italic">
+            <h2 className="mb-8 font-serif text-5xl text-foreground/90 italic lg:text-6xl xl:text-7xl">
               Attire
             </h2>
 
-            <div className="space-y-6 text-muted-foreground text-base">
+            <div className="space-y-6 text-base text-muted-foreground lg:text-lg">
               <div>
-                <h4 className="mb-2 font-medium text-foreground text-lg">
+                <h4 className="mb-2 font-medium text-2xl text-foreground lg:text-3xl xl:text-4xl">
                   Ladies:
                 </h4>
                 <p className="leading-relaxed">
@@ -241,7 +241,7 @@ export default function AttireSection() {
               </div>
 
               <div>
-                <h4 className="mb-2 font-medium text-foreground text-lg">
+                <h4 className="mb-2 font-medium text-2xl text-foreground lg:text-3xl xl:text-4xl">
                   Gentlemen:
                 </h4>
                 <p className="leading-relaxed">
@@ -298,13 +298,13 @@ export default function AttireSection() {
         {/* Mobile Layout */}
         <div ref={centerRef} className="lg:hidden">
           <div className="flex flex-col items-center text-center">
-            <h2 className="mb-6 font-serif text-3xl text-foreground/90 italic sm:mb-8 sm:text-4xl">
+            <h2 className="mb-6 font-serif text-4xl text-foreground/90 italic sm:mb-8 sm:text-5xl md:text-6xl">
               Attire
             </h2>
 
-            <div className="space-y-5 text-muted-foreground text-sm sm:space-y-6 sm:text-base">
+            <div className="space-y-5 text-base text-muted-foreground sm:space-y-6 sm:text-lg">
               <div>
-                <h4 className="mb-1.5 font-medium text-foreground text-base sm:mb-2 sm:text-lg">
+                <h4 className="mb-1.5 font-medium text-foreground text-xl sm:mb-2 sm:text-2xl md:text-3xl lg:text-4xl">
                   Ladies:
                 </h4>
                 <p className="leading-relaxed">
@@ -314,7 +314,7 @@ export default function AttireSection() {
               </div>
 
               <div>
-                <h4 className="mb-1.5 font-medium text-foreground text-base sm:mb-2 sm:text-lg">
+                <h4 className="mb-1.5 font-medium text-foreground text-xl sm:mb-2 sm:text-2xl md:text-3xl lg:text-4xl">
                   Gentlemen:
                 </h4>
                 <p className="leading-relaxed">

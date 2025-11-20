@@ -169,7 +169,7 @@ export default function StaySection() {
     <section
       id="stay"
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-background py-20 lg:py-32"
+      className="relative w-full overflow-hidden bg-background py-8 lg:py-12"
     >
       <DecorativeBackground variant="light" density="sparse" />
 
