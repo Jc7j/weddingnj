@@ -34,6 +34,17 @@ const accommodations = [
     type: 'hotel',
   },
   {
+    name: 'Sefriya Farm & Orchard',
+    pricePerNight: 100,
+    priceCategory: '$$',
+    driveTime: '17 minutes (depends on traffic)',
+    distance: '4.4 miles from venue',
+    airportTime: '1 hour 30 minutes from International Airport',
+    description: 'Farm and orchard accommodation near venue',
+    link: 'https://www.sefriya.com/',
+    type: 'farm',
+  },
+  {
     name: 'Cuenca Summer House',
     pricePerNight: 254,
     priceCategory: '$$',

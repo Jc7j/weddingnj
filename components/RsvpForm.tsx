@@ -107,7 +107,8 @@ export default function RsvpForm() {
     ? [foundGuest, ...(foundGuest.children || [])]
     : []
 
-  // Form validation - check that all guests have made attendance decision and attending guests have contact info
+  // Form validation - check that all guests have made attendance decision
+  // Group leader must provide contact info if attending
   const isFormValid = () => {
     return allPartyMembers.every((member) => {
       const details = guestDetails[member._id]
@@ -116,13 +117,14 @@ export default function RsvpForm() {
       // Must have made attendance decision (cannot be null)
       if (details.attending === null) return false
 
-      // If attending, must have contact info
-      if (details.attending === true) {
+      // Group leader (foundGuest) must provide contact info if attending
+      const isGroupLeader = member._id === foundGuest?._id
+      if (isGroupLeader && details.attending === true) {
         return details.contact.trim() !== ''
       }
 
-      // If not attending, just need attendance decision (already checked above)
-      return details.attending === false
+      // Other party members: contact info is optional
+      return true
     })
   }
 
@@ -133,23 +135,41 @@ export default function RsvpForm() {
       : 'flex flex-1 cursor-pointer items-center justify-center rounded border px-2 py-1 text-xs transition-colors'
 
     return (
-      <div className={`flex ${isMobile ? 'gap-2' : 'gap-1'}`} role="radiogroup" aria-label={`Attendance ${isMobile ? 'choice' : ''} for ${member.name}`}>
-        <Label className={`${baseClasses} ${guestDetails[member._id]?.attending === true ? 'border-green-600 bg-green-100 text-green-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+      <div
+        className={`flex ${isMobile ? 'gap-2' : 'gap-1'}`}
+        role="radiogroup"
+        aria-label={`Attendance ${isMobile ? 'choice' : ''} for ${member.name}`}
+      >
+        <Label
+          className={`${baseClasses} ${guestDetails[member._id]?.attending === true ? 'border-green-600 bg-green-100 text-green-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}
+        >
           <input
             type="radio"
             name={`attending-${member._id}`}
             checked={guestDetails[member._id]?.attending === true}
-            onChange={() => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], attending: true } }))}
+            onChange={() =>
+              setGuestDetails((prev) => ({
+                ...prev,
+                [member._id]: { ...prev[member._id], attending: true },
+              }))
+            }
             className="sr-only"
           />
           Yes
         </Label>
-        <Label className={`${baseClasses} ${guestDetails[member._id]?.attending === false ? 'border-red-600 bg-red-100 text-red-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+        <Label
+          className={`${baseClasses} ${guestDetails[member._id]?.attending === false ? 'border-red-600 bg-red-100 text-red-800' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}
+        >
           <input
             type="radio"
             name={`attending-${member._id}`}
             checked={guestDetails[member._id]?.attending === false}
-            onChange={() => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], attending: false } }))}
+            onChange={() =>
+              setGuestDetails((prev) => ({
+                ...prev,
+                [member._id]: { ...prev[member._id], attending: false },
+              }))
+            }
             className="sr-only"
           />
           No
@@ -159,10 +179,20 @@ export default function RsvpForm() {
   }
 
   // Helper: Render contact input with animation
-  function renderContactInput(member: Guest, isMobile: boolean) {
+  function renderContactInput(
+    member: Guest,
+    isMobile: boolean,
+    isGroupLeader: boolean
+  ) {
     if (guestDetails[member._id]?.attending !== true) {
-      return !isMobile ? <div className="text-muted-foreground text-sm">—</div> : null
+      return !isMobile ? (
+        <div className="text-muted-foreground text-sm">—</div>
+      ) : null
     }
+
+    const labelText = isGroupLeader
+      ? 'Email or Phone Number *'
+      : 'Email or Phone Number (optional)'
 
     return (
       <motion.div
@@ -171,13 +201,22 @@ export default function RsvpForm() {
         exit={{ opacity: 0, [isMobile ? 'height' : 'width']: 0 }}
         transition={{ duration: 0.15 }}
       >
-        {isMobile && <Label className="mb-1 block font-medium text-gray-700 text-sm">Email or Phone Number *</Label>}
+        {isMobile && (
+          <Label className="mb-1 block font-medium text-gray-700 text-sm">
+            {labelText}
+          </Label>
+        )}
         <Input
           type="text"
           value={guestDetails[member._id]?.contact || ''}
-          onChange={(e) => setGuestDetails((prev) => ({ ...prev, [member._id]: { ...prev[member._id], contact: e.target.value } }))}
+          onChange={(e) =>
+            setGuestDetails((prev) => ({
+              ...prev,
+              [member._id]: { ...prev[member._id], contact: e.target.value },
+            }))
+          }
           placeholder={isMobile ? '...' : 'Email or phone number'}
-          required={guestDetails[member._id]?.attending === true}
+          required={isGroupLeader}
           className={isMobile ? 'w-full' : 'h-9 w-full text-sm'}
         />
       </motion.div>
@@ -244,10 +283,7 @@ export default function RsvpForm() {
         transition={{ duration: 0.4 }}
         className="space-y-6"
       >
-        <div className="text-center">
-          <h2 className="mb-2 font-serif text-2xl">
-            Hello, {foundGuest.name}!
-          </h2>
+        <div className="flex items-center justify-between">
           <Button
             type="button"
             variant="outline"
@@ -259,8 +295,14 @@ export default function RsvpForm() {
               setHasAttemptedSearch(false)
             }}
           >
-            ← Back
+            Back
           </Button>
+
+          <h2 className="font-serif text-2xl">
+            Primary guest must include email or phone number.
+          </h2>
+
+          <div className="w-[76px]" />
         </div>
 
         {/* Batch Actions for Large Parties */}
@@ -310,14 +352,12 @@ export default function RsvpForm() {
 
         {/* Guest List - Row-Based Layout */}
         <div className="space-y-4">
-          <div className="text-center">
-            <p className="text-muted-foreground text-sm">
-              Please provide attendance and contact information for each guest
-            </p>
-          </div>
-
           {/* Guest Rows */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-3"
+          >
             <AnimatePresence>
               {allPartyMembers.map((member, index) => (
                 <motion.div
@@ -330,28 +370,43 @@ export default function RsvpForm() {
                   {/* Mobile Layout */}
                   <div className="space-y-3 lg:hidden">
                     <div className="border-gray-200 border-b pb-2">
-                      <h4 className="font-medium text-gray-900">{member.name}</h4>
+                      <h4 className="font-medium text-gray-900">
+                        {member.name}
+                      </h4>
                     </div>
                     <div>
-                      <Label className="mb-2 block font-medium text-gray-700 text-sm">Attending *</Label>
+                      <Label className="mb-2 block font-medium text-gray-700 text-sm">
+                        Attending *
+                      </Label>
                       {renderAttendanceRadios(member, true)}
                     </div>
                     <AnimatePresence>
-                      {guestDetails[member._id]?.attending === true && renderContactInput(member, true)}
+                      {guestDetails[member._id]?.attending === true &&
+                        renderContactInput(
+                          member,
+                          true,
+                          member._id === foundGuest._id
+                        )}
                     </AnimatePresence>
                   </div>
 
                   {/* Desktop Layout */}
                   <div className="hidden grid-cols-12 items-center gap-12 lg:grid">
                     <div className="col-span-3">
-                      <h4 className="truncate font-medium text-gray-900">{member.name}</h4>
+                      <h4 className="truncate font-medium text-gray-900">
+                        {member.name}
+                      </h4>
                     </div>
                     <div className="col-span-2">
                       {renderAttendanceRadios(member, false)}
                     </div>
                     <div className="col-span-7">
                       <AnimatePresence>
-                        {renderContactInput(member, false)}
+                        {renderContactInput(
+                          member,
+                          false,
+                          member._id === foundGuest._id
+                        )}
                       </AnimatePresence>
                     </div>
                   </div>

@@ -280,21 +280,13 @@ export default function VenueSection() {
                 </div>
                 <div>
                   <p className="mb-1 font-medium text-foreground text-xs sm:text-sm">
-                    Public Transportation:
+                    Rideshare:
                   </p>
                   <p className="text-xs leading-relaxed sm:text-sm">
-                    Buses to Batangas City are available from various terminals
-                    in Manila. From Batangas City, take a jeepney or tricycle to
-                    Cuenca.
-                  </p>
-                </div>
-                <div>
-                  <p className="mb-1 font-medium text-foreground text-xs sm:text-sm">
-                    Accommodation:
-                  </p>
-                  <p className="text-xs leading-relaxed sm:text-sm">
-                    Several hotels and resorts are available in nearby Lipa City
-                    (20 minutes) and Batangas City (30 minutes).
+                    Grab (the Philippines equivalent of Uber) is the recommended
+                    way to travel. Available for rides throughout the region,
+                    it's the safest and most convenient option to get to the
+                    venue.
                   </p>
                 </div>
               </div>

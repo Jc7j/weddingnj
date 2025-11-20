@@ -254,7 +254,7 @@ export default function AttireSection() {
                 <p className="leading-relaxed">
                   Please do{' '}
                   <span className="font-semibold text-foreground">NOT</span>{' '}
-                  wear white. Attire examples available on our website.
+                  wear white.
                 </p>
               </div>
             </div>
@@ -327,7 +327,7 @@ export default function AttireSection() {
                 <p className="leading-relaxed">
                   Please do{' '}
                   <span className="font-semibold text-foreground">NOT</span>{' '}
-                  wear white. Attire examples available on our website.
+                  wear white.
                 </p>
               </div>
             </div>
