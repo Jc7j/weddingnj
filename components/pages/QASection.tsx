@@ -2,46 +2,67 @@
 
 import DecorativeBackground from '@/components/ui/decorative-background'
 
-const questions = [
+import type { ReactNode } from 'react'
+
+const questions: Array<{ q: string; a: ReactNode }> = [
   {
-    q: 'When will you be arriving',
-    a: 'Cocktail attire. Please wear something comfortable for an outdoor garden wedding. Consider bringing a light jacket as it may get cool in the evening.',
+    q: 'How do I RSVP?',
+    a: (
+      <>
+        <a
+          href="#rsvp"
+          className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
+        >
+          Fill out the RSVP form
+        </a>{' '}
+        and select the guests that you'll be bringing. Add your email so you can
+        be notified of any updates.
+      </>
+    ),
+  },
+  {
+    q: 'When is the RSVP deadline?',
+    a: 'Please RSVP by Wednesday, April 1st 2026.',
+  },
+  {
+    q: 'What should I do if I cannot make it?',
+    a: 'We\'re sorry that you can\'t make it to our wedding, we understand traveling can be difficult. Please let us know as soon as possible and RSVP "no" so we can plan accordingly. If there are any changes about your RSVP, contact James or Nicole.',
+  },
+  {
+    q: 'Can I bring a plus one or children?',
+    a: 'Only guests listed on your invitation are invited due to limited capacity. We appreciate your understanding.',
+  },
+  {
+    q: 'What time should guests arrive?',
+    a: 'Please arrive 15-30 minutes before the ceremony so you can settle in and enjoy the garden setting.',
+  },
+  {
+    q: 'Is there a dress code?',
+    a: "Garden-formal or semi-formal. Attire examples are available above. The entire event will be outdoors so please dress accordingly. Please don't wear white.",
+  },
+  {
+    q: "What's the weather like this time of year? Will it be hot? Should I bring anything?",
+    a: "Typical daytime temperatures will be hot and humid, but in the evening, it'll be warm with a slight breeze. Hand fans and water will be available.",
+  },
+  {
+    q: 'What happens if it rains?',
+    a: 'We have a weather-appropriate backup within the garden to keep guests comfortable.',
   },
   {
     q: 'Is there parking available?',
-    a: "Yes, there's ample free parking at Imelda's Garden. The venue has a dedicated parking area that can accommodate all guests.",
+    a: "Yes, Imelda's Garden has on-site parking.",
   },
   {
-    q: 'Can I bring a plus one?',
-    a: 'We have reserved a seat for you and your invited guests. Please refer to your invitation for details. If you have questions, feel free to reach out to us directly.',
-  },
-  {
-    q: 'Are children welcome?',
-    a: 'While we love your little ones, we have decided to make this an adults-only celebration. We hope you understand and can enjoy a night off!',
-  },
-  {
-    q: 'Will there be vegetarian/vegan options?',
-    a: 'Yes! We will have vegetarian and vegan options available. Please let us know about any dietary restrictions when you RSVP.',
-  },
-  {
-    q: 'What time should I arrive?',
-    a: 'Please arrive by 3:30 PM. The ceremony will begin promptly at 4:00 PM.',
-  },
-  {
-    q: 'Is there a wedding registry?',
-    a: 'Your presence at our wedding is the greatest gift of all. If you wish to honor us with a gift, a contribution to our honeymoon fund would be appreciated.',
-  },
-  {
-    q: 'Will there be transportation provided?',
-    a: 'We recommend arranging your own transportation to and from the venue. There are local taxi services and ride-sharing options available in the area.',
-  },
-  {
-    q: 'What if I have food allergies?',
-    a: 'Please indicate any food allergies or dietary restrictions when you RSVP. Our catering team will do their best to accommodate your needs.',
+    q: 'What should I gift?',
+    a: 'Your presence is the greatest gift! However, if you want to gift us something then we kindly request funds for our honeymoon.',
   },
   {
     q: 'Can I take photos during the ceremony?',
-    a: 'We kindly ask that you refrain from taking photos during the ceremony. We have a professional photographer who will capture these special moments. Feel free to take photos during the reception!',
+    a: "We kindly request an unplugged ceremony since we'll have professional photographers during the event. However, after the ceremony you can take all the photos you want.",
+  },
+  {
+    q: 'Who should I contact if I have questions about the wedding day?',
+    a: "If you have additional questions that aren't listed above, please contact James or Nicole.",
   },
 ]
 
@@ -51,7 +72,7 @@ export default function QASection() {
       <DecorativeBackground variant="light" density="sparse" />
       <div className="container relative z-10 mx-auto max-w-4xl px-6 lg:px-12">
         <h2 className="mb-6 text-center font-serif text-2xl text-foreground/90 sm:mb-8 sm:text-3xl lg:text-4xl">
-          Questions & Answers
+          FAQ
         </h2>
         <div className="space-y-4 sm:space-y-5">
           {questions.map((item) => (
@@ -59,10 +80,10 @@ export default function QASection() {
               key={item.q}
               className="border-muted-foreground/10 border-b pb-3 sm:pb-4"
             >
-              <h3 className="mb-1.5 font-medium text-foreground/90 text-sm sm:mb-2 sm:text-base lg:text-lg">
+              <h4 className="mb-1.5 font-medium text-foreground/90 text-base sm:mb-2 sm:text-lg lg:text-xl">
                 {item.q}
-              </h3>
-              <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm lg:text-base">
+              </h4>
+              <p className="text-muted-foreground text-sm leading-relaxed sm:text-base lg:text-lg">
                 {item.a}
               </p>
             </div>

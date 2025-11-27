@@ -4,6 +4,8 @@ import localFont from 'next/font/local'
 import type { Metadata } from 'next'
 import './globals.css'
 
+import Script from 'next/script'
+
 import { ConvexClientProvider } from '~/components/ConvexClientProvider'
 
 const billionMiracles = localFont({
@@ -30,6 +32,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {process.env.NODE_ENV === 'development' && (
+          <Script
+            src="//unpkg.com/react-grab/dist/index.global.js"
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        )}
+      </head>
       <body
         className={`${billionMiracles.variable} ${cormorantGaramond.variable} antialiased`}
       >
