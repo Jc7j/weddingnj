@@ -80,7 +80,7 @@ export default function QASection() {
               key={item.q}
               className="border-muted-foreground/10 border-b pb-3 sm:pb-4"
             >
-              <h4 className="mb-1.5 font-medium text-foreground/90 text-base sm:mb-2 sm:text-lg lg:text-xl">
+              <h4 className="mb-1.5 font-medium text-base text-foreground/90 sm:mb-2 sm:text-lg lg:text-xl">
                 {item.q}
               </h4>
               <p className="text-muted-foreground text-sm leading-relaxed sm:text-base lg:text-lg">
