@@ -36,7 +36,7 @@ export default function FooterSection() {
             className="font-serif text-xl tracking-wide md:text-2xl lg:text-3xl"
             style={{ color: '#2B4735' }}
           >
-            - Nicole Coyu & James Shoung
+            - Nicole & James
           </span>
         </div>
       </div>
