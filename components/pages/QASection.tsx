@@ -22,7 +22,7 @@ const questions: Array<{ q: string; a: ReactNode }> = [
   },
   {
     q: 'When is the RSVP deadline?',
-    a: 'Please RSVP by Wednesday, April 1st 2026.',
+    a: 'Please RSVP by Sunday, March 1st 2026.',
   },
   {
     q: 'What should I do if I cannot make it?',
