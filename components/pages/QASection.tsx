@@ -1,8 +1,14 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 import DecorativeBackground from '@/components/ui/decorative-background'
 
 import type { ReactNode } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const questions: Array<{ q: string; a: ReactNode }> = [
   {
@@ -11,7 +17,7 @@ const questions: Array<{ q: string; a: ReactNode }> = [
       <>
         <a
           href="#rsvp"
-          className="text-foreground/90 underline underline-offset-2 hover:text-foreground"
+          className="text-foreground/90 underline underline-offset-2 transition-colors hover:text-foreground"
         >
           Fill out the RSVP form
         </a>{' '}
@@ -41,7 +47,7 @@ const questions: Array<{ q: string; a: ReactNode }> = [
     a: "Garden-formal or semi-formal. Attire examples are available above. The entire event will be outdoors so please dress accordingly. Please don't wear white.",
   },
   {
-    q: "What's the weather like this time of year? Will it be hot? Should I bring anything?",
+    q: "What's the weather like?",
     a: "Typical daytime temperatures will be hot and humid, but in the evening, it'll be warm with a slight breeze. Hand fans and water will be available.",
   },
   {
@@ -61,33 +67,118 @@ const questions: Array<{ q: string; a: ReactNode }> = [
     a: "We kindly request an unplugged ceremony since we'll have professional photographers during the event. However, after the ceremony you can take all the photos you want.",
   },
   {
-    q: 'Who should I contact if I have questions about the wedding day?',
+    q: 'Who should I contact if I have questions?',
     a: "If you have additional questions that aren't listed above, please contact James or Nicole.",
   },
 ]
 
 export default function QASection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+
+    if (prefersReducedMotion) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
+
+      const items = listRef.current?.querySelectorAll('.qa-item')
+      if (items) {
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: listRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        )
+      }
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="qa" className="relative w-full bg-background py-16 lg:py-20">
+    <section
+      id="qa"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-background py-12 lg:py-16"
+    >
       <DecorativeBackground variant="light" density="sparse" />
+
       <div className="container relative z-10 mx-auto max-w-4xl px-6 lg:px-12">
-        <h2 className="mb-6 text-center font-serif text-2xl text-foreground/90 sm:mb-8 sm:text-3xl lg:text-4xl">
-          FAQ
-        </h2>
-        <div className="space-y-4 sm:space-y-5">
-          {questions.map((item) => (
-            <div
-              key={item.q}
-              className="border-muted-foreground/10 border-b pb-3 sm:pb-4"
-            >
-              <h4 className="mb-1.5 font-medium text-base text-foreground/90 sm:mb-2 sm:text-lg lg:text-xl">
-                {item.q}
-              </h4>
-              <p className="text-muted-foreground text-sm leading-relaxed sm:text-base lg:text-lg">
-                {item.a}
-              </p>
-            </div>
-          ))}
+        {/* Header */}
+        <div ref={headerRef} className="mb-12 text-center">
+          <p className="mb-4 font-medium text-muted-foreground text-xs tracking-[0.3em]">
+            QUESTIONS
+          </p>
+          <h2 className="font-serif text-4xl text-foreground/90 lg:text-6xl">
+            FAQ
+          </h2>
+        </div>
+
+        {/* Q&A List - Editorial Style */}
+        <div
+          ref={listRef}
+          className="overflow-hidden rounded-xl bg-white/30 backdrop-blur-sm"
+        >
+          {questions.map((item, index) => {
+            const isLast = index === questions.length - 1
+            const number = String(index + 1).padStart(2, '0')
+
+            return (
+              <div
+                key={item.q}
+                className={`qa-item group px-5 py-5 transition-colors hover:bg-white/40 lg:px-6 ${
+                  !isLast ? 'border-muted/20 border-b' : ''
+                }`}
+              >
+                <div className="flex gap-4 lg:gap-6">
+                  {/* Number indicator */}
+                  <span className="shrink-0 font-serif text-lg text-muted-foreground/40 tabular-nums">
+                    {number}
+                  </span>
+
+                  {/* Content */}
+                  <div className="min-w-0 flex-1">
+                    <h4 className="mb-2 font-serif text-base text-foreground/90 lg:text-lg">
+                      {item.q}
+                    </h4>
+                    <p className="text-muted-foreground text-sm leading-relaxed lg:text-base">
+                      {item.a}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

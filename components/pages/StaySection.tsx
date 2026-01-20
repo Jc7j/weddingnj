@@ -6,7 +6,7 @@ import DecorativeBackground from '@/components/ui/decorative-background'
 
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Globe } from 'lucide-react'
+import { ArrowUpRight, Globe } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,70 +15,53 @@ const accommodations = [
     name: 'Joane Suites by Hotel Cara',
     pricePerNight: 47,
     priceCategory: '$',
-    driveTime: '30 minutes (depends on traffic)',
-    distance: '9.2 miles from venue',
-    airportTime: '1 hour 15 minutes from International Airport',
+    driveTime: '30 min drive',
+    distance: '9.2 mi from venue',
     description: 'Decent for price, mid looking hotel',
-    link: 'https://www.google.com/travel/search?q=imelda%27s%20garden%20cuenca&g2lb=4965990%2C72317059%2C72414906%2C72471280%2C72472051%2C72485658%2C72560029%2C72573224%2C72616120%2C72647020%2C72686036%2C72803964%2C72882230%2C72958624%2C72959983%2C73053698%2C73059275%2C73064764%2C73107089%2C73125229%2C73127086%2C73148426&hl=en-US&gl=us&cs=1&ssta=1&ts=CAESCgoCCAMKAggDEAAaaQpLEkcKDS9nLzExc2RweXptOWwyJTB4MzNiZDBkNWNkMmZlYjVmZDoweDFlYmRlYThjMTQyYzU1OTA6D0ltZWxkYSdzIEdhcmRlbhoAEhoSFAoHCOoPEAUYFBIHCOoPEAUYFhgCMgIIASoJCgU6A1VTRBoA&qs=CAEgASgAMihDaG9JNUs2a29JZW5pclNzQVJvTkwyY3ZNVEY1Tlhaa05USm5heEFCOA1IAA&ap=KigKEgneHkLfIdMrQBHMy2E_WUdeQBISCTox7a1B9ytAEczLYScRTV5AMABIAWgBugEIb3ZlcnZpZXc&ictx=111&ved=0CAAQ5JsGahcKEwjwgPHK69yQAxUAAAAAHQAAAAAQBA',
-    type: 'hotel',
+    link: 'https://www.google.com/travel/search?q=imelda%27s%20garden%20cuenca&g2lb=4965990%2C72317059%2C72414906%2C72471280%2C72472051%2C72485658%2C72560029%2C72573224%2C72616120%2C72647020%2C72686036%2C72803964%2C72882230%2C72958624%2C72959983%2C73053698%2C73059275%2C73064764%2C73107089%2C73125229%2C73127086%2C73148426&hl=en-US&gl=us&cs=1&ssta=1&ts=CAESCgoCCAMKAggDEAAaaQpLEkcKDS9nLzExc2RweXptOWwyJTB4MzNiZDBkNWNkMmZlYjVmZDoweDFlYmRlYThjMTQyYzU1OTA6D0ltZWxkYSdzIEdhcmRlbhoAEhoSFAoHCOoPEAUYFBIHCOoPEAUYFhgCMgIIASoJCgU6A1VTRBoA&qs=CAEgASgAMihDaG9JNUs2a29JZW5pclNzQVJvTkwyY3ZNVEZ5Tlhaa05USm5heEFCOA1IAA&ap=KigKEgneHkLfIdMrQBHMy2E_WUdeQBISCTox7a1B9ytAEczLYScRTV5AMABIAWgBugEIb3ZlcnZpZXc&ictx=111&ved=0CAAQ5JsGahcKEwjwgPHK69yQAxUAAAAAHQAAAAAQBA',
   },
   {
     name: 'Solano Hotel',
     pricePerNight: 78,
     priceCategory: '$',
-    driveTime: '45 minutes (depends on traffic)',
-    distance: '9.3 miles from venue',
-    airportTime: '1 hour 20 minutes from International Airport',
+    driveTime: '45 min drive',
+    distance: '9.3 mi from venue',
     description: 'Nice looking hotel',
     link: 'https://www.google.com/travel/search?q=imelda%27s%20garden%20cuenca&g2lb=4965990%2C72317059%2C72414906%2C72471280%2C72472051%2C72485658%2C72560029%2C72573224%2C72616120%2C72647020%2C72686036%2C72803964%2C72882230%2C72958624%2C72959983%2C73053698%2C73059275%2C73064764%2C73107089%2C73125229%2C73127086%2C73148426&hl=en-US&gl=us&cs=1&ssta=1&ts=CAESCgoCCAMKAggDEAAaaQpLEkcKDS9nLzExc2RweXptOWwyJTB4MzNiZDBkNWNkMmZlYjVmZDoweDFlYmRlYThjMTQyYzU1OTA6D0ltZWxkYSdzIEdhcmRlbhoAEhoSFAoHCOoPEAUYFBIHCOoPEAUYFhgCMgIIASoJCgU6A1VTRBoA&qs=CAEgASgAMidDaGtJMi1UZWhJakR2dEU4R2cwdlp5OHhNVzVzWW5GM1gzaDRFQUU4DUgA&ap=KigKEgn55LyaIsMrQBHMy2EP5kReQBISCYeJTeRhCyxAEczLYd9VUF5AMABIAWgB&ictx=111&ved=0CAAQ5JsGahcKEwjolrbJ69yQAxUAAAAAHQAAAAAQBA',
-    type: 'hotel',
   },
   {
     name: 'Sefriya Farm & Orchard',
     pricePerNight: 100,
     priceCategory: '$$',
-    driveTime: '17 minutes (depends on traffic)',
-    distance: '4.4 miles from venue',
-    airportTime: '1 hour 30 minutes from International Airport',
+    driveTime: '17 min drive',
+    distance: '4.4 mi from venue',
     description: 'Farm and orchard accommodation near venue',
     link: 'https://www.sefriya.com/',
-    type: 'farm',
   },
   {
     name: 'Cuenca Summer House',
     pricePerNight: 254,
     priceCategory: '$$',
-    driveTime: '15 minutes',
+    driveTime: '15 min drive',
     distance: 'Close to venue',
-    airportTime: '1 hour 45 minutes from International Airport',
-    description:
-      'Can split with people if want to room together, different families etc.',
-    capacity: 'Fits up to 14 people',
-    details: '3 bedrooms, 14 beds, 3 baths',
+    description: 'Great for groups — fits 14 people, 3 beds, 3 baths',
     link: 'https://www.airbnb.com/s/Cuenca--Batangas--Philippines/homes?place_id=ChIJPUhDMAoNvTMRBORz6JHh2GQ&refinement_paths[]=%2Fhomes&checkin=2026-05-21&checkout=2026-05-22&date_picker_type=calendar&adults=5&guests=5',
-    type: 'rental',
   },
   {
     name: 'Palms Dream Beach Resort',
     pricePerNight: 339,
     priceCategory: '$$',
-    driveTime: '~15 minutes',
+    driveTime: '~15 min drive',
     distance: 'Close to venue',
-    airportTime: '1 hour 35 minutes from International Airport',
-    description:
-      'Can split with people if want to room together, different families etc.',
-    capacity: 'Fits 15 guests',
-    details: '3 bedrooms, 7 beds',
-    note: "Can't find directions for certain so rough estimate",
+    description: 'Beach resort for groups — fits 15 guests, 7 beds',
     link: 'https://www.airbnb.com/s/Cuenca--Batangas--Philippines/homes?place_id=ChIJPUhDMAoNvTMRBORz6JHh2GQ&refinement_paths[]=%2Fhomes&checkin=2026-05-21&checkout=2026-05-22&date_picker_type=calendar&adults=5&guests=5',
-    type: 'rental',
   },
 ]
 
 export default function StaySection() {
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
-  const accommodationsRef = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
   const airbnbRef = useRef<HTMLDivElement>(null)
   const grabRef = useRef<HTMLDivElement>(null)
 
@@ -92,14 +75,11 @@ export default function StaySection() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         headerRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.7,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: headerRef.current,
@@ -109,24 +89,35 @@ export default function StaySection() {
         }
       )
 
-      const accommodationCards = accommodationsRef.current?.querySelectorAll(
-        '.accommodation-card'
-      )
-      if (accommodationCards) {
-        gsap.fromTo(
-          accommodationCards,
-          {
-            opacity: 0,
-            y: 30,
+      gsap.fromTo(
+        grabRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: grabRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
           },
+        }
+      )
+
+      const items = listRef.current?.querySelectorAll('.accommodation-item')
+      if (items) {
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.15,
+            duration: 0.5,
+            stagger: 0.1,
             ease: 'power2.out',
             scrollTrigger: {
-              trigger: accommodationsRef.current,
+              trigger: listRef.current,
               start: 'top 80%',
               toggleActions: 'play none none reverse',
             },
@@ -136,37 +127,15 @@ export default function StaySection() {
 
       gsap.fromTo(
         airbnbRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
+        { opacity: 0, y: 20 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.6,
           ease: 'power2.out',
           scrollTrigger: {
             trigger: airbnbRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      )
-
-      gsap.fromTo(
-        grabRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: grabRef.current,
-            start: 'top 80%',
+            start: 'top 85%',
             toggleActions: 'play none none reverse',
           },
         }
@@ -184,13 +153,13 @@ export default function StaySection() {
     >
       <DecorativeBackground variant="light" density="sparse" />
 
-      <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+      <div className="container relative z-10 mx-auto max-w-4xl px-6 lg:px-12">
         {/* Header */}
-        <div ref={headerRef} className="mb-16 text-center">
+        <div ref={headerRef} className="mb-12 text-center">
           <p className="mb-4 font-medium text-muted-foreground text-xs tracking-[0.3em]">
             ACCOMMODATION
           </p>
-          <h2 className="mb-4 font-serif text-4xl text-foreground/90 lg:text-6xl">
+          <h2 className="font-serif text-4xl text-foreground/90 lg:text-6xl">
             Where to Stay
           </h2>
         </div>
@@ -198,146 +167,89 @@ export default function StaySection() {
         {/* Grab Transportation Info */}
         <div
           ref={grabRef}
-          className="mb-12 rounded-lg border border-muted/30 bg-muted/10 px-6 py-4"
+          className="mb-10 rounded-lg border border-muted/30 bg-white/40 px-5 py-3 backdrop-blur-sm"
         >
           <div className="flex items-center justify-center gap-3">
-            <span className="text-lg">🚗</span>
-            <div className="text-sm">
+            <span className="text-base">🚗</span>
+            <p className="text-sm">
               <span className="font-medium text-foreground">
                 Getting Around:{' '}
               </span>
               <span className="text-muted-foreground">
-                Use Grab (like Uber) for rides, food, and groceries—the safest
-                way to travel locally.
+                Use Grab (like Uber) for rides—the safest way to travel locally.
               </span>
-            </div>
+            </p>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="space-y-16">
-          {/* Accommodations List */}
-          <div ref={accommodationsRef} className="space-y-6">
-            {accommodations.map((accommodation) => (
-              <div
+        {/* Accommodations List - Editorial Style */}
+        <div
+          ref={listRef}
+          className="mb-10 overflow-hidden rounded-xl bg-white/30 backdrop-blur-sm"
+        >
+          {accommodations.map((accommodation, index) => {
+            const isLast = index === accommodations.length - 1
+            return (
+              <a
                 key={accommodation.name}
-                className="accommodation-card rounded-xl bg-white p-6 shadow-lg transition-all duration-200 hover:shadow-xl lg:p-8"
+                href={accommodation.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`accommodation-item group flex flex-col gap-1 px-5 py-4 transition-colors hover:bg-white/50 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:px-6 ${
+                  !isLast ? 'border-muted/20 border-b' : ''
+                }`}
               >
-                <div className="mb-3 flex items-center gap-3">
-                  <h3 className="font-serif text-foreground text-xl lg:text-2xl">
+                {/* Left: Name + Price */}
+                <div className="flex items-center gap-3">
+                  <h3 className="font-serif text-foreground text-lg">
                     {accommodation.name}
                   </h3>
-                  <span className="rounded bg-primary/10 px-2 py-1 font-medium text-primary text-xs">
+                  <span className="whitespace-nowrap rounded bg-primary/10 px-2 py-0.5 font-medium text-primary text-xs">
+                    ${accommodation.pricePerNight}/night{' '}
                     {accommodation.priceCategory}
                   </span>
                 </div>
 
-                <p className="mb-4 text-muted-foreground text-sm">
-                  {accommodation.description}
-                </p>
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 text-xs">💰</span>
-                    <span className="font-medium">
-                      ${accommodation.pricePerNight}/night
-                    </span>
-                  </div>
-
-                  {accommodation.capacity && (
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 text-xs">👥</span>
-                      <span className="text-muted-foreground">
-                        {accommodation.capacity}
-                      </span>
-                    </div>
-                  )}
-
-                  {accommodation.details && (
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 text-xs">🏠</span>
-                      <span className="text-muted-foreground">
-                        {accommodation.details}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 text-xs">🚗</span>
-                    <span className="text-muted-foreground">
-                      {accommodation.driveTime} - {accommodation.distance}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <span className="mt-0.5 text-xs">✈️</span>
-                    <span className="text-muted-foreground">
-                      {accommodation.airportTime}
-                      {accommodation.note &&
-                        ' (depending on traffic, might be higher)'}
-                    </span>
-                  </div>
-
-                  {accommodation.note && (
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 text-xs">ℹ️</span>
-                      <span className="text-muted-foreground text-xs italic">
-                        {accommodation.note}
-                      </span>
-                    </div>
-                  )}
+                {/* Middle: Distance + Description */}
+                <div className="flex-1 lg:text-center">
+                  <p className="text-muted-foreground text-sm">
+                    {accommodation.driveTime} · {accommodation.distance}
+                  </p>
+                  <p className="text-muted-foreground/80 text-xs">
+                    {accommodation.description}
+                  </p>
                 </div>
 
-                <a
-                  href={accommodation.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 text-primary underline-offset-2 hover:underline"
-                >
-                  <Globe className="h-4 w-4" />
-                  View Details
-                </a>
-              </div>
-            ))}
-          </div>
+                {/* Right: View Link */}
+                <div className="mt-2 flex items-center gap-1 text-primary text-sm lg:mt-0">
+                  <span className="group-hover:underline">View</span>
+                  <ArrowUpRight className="group-hover:-translate-y-0.5 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </a>
+            )
+          })}
+        </div>
 
-          {/* Airbnb Search Section */}
-          <div
-            ref={airbnbRef}
-            className="rounded-xl bg-gradient-to-r from-primary/10 to-secondary/10 p-8 lg:p-12"
+        {/* Airbnb Search Section */}
+        <div
+          ref={airbnbRef}
+          className="rounded-xl bg-white/30 p-6 backdrop-blur-sm lg:p-8"
+        >
+          <h3 className="mb-2 font-serif text-foreground text-xl lg:text-2xl">
+            Browse More Options
+          </h3>
+          <p className="mb-4 text-muted-foreground text-sm">
+            Search Airbnb for more places in Cuenca, Batangas.
+          </p>
+          <a
+            href="https://www.airbnb.com/s/Cuenca--Batangas--Philippines/homes?place_id=ChIJPUhDMAoNvTMRBORz6JHh2GQ&refinement_paths[]=%2Fhomes&checkin=2026-05-21&checkout=2026-05-22&date_picker_type=calendar&adults=5&guests=5"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
           >
-            <h3 className="mb-4 font-serif text-2xl text-foreground lg:text-3xl">
-              Browse More Options on Airbnb
-            </h3>
-            <p className="mb-6 text-muted-foreground">
-              You can also look around on your own. A few available
-              spots—figured we'd let you decide what works best for you.
-            </p>
-
-            <div className="mb-6 space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">Search Filters:</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs">📅</span>
-                <span className="text-muted-foreground">1 night</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs">👥</span>
-                <span className="text-muted-foreground">5 guests</span>
-              </div>
-            </div>
-
-            <a
-              href="https://www.airbnb.com/s/Cuenca--Batangas--Philippines/homes?place_id=ChIJPUhDMAoNvTMRBORz6JHh2GQ&refinement_paths[]=%2Fhomes&checkin=2026-05-21&checkout=2026-05-22&date_picker_type=calendar&adults=5&guests=5"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              <Globe className="h-5 w-5" />
-              Search Airbnb
-            </a>
-          </div>
+            <Globe className="h-4 w-4" />
+            Search Airbnb
+          </a>
         </div>
       </div>
     </section>
