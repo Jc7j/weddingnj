@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger)
 const imagePositions = [
   {
     id: 'decoration-1',
-    src: '/hero/IMG_8712.jpg',
+    src: '/hero/1.JPG',
     desktop: { top: '10%', left: '1%', width: 280, height: 320, rotation: -8 },
     mobile: { top: '5%', left: '1%', width: 120, height: 140, rotation: -5 },
     alt: 'Wedding ceremony decoration',
@@ -23,7 +23,7 @@ const imagePositions = [
   },
   {
     id: 'floral-1',
-    src: '/hero/IMG_8745.jpg',
+    src: '/hero/2.JPG',
     desktop: { top: '5%', right: '2%', width: 260, height: 300, rotation: 5 },
     mobile: { top: '3%', right: '1%', width: 110, height: 130, rotation: 3 },
     alt: 'Beautiful floral arrangement',
@@ -31,7 +31,7 @@ const imagePositions = [
   },
   {
     id: 'venue-1',
-    src: '/hero/IMG_8755.jpg',
+    src: '/hero/3.JPG',
     desktop: {
       bottom: '15%',
       left: '1%',
@@ -51,7 +51,7 @@ const imagePositions = [
   },
   {
     id: 'sunset-1',
-    src: '/hero/IMG_8757.jpg',
+    src: '/hero/4.JPG',
     desktop: {
       bottom: '8%',
       right: '1%',
@@ -71,7 +71,7 @@ const imagePositions = [
   },
   {
     id: 'arch-1',
-    src: '/hero/IMG_8758.jpg',
+    src: '/hero/5.JPG',
     desktop: { top: '50%', left: '5%', width: 220, height: 280, rotation: -12 },
     mobile: { top: '55%', left: '2%', width: 110, height: 140, rotation: -8 },
     alt: 'Wedding ceremony arch',
@@ -79,7 +79,7 @@ const imagePositions = [
   },
   {
     id: 'garden-1',
-    src: '/hero/IMG_8766.jpg',
+    src: '/hero/6.JPG',
     desktop: {
       top: '42%',
       right: '6%',
@@ -93,7 +93,7 @@ const imagePositions = [
   },
   {
     id: 'celebration-top-1',
-    src: '/hero/IMG_8770.jpg',
+    src: '/hero/7.JPG',
     desktop: { top: '2%', left: '25%', width: 200, height: 240, rotation: -3 },
     mobile: { top: '1%', left: '20%', width: 100, height: 120, rotation: -2 },
     alt: 'Wedding celebration moment',
@@ -101,7 +101,7 @@ const imagePositions = [
   },
   {
     id: 'flowers-top-1',
-    src: '/hero/IMG_8771.jpg',
+    src: '/hero/8.JPG',
     desktop: { top: '1%', right: '30%', width: 180, height: 220, rotation: 4 },
     mobile: { top: '0.5%', right: '25%', width: 90, height: 110, rotation: 2 },
     alt: 'Wedding flowers arrangement',
@@ -109,7 +109,7 @@ const imagePositions = [
   },
   {
     id: 'details-bottom-1',
-    src: '/hero/IMG_8772.jpg',
+    src: '/hero/9.JPG',
     desktop: {
       bottom: '2%',
       left: '30%',
@@ -123,7 +123,7 @@ const imagePositions = [
   },
   {
     id: 'moments-bottom-1',
-    src: '/hero/IMG_8775.jpg',
+    src: '/hero/10.JPG',
     desktop: {
       bottom: '1%',
       right: '25%',
