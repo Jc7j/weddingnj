@@ -351,29 +351,23 @@ export default function HeroSection({ onRsvpClick }: HeroProps) {
         {/* Soft glow backdrop */}
         <div className="-inset-20 pointer-events-none absolute bg-white/20 blur-3xl" />
 
-        <div className="relative">
-          <div ref={dateRef} className="mb-8 space-y-2">
-            <p
-              className="mb-2 font-light text-sm uppercase tracking-[0.3em] sm:text-base md:text-lg lg:text-xl"
-              style={{ color: '#2B4735' }}
-            >
-              Save the Date
-            </p>
-            <div
-              className="flex items-center justify-center gap-3 text-2xl tracking-[0.2em] sm:text-3xl md:text-4xl lg:text-5xl"
-              style={{ color: '#2B4735' }}
-            >
-              <span className="font-medium">THURSDAY</span>
-              <span className="text-3xl opacity-40 sm:text-4xl md:text-5xl">
-                •
-              </span>
-              <span>05.21.2026</span>
-            </div>
+        <div className="-mt-16 sm:-mt-20 md:-mt-24 lg:-mt-28 relative">
+          <div ref={dateRef} className="space-y-2 sm:mb-6">
+            <span className="flex items-center justify-center gap-3 text-1xl tracking-[0.2em] sm:text-2xl md:text-3xl lg:text-4xl">
+              05.21.2026
+            </span>
           </div>
+
+          <h4
+            className="mb-2 font-light text-3xl uppercase tracking-[0.25em] sm:text-3xl md:text-5xl lg:text-6xl"
+            style={{ color: '#2B4735' }}
+          >
+            Nicole & James
+          </h4>
 
           <p
             ref={locationRef}
-            className="mb-16 font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mb-10 font-heading text-5xl sm:mb-12 sm:text-6xl md:mb-14 md:text-7xl lg:mb-16 lg:text-8xl"
             style={{ color: '#2B4735' }}
           >
             Philippines
