@@ -23,6 +23,11 @@ const questions: Array<{ q: string; a: ReactNode }> = [
         </a>{' '}
         and select the guests that you'll be bringing. Add your email so you can
         be notified of any updates.
+        <br />
+        <br />
+        If you do not RSVP by March 1st, you'll
+        unfortunately be marked as a "No". We apologize for the inconvenience
+        but this is to ensure we have an accurate headcount for the wedding.
       </>
     ),
   },
