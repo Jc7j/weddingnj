@@ -18,7 +18,7 @@ const storyParts = [
     quote: '"Every love story is beautiful, but ours is my favorite"',
     paragraph:
       "Every love story is unique, and Nicole and James's began in the most natural way. When they first met in 2019, neither of them expected anything more than friendship. But, as with many of life's best surprises, something unexpected began to grow. The more time they spent together, the more they clicked. James was the first to catch feelings and made the bold move to ask Nicole on a date—to Disneyland, no less. On December 11, 2019, their lives became intertwined, and they've been inseparable ever since.",
-    image: '/story/1.png',
+    image: '/story2/1.png',
     bgColor: '#F5E6D3',
     accentColor: '#E6D5F0',
   },
@@ -28,7 +28,7 @@ const storyParts = [
     quote: '"Home is wherever I\'m with you"',
     paragraph:
       "When they began dating, laughter quickly became the soundtrack of their days, and with every shared moment, their feelings for each other deepened. James found a true home within Nicole's heart—and she found the same comfort in his. They grew closer than ever, inspiring one another to become the best versions of themselves. Opening their hearts fully, they discovered that together was the coziest place to be. Over time, they became not only partners but best friends, continuously uplifting and bettering each other along the way.",
-    image: '/story/2.png',
+    image: '/story2/2.png',
     bgColor: '#E6D5F0',
     accentColor: '#F0D5D5',
   },
@@ -38,7 +38,7 @@ const storyParts = [
     quote: '"She said yes!"',
     paragraph:
       "There wasn't one single moment when James knew Nicole was the one—he just had a gut feeling that she was it. By 2021, the idea of proposing had started to take shape, and when James found out that Honne—an artist both he and Nicole deeply love—was coming to L.A., inspiration struck. He decided to take a leap of faith and reached out to the band to ask if they'd help with the proposal. To his surprise, they said yes. On May 21st, 2022, James had invited their closest friends and family to be there. During the concert, he was brought up on stage—and in front of everyone, he asked Nicole to marry him. She was completely shocked... and said yes! The crowd erupted in cheers, and it became a night they'll both remember forever.",
-    image: '/story/3.png',
+    image: '/story2/3.png',
     bgColor: '#F0D5D5',
     accentColor: '#D4E6D5',
   },
@@ -48,7 +48,7 @@ const storyParts = [
     quote: '"And so the adventure begins..."',
     paragraph:
       "Fast forward a few years, and Nicole and James are finally ready to celebrate their wedding and begin this exciting new chapter together. More than anything, they're thrilled to share this joyous moment with the people who mean the most to them. They can't wait to see all of your beautiful faces as they celebrate a love that has grown stronger every day. No matter where life has led them, they've always found home in each other — and with your love and support, this next chapter will be the best one yet. From the bottom of their hearts, Nicole and James thank you for being part of their story and this unforgettable celebration.",
-    image: '/story/4.png',
+    image: '/story2/4.png',
     bgColor: '#D4E6D5',
     accentColor: '#F5E6D3',
   },
@@ -194,7 +194,7 @@ export default function StorySection() {
         <div ref={contentRef} className="mx-auto w-full max-w-7xl">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Text Content */}
-            <div className="story-content order-2 lg:order-1">
+            <div className="story-content order-3 lg:order-1">
               {/* Title */}
               <div className="story-text mb-4 sm:mb-6">
                 <h2 className="mb-2 font-serif text-2xl text-foreground sm:text-4xl lg:text-6xl">
@@ -216,7 +216,7 @@ export default function StorySection() {
             </div>
 
             {/* Image with Frame */}
-            <div className="gstory-image relative order-1 mx-auto max-w-[240px] sm:max-w-sm lg:order-2 lg:max-w-none">
+            <div className="gstory-image relative order-1 w-full mx-auto sm:max-w-[240px] lg:order-2 lg:max-w-xs">
               {/* Decorative Frame with dynamic color */}
               <div
                 className="-inset-4 absolute rounded-2xl opacity-20"
@@ -225,14 +225,14 @@ export default function StorySection() {
               {/* Main Image Container */}
               <div
                 ref={imageRef}
-                className="after:-inset-2 relative aspect-[4/3] overflow-hidden rounded-xl shadow-2xl after:absolute after:rounded-2xl after:border-2 after:border-white/30 sm:aspect-[3/4]"
+                className="after:-inset-2 relative aspect-[3/4] overflow-hidden rounded-xl shadow-2xl after:absolute after:rounded-2xl after:border-2 after:border-white/30"
               >
                 <Image
                   src={currentPart.image}
                   alt={currentPart.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 180px, (max-width: 1024px) 240px, 320px"
                   priority={currentPartIndex === 0}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
@@ -245,12 +245,8 @@ export default function StorySection() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Navigation - Responsive for all devices */}
-        <div className="mt-12">
-          <div className="flex items-center justify-center gap-6 sm:gap-12">
+            {/* Navigation - Between image and text on mobile, below both on desktop */}
+            <div className="order-2 flex items-center justify-center gap-6 sm:gap-12 lg:order-3 lg:col-span-2 lg:mt-12">
             {/* Progress Dots */}
             <div className="flex gap-3">
               {storyParts.map((part, index) => (
@@ -332,6 +328,7 @@ export default function StorySection() {
                   />
                 </svg>
               </Button>
+            </div>
             </div>
           </div>
         </div>

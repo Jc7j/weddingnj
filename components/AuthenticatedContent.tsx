@@ -2,7 +2,7 @@
 
 import { useRsvpDialog } from '~/components/LayoutContent'
 import AttireSection from '~/components/pages/AttireSection'
-// import BridesAndGroomsSection from '~/components/pages/BridesAndGrooms'
+import BridalPartyProcession from '~/components/pages/BridalPartyProcession'
 // import DetailsSection from '~/components/pages/DetailsSection'
 import HeroSection from '~/components/pages/HeroSection'
 import QASection from '~/components/pages/QASection'
@@ -18,11 +18,11 @@ export default function AuthenticatedContent() {
     <main className="min-h-screen">
       <HeroSection onRsvpClick={openRsvpDialog} />
       <StorySection />
-      {/* <BridesAndGroomsSection /> */}
       <VenueSection />
       {/* <DetailsSection /> */}
       <AttireSection />
       <StaySection />
+      <BridalPartyProcession />
       <QASection />
       <RsvpSection onRsvpClick={openRsvpDialog} />
     </main>
